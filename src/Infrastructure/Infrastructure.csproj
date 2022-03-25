@@ -16,4 +16,11 @@
       </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\tests\Application.UnitTests\Application.UnitTests.csproj" />
+      <ProjectReference Include="..\..\tests\Domain.UnitTests\Domain.UnitTests.csproj" />
+      <ProjectReference Include="..\Application\Application.csproj" />
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+    </ItemGroup>
+
 </Project>

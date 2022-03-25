@@ -4,9 +4,11 @@ namespace Domain.Entities;
 
 public class MovieGenreOffer : Offer
 {
-    public MovieGenre MovieGenre { get; private set; }
-    
-    public MovieGenreOffer(string name, string description, decimal discountValue, MovieGenre movieGenre) 
+    public Genre MovieGenre { get; private set; }
+    public ICollection<Order>? Orders { get; set; }
+
+    private MovieGenreOffer() { }
+    public MovieGenreOffer(string name, string description, decimal discountValue, Genre movieGenre) 
         : base(name, description, discountValue)
     {
         MovieGenre = movieGenre;

@@ -7,6 +7,8 @@ public abstract class Offer
     public string Description { get; private set; }
     public decimal DiscountValue { get; private set; }
 
+    protected Offer() { }
+    
     protected Offer(string name, string description, decimal discountValue)
     {
         Name = name;
