@@ -17,9 +17,10 @@ public class MovieGenreOfferConfiguration : IEntityTypeConfiguration<MovieGenreO
         builder.Property(m => m.DiscountValue)
             .HasPrecision(3, 2)
             .IsRequired();
-        builder.HasMany(m => m.Orders)
+        builder.HasMany(mgo => mgo.Orders)
             .WithOne(o => o.MovieGenreOffer);
-        builder.HasOne(m => m.MovieGenre)
-            .WithMany(g => g.MovieGenreOffers);
+        builder.HasOne(mgo => mgo.Genre)
+            .WithOne(g => g.MovieGenreOffer)
+            .HasForeignKey<MovieGenreOffer>(mgo => mgo.GenreId);
     }
 }

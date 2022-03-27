@@ -5,7 +5,7 @@ public class CinemaHall
     public byte Id { get; private set; }
     public byte HallNumber { get; private set; }
     public short NumberOfSeats { get; private set; }
-    public Seance? Seance { get; set; }
+    public ICollection<Seance>? Seances { get; set; }
     public ICollection<Seat>? Seats { get; set; }
 
     private CinemaHall() { }
@@ -14,6 +14,5 @@ public class CinemaHall
     {
         HallNumber = hallNumber;
         NumberOfSeats = numberOfSeats;
-        // Create Seats numberOfSeats times 
     }
 }

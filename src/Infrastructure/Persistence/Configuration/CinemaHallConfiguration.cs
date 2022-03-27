@@ -15,8 +15,7 @@ public class CinemaHallConfiguration : IEntityTypeConfiguration<CinemaHall>
             .HasDefaultValue(256);
         builder.HasMany(c => c.Seats)
             .WithOne(s => s.CinemaHall);
-        builder.HasOne(c => c.Seance)
-            .WithOne(s => s.CinemaHall)
-            .HasForeignKey<Seance>(s => s.CinemaHallId);
+        builder.HasMany(c => c.Seances)
+            .WithOne(s => s.CinemaHall);
     }
 }

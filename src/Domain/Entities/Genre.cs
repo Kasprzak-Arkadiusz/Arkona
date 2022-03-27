@@ -6,7 +6,7 @@ public class Genre
     public string Name { get; private set; }
 
     public ICollection<MovieGenre> MovieGenres { get; set; }
-    public ICollection<MovieGenreOffer> MovieGenreOffers { get; set; }
+    public MovieGenreOffer MovieGenreOffer { get; set; }
 
     public Genre(string name)
     {

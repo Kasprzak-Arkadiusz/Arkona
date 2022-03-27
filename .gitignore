@@ -266,3 +266,6 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+# EF generated scripts
+src/Infrastructure/Persistence/Migrations/Scripts/

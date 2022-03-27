@@ -8,6 +8,7 @@ public class Seat
     public CinemaHall CinemaHall { get; set; }
     public int TicketId { get; set; }
     public Ticket Ticket { get; set; }
+    public ICollection<SeanceSeat> SeanceSeats { get; set; }
 
     private Seat() { }
     public Seat(byte number, char row)
