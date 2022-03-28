@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Persistence.Migrations
 {
-    public partial class Initial : Migration
+    public partial class NewCleanMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,8 @@ namespace Infrastructure.Persistence.Migrations
                 name: "AgeConstraints",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(type: "tinyint", nullable: false),
+                    Id = table.Column<byte>(type: "tinyint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     MinAge = table.Column<byte>(type: "tinyint", nullable: false)
                 },
                 constraints: table =>
@@ -22,27 +23,11 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AmountOffers",
-                columns: table => new
-                {
-                    Id = table.Column<short>(type: "smallint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RequiredNumberOfTickets = table.Column<byte>(type: "tinyint", nullable: false),
-                    DiscountedNumberOfTickets = table.Column<byte>(type: "tinyint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    DiscountValue = table.Column<decimal>(type: "decimal(3,2)", precision: 3, scale: 2, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AmountOffers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CinemaHalls",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(type: "tinyint", nullable: false),
+                    Id = table.Column<byte>(type: "tinyint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     HallNumber = table.Column<byte>(type: "tinyint", nullable: false),
                     NumberOfSeats = table.Column<short>(type: "smallint", nullable: false, defaultValue: (short)256)
                 },
@@ -52,15 +37,16 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Genre",
+                name: "Genres",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(type: "tinyint", nullable: false),
+                    Id = table.Column<byte>(type: "tinyint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Genre", x => x.Id);
+                    table.PrimaryKey("PK_Genres", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -83,33 +69,12 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AgeOffers",
-                columns: table => new
-                {
-                    Id = table.Column<short>(type: "smallint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AgeConstraintId = table.Column<byte>(type: "tinyint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    DiscountValue = table.Column<decimal>(type: "decimal(3,2)", precision: 3, scale: 2, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AgeOffers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AgeOffers_AgeConstraints_AgeConstraintId",
-                        column: x => x.AgeConstraintId,
-                        principalTable: "AgeConstraints",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Movies",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ReleaseDate = table.Column<DateTime>(type: "date", nullable: false),
                     Duration = table.Column<short>(type: "smallint", nullable: false),
@@ -128,23 +93,35 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MovieGenreOffers",
+                name: "Offers",
                 columns: table => new
                 {
                     Id = table.Column<short>(type: "smallint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MovieGenreId = table.Column<byte>(type: "tinyint", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ValidFrom = table.Column<DateTime>(type: "date", nullable: false),
+                    ValidTo = table.Column<DateTime>(type: "date", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    DiscountValue = table.Column<decimal>(type: "decimal(3,2)", precision: 3, scale: 2, nullable: false)
+                    DiscountValue = table.Column<decimal>(type: "decimal(3,2)", precision: 3, scale: 2, nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AgeConstraintId = table.Column<byte>(type: "tinyint", nullable: true),
+                    RequiredNumberOfTickets = table.Column<byte>(type: "tinyint", nullable: true),
+                    DiscountedNumberOfTickets = table.Column<byte>(type: "tinyint", nullable: true),
+                    GenreId = table.Column<byte>(type: "tinyint", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MovieGenreOffers", x => x.Id);
+                    table.PrimaryKey("PK_Offers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MovieGenreOffers_Genre_MovieGenreId",
-                        column: x => x.MovieGenreId,
-                        principalTable: "Genre",
+                        name: "FK_Offers_AgeConstraints_AgeConstraintId",
+                        column: x => x.AgeConstraintId,
+                        principalTable: "AgeConstraints",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Offers_Genres_GenreId",
+                        column: x => x.GenreId,
+                        principalTable: "Genres",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -160,9 +137,9 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_MovieGenre", x => new { x.MovieId, x.GenreId });
                     table.ForeignKey(
-                        name: "FK_MovieGenre_Genre_GenreId",
+                        name: "FK_MovieGenre_Genres_GenreId",
                         column: x => x.GenreId,
-                        principalTable: "Genre",
+                        principalTable: "Genres",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -201,7 +178,7 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Order",
+                name: "Orders",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -214,25 +191,22 @@ namespace Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Order", x => x.Id);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Order_AgeOffers_AgeOfferId",
+                        name: "FK_Orders_Offers_AgeOfferId",
                         column: x => x.AgeOfferId,
-                        principalTable: "AgeOffers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Offers",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Order_AmountOffers_AmountOfferId",
+                        name: "FK_Orders_Offers_AmountOfferId",
                         column: x => x.AmountOfferId,
-                        principalTable: "AmountOffers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Offers",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Order_MovieGenreOffers_MovieGenreOfferId",
+                        name: "FK_Orders_Offers_MovieGenreOfferId",
                         column: x => x.MovieGenreOfferId,
-                        principalTable: "MovieGenreOffers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Offers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -254,9 +228,9 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Tickets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tickets_Order_OrderId",
+                        name: "FK_Tickets_Orders_OrderId",
                         column: x => x.OrderId,
-                        principalTable: "Order",
+                        principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -264,8 +238,7 @@ namespace Infrastructure.Persistence.Migrations
                         column: x => x.SeanceId,
                         principalTable: "Seances",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                        //TODO Check later
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -295,11 +268,28 @@ namespace Infrastructure.Persistence.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_AgeOffers_AgeConstraintId",
-                table: "AgeOffers",
-                column: "AgeConstraintId",
-                unique: true);
+            migrationBuilder.CreateTable(
+                name: "SeanceSeat",
+                columns: table => new
+                {
+                    SeanceId = table.Column<int>(type: "int", nullable: false),
+                    SeatId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SeanceSeat", x => new { x.SeanceId, x.SeatId });
+                    table.ForeignKey(
+                        name: "FK_SeanceSeat_Seances_SeanceId",
+                        column: x => x.SeanceId,
+                        principalTable: "Seances",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SeanceSeat_Seats_SeatId",
+                        column: x => x.SeatId,
+                        principalTable: "Seats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_MovieGenre_GenreId",
@@ -307,40 +297,53 @@ namespace Infrastructure.Persistence.Migrations
                 column: "GenreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MovieGenreOffers_MovieGenreId",
-                table: "MovieGenreOffers",
-                column: "MovieGenreId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Movies_AgeConstraintId",
                 table: "Movies",
                 column: "AgeConstraintId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_AgeOfferId",
-                table: "Order",
+                name: "IX_Offers_AgeConstraintId",
+                table: "Offers",
+                column: "AgeConstraintId",
+                unique: true,
+                filter: "[AgeConstraintId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Offers_GenreId",
+                table: "Offers",
+                column: "GenreId",
+                unique: true,
+                filter: "[GenreId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_AgeOfferId",
+                table: "Orders",
                 column: "AgeOfferId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_AmountOfferId",
-                table: "Order",
+                name: "IX_Orders_AmountOfferId",
+                table: "Orders",
                 column: "AmountOfferId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_MovieGenreOfferId",
-                table: "Order",
+                name: "IX_Orders_MovieGenreOfferId",
+                table: "Orders",
                 column: "MovieGenreOfferId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Seances_CinemaHallId",
                 table: "Seances",
-                column: "CinemaHallId",
-                unique: true);
+                column: "CinemaHallId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Seances_MovieId",
                 table: "Seances",
                 column: "MovieId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SeanceSeat_SeatId",
+                table: "SeanceSeat",
+                column: "SeatId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Seats_CinemaHallId",
@@ -370,28 +373,25 @@ namespace Infrastructure.Persistence.Migrations
                 name: "MovieGenre");
 
             migrationBuilder.DropTable(
-                name: "Seats");
+                name: "SeanceSeat");
 
             migrationBuilder.DropTable(
                 name: "UsedTickets");
 
             migrationBuilder.DropTable(
+                name: "Seats");
+
+            migrationBuilder.DropTable(
                 name: "Tickets");
 
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Seances");
 
             migrationBuilder.DropTable(
-                name: "AgeOffers");
-
-            migrationBuilder.DropTable(
-                name: "AmountOffers");
-
-            migrationBuilder.DropTable(
-                name: "MovieGenreOffers");
+                name: "Offers");
 
             migrationBuilder.DropTable(
                 name: "CinemaHalls");
@@ -400,7 +400,7 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Movies");
 
             migrationBuilder.DropTable(
-                name: "Genre");
+                name: "Genres");
 
             migrationBuilder.DropTable(
                 name: "AgeConstraints");

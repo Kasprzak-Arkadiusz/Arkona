@@ -6,9 +6,9 @@ public class Order
     public string Number { get; private set; }
     public DateTime DateTimeOfOrder { get; private set; }
     public ICollection<Ticket> Tickets { get; set; }
-    public AgeOffer AgeOffer { get; set; }
-    public AmountOffer AmountOffer { get; set; }
-    public MovieGenreOffer MovieGenreOffer { get; set; }
+    public AgeOffer? AgeOffer { get; set; }
+    public AmountOffer? AmountOffer { get; set; }
+    public MovieGenreOffer? MovieGenreOffer { get; set; }
 
     private Order() { }
     

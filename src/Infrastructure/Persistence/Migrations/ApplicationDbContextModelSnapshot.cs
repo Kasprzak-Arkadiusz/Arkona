@@ -25,7 +25,10 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.AgeConstraint", b =>
                 {
                     b.Property<byte>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<byte>("Id"), 1L, 1);
 
                     b.Property<byte>("MinAge")
                         .HasColumnType("tinyint");
@@ -38,7 +41,10 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.CinemaHall", b =>
                 {
                     b.Property<byte>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<byte>("Id"), 1L, 1);
 
                     b.Property<byte>("HallNumber")
                         .HasColumnType("tinyint");
@@ -56,7 +62,10 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Genre", b =>
                 {
                     b.Property<byte>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<byte>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -168,16 +177,16 @@ namespace Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<short>("AgeOfferId")
+                    b.Property<short?>("AgeOfferId")
                         .HasColumnType("smallint");
 
-                    b.Property<short>("AmountOfferId")
+                    b.Property<short?>("AmountOfferId")
                         .HasColumnType("smallint");
 
                     b.Property<DateTime>("DateTimeOfOrder")
                         .HasColumnType("datetime");
 
-                    b.Property<short>("MovieGenreOfferId")
+                    b.Property<short?>("MovieGenreOfferId")
                         .HasColumnType("smallint");
 
                     b.Property<string>("Number")

@@ -8,6 +8,8 @@ public class AgeConstraintConfiguration : IEntityTypeConfiguration<AgeConstraint
 {
     public void Configure(EntityTypeBuilder<AgeConstraint> builder)
     {
+        builder.Property(ac => ac.Id)
+            .ValueGeneratedOnAdd();
         builder.ToTable("AgeConstraints");
     }
 }
