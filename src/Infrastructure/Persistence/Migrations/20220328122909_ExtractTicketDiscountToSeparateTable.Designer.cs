@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220328122909_ExtractTicketDiscountToSeparateTable")]
+    partial class ExtractTicketDiscountToSeparateTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -267,9 +269,15 @@ namespace Infrastructure.Persistence.Migrations
                         .HasMaxLength(1)
                         .HasColumnType("char(1)");
 
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CinemaHallId");
+
+                    b.HasIndex("TicketId")
+                        .IsUnique();
 
                     b.ToTable("Seats");
                 });
@@ -295,10 +303,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<int>("SeanceId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SeatId")
-                        .HasColumnType("int");
-
-                    b.Property<byte?>("TicketDiscountId")
+                    b.Property<byte>("TicketDiscountId")
                         .HasColumnType("tinyint");
 
                     b.HasKey("Id");
@@ -306,9 +311,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasIndex("OrderId");
 
                     b.HasIndex("SeanceId");
-
-                    b.HasIndex("SeatId")
-                        .IsUnique();
 
                     b.HasIndex("TicketDiscountId");
 
@@ -517,7 +519,14 @@ namespace Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.Ticket", "Ticket")
+                        .WithOne("Seat")
+                        .HasForeignKey("Domain.Entities.Seat", "TicketId")
+                        .IsRequired();
+
                     b.Navigation("CinemaHall");
+
+                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("Domain.Entities.Ticket", b =>
@@ -534,14 +543,11 @@ namespace Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Seat", "Seat")
-                        .WithOne("Ticket")
-                        .HasForeignKey("Domain.Entities.Ticket", "SeatId")
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.TicketDiscount", "TicketDiscount")
                         .WithMany("Tickets")
-                        .HasForeignKey("TicketDiscountId");
+                        .HasForeignKey("TicketDiscountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsOne("Domain.ValueObjects.Price", "Price", b1 =>
                         {
@@ -572,8 +578,6 @@ namespace Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Seance");
-
-                    b.Navigation("Seat");
 
                     b.Navigation("TicketDiscount");
                 });
@@ -674,8 +678,11 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Seat", b =>
                 {
                     b.Navigation("SeanceSeats");
+                });
 
-                    b.Navigation("Ticket")
+            modelBuilder.Entity("Domain.Entities.Ticket", b =>
+                {
+                    b.Navigation("Seat")
                         .IsRequired();
                 });
 

@@ -6,7 +6,6 @@ public class Seat
     public byte Number { get; private set; }
     public char Row { get; private set; }
     public CinemaHall CinemaHall { get; set; }
-    public int TicketId { get; set; }
     public Ticket Ticket { get; set; }
     public ICollection<SeanceSeat> SeanceSeats { get; set; }
 
