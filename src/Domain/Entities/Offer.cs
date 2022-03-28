@@ -4,11 +4,13 @@ public abstract class Offer
 {
     public short Id { get; private set; }
     public string Name { get; private set; }
+    public DateOnly ValidFrom { get; set; }
+    public DateOnly ValidTo { get; set; }
     public string Description { get; private set; }
     public decimal DiscountValue { get; private set; }
 
     protected Offer() { }
-    
+
     protected Offer(string name, string description, decimal discountValue)
     {
         Name = name;

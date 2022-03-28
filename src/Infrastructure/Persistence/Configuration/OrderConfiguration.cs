@@ -16,6 +16,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             .HasComputedColumnSql("FORMAT([Id],'d9')");
         builder.HasMany(o => o.Tickets)
             .WithOne(t => t.Order)
-            .IsRequired();
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

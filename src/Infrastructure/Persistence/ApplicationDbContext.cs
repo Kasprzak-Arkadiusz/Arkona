@@ -19,6 +19,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Genre> Genres { get; set; }
     public DbSet<Movie> Movies { get; set; }
     public DbSet<MovieGenreOffer> MovieGenreOffers { get; set; }
+    public DbSet<Offer> Offers { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Seance> Seances { get; set; }
     public DbSet<Seat> Seats { get; set; }
