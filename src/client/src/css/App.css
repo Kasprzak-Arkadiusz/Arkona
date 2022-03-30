@@ -1,0 +1,38 @@
+.display-container {
+    width: 96%;
+    height: 100%;
+    max-width: 1024px;
+    min-width: 360px;
+}
+
+.header {
+    width: auto;
+    height: 60px;
+    margin-top: 20px;
+    margin-left: 12px;
+    margin-right: 12px;
+
+    background: #1e1e25;
+    border-radius: 25px;
+}
+
+.films-container {
+    width: auto;
+    height: auto;
+    min-height: 70px;
+    margin-top: 40px;
+    margin-left: 12px;
+    margin-right: 12px;
+
+    background: #1f2126;
+    border-radius: 50px;
+}
+
+.offers-container {
+    width: auto;
+    height: 390px;
+    margin: 40px 12px;
+
+    background: #1f2126;
+    border-radius: 50px;
+}
