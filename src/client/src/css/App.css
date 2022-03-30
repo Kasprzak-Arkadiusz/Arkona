@@ -12,7 +12,7 @@
     margin-left: 12px;
     margin-right: 12px;
 
-    background: #1e1e25;
+    background-color: #1e1e25;
     border-radius: 25px;
 }
 
@@ -24,15 +24,203 @@
     margin-left: 12px;
     margin-right: 12px;
 
-    background: #1f2126;
+    background-color: #1f2126;
     border-radius: 50px;
+}
+
+.on-screen-container {
+    height: 5%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+
+    border-bottom-style: solid;
+    border-bottom-color: #121212;
+    border-bottom-width: 5px;
+}
+
+.on-screen-container__text {
+    width: 100px;
+    display: inline-block;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-top: 4px;
+
+    font-family: 'Gugi', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+
+    color: #fafafa;
+}
+
+.on-screen-container__icon {
+    width: 25px;
+    display: inline-block;
+    margin-left: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-top: 4px;
+
+    font-family: 'Gugi', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.film-list-container {
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.film-holder {
+    width: 220px;
+    height: 360px;
+    line-height: 20px;
+    margin: 20px auto 10px;
+    vertical-align: top;
+}
+
+.film-holder__image {
+    width: inherit;
+    height: 320px;
+
+    background-color: #999999;
+}
+
+.film-holder__title {
+    width: inherit;
+    height: 40px;
+    margin-top: 5px;
+
+    font-family: 'Domine', serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+
+    color: #fafafa;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.see-more-container {
+    height: 50px;
+    text-align: center;
+
+    border-top-style: solid;
+    border-top-color: #121212;
+    border-top-width: 5px;
+}
+
+.see-more-container__action {
+    height: 50px;
+    width: 100px;
+    margin: 0 60px 0 auto;
+
+    font-family: 'Domine', serif;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 12px;
+    line-height: 14px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+
+    color: #fafafa;
 }
 
 .offers-container {
     width: auto;
-    height: 390px;
-    margin: 40px 12px;
+    height: auto;
+    min-height: 70px;
+    margin-top: 40px;
+    margin-left: 12px;
+    margin-right: 12px;
 
-    background: #1f2126;
+    background-color: #1f2126;
     border-radius: 50px;
+
+    justify-content: center;
+    text-align: center;
+}
+
+.offers-header-container {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+
+    border-bottom-style: solid;
+    border-bottom-color: #121212;
+    border-bottom-width: 5px;
+}
+
+.offers-header-container__text {
+    width: 150px;
+    display: inline-block;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-top: 4px;
+
+    font-family: 'Gugi', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+
+    color: #fafafa;
+}
+
+.offers-header-container__icon {
+    display: inline-block;
+    height: 20px;
+    margin-top: auto;
+    margin-bottom: auto;
+    z-index: 2;
+
+    font-family: 'Gugi', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.offer-list-container {
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.offer-holder {
+    width: 240px;
+    height: 240px;
+    line-height: 20px;
+    margin: 20px auto 20px;
+    position: relative;
+
+    background: #c4c4c4;
+    border-radius: 5px;
+}
+
+.offer-holder__text {
+    height: 235px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0 10px 10px 10px;
+    z-index: 2;
+
+    font-family: 'Domine', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 20px;
+
+    color: #fafafa;
+    text-shadow: 4px 2px 4px rgba(0, 0, 0, 0.4);
 }
