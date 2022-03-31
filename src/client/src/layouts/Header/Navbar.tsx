@@ -1,9 +1,8 @@
 ﻿import React, { useState } from 'react';
-import 'assets/App.css';
-import 'assets/index.css';
 import { Link } from 'react-router-dom';
-import { Logo } from 'assets/icons/Logo';
 import { FiMenu, FiX } from 'react-icons/fi';
+import { Logo } from 'assets/icons/Logo';
+import 'assets/Navbar.css';
 
 function Navbar() {
     const [open, setOpen] = useState(false);

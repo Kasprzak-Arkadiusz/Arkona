@@ -4,98 +4,6 @@
     min-width: 360px;
 }
 
-.header {
-    width: auto;
-    height: 60px;
-    margin-top: 20px;
-    margin-left: 12px;
-    margin-right: 12px;
-    display: flex;
-
-    background-color: #1e1e25;
-    border-radius: 25px;
-}
-
-.nav-links-active {
-    width: 100%;
-    list-style-type: none;
-    display: flex;
-}
-
-.nav-links {
-    display: flex;
-    width: 100%;
-    padding-left: 0;
-    list-style-type: none;
-}
-
-.text-link {
-    color: inherit;
-    text-decoration: inherit;
-}
-
-.logo-container {
-    display: inherit;
-    position: relative;
-    width: 180px;
-    min-width: 180px;
-    margin-right: 10px;
-}
-
-.logo-container__logo {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    margin-left: 10px;
-}
-
-.logo-container__title {
-    width: auto;
-    height: inherit;
-    white-space: nowrap;
-    line-height: 60px;
-    margin-left: auto;
-
-    font-family: 'Gugi', serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 32px;
-    text-align: center;
-
-    -webkit-text-fill-color: #fafafa;
-    -webkit-text-stroke-color: #3a6df1;
-    -webkit-text-stroke-width: 1px;
-    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.navbar-container__link,
-.account-container__link {
-    white-space: nowrap;
-    margin: 0 10px 0 10px;
-
-    font-family: 'Gugi', serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-
-    -webkit-text-fill-color: #fafafa;
-    -webkit-text-stroke-color: #3a6df1;
-    -webkit-text-stroke-width: 1px;
-    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-}
-.nav-icon {
-    display: none;
-    cursor: pointer;
-}
-
-#login-link {
-    margin-left: auto;
-}
-
-#register-link {
-    margin-right: 20px;
-}
-
 .films-container {
     width: auto;
     height: auto;
@@ -192,19 +100,20 @@
 }
 
 .see-more-container__action {
-    height: 50px;
     width: 100px;
+    height: 50px;
     margin: 0 60px 0 auto;
+    display: flex;
 
+    line-height: 14px;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
     font-family: 'Domine', serif;
     font-style: normal;
     font-weight: 200;
     font-size: 12px;
-    line-height: 14px;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
 
     color: #fafafa;
 }
@@ -227,6 +136,7 @@
     height: 40px;
     display: flex;
     justify-content: center;
+ 
     text-align: center;
 
     border-bottom-style: solid;
@@ -249,11 +159,10 @@
 }
 
 .offers-header-container__icon {
-    display: inline-block;
     height: 20px;
+    display: inline-block;
     margin-top: auto;
     margin-bottom: auto;
-    z-index: 2;
 
     font-family: 'Gugi', serif;
     font-style: normal;
@@ -271,8 +180,8 @@
 .offer-holder {
     width: 240px;
     height: 240px;
-    line-height: 20px;
     margin: 20px auto 20px;
+    line-height: 20px;
     position: relative;
 
     background: #c4c4c4;
@@ -285,8 +194,7 @@
     align-items: flex-end;
     justify-content: center;
     padding: 0 10px 10px 10px;
-    z-index: 2;
-
+    
     font-family: 'Domine', serif;
     font-style: normal;
     font-weight: 400;
@@ -295,66 +203,4 @@
 
     color: #fafafa;
     text-shadow: 4px 2px 4px rgba(0, 0, 0, 0.4);
-}
-
-@media only screen and (max-width: 840px) {
-    .header {
-        position: relative;
-    }
-
-    .nav-links {
-        width: 100%;
-        position: absolute;
-        top: 60px;
-        left: -150%;
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        list-style-type: none;
-        transition: 1s all;
-    }
-
-    .nav-links-active {
-        position: absolute;
-        top: 60px;
-        left: -40px;
-        flex-direction: column;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        text-align: center;
-        transition: 1s all;
-    }
-
-    .nav-icon {
-        display: flex;
-        margin: 14px 20px 14px auto;
-
-        font-size: 32px;
-
-        color: #fafafa;
-    }
-
-    .nav-link {
-        height: 50px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        background-color: #1e1e25;
-    }
-
-    #first-link {
-        border-top-left-radius: 25px;
-        border-top-right-radius: 25px;
-    }
-
-    #login-link {
-        margin-left: 0;
-    }
-
-    #register-link {
-        margin-right: 0;
-        border-bottom-left-radius: 25px;
-        border-bottom-right-radius: 25px;
-    }
 }
