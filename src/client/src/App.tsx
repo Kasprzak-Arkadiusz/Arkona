@@ -3,12 +3,25 @@ import './css/App.css';
 import './css/index.css';
 import { ProjectorIcon } from './icons/Projector';
 import { OfferIcon } from './icons/Offer';
+import { Logo } from './icons/Logo';
 
 function App() {
     return (
         <main className="display-container">
             <header className="header">
-                <section />
+                <div className="logo-container">
+                    <Logo className="logo-container__logo" />
+                    <span className="logo-container__title">Arkona</span>
+                </div>
+                <div className="navbar-container">
+                    <span className="navbar-container__link">Repertuar</span>
+                    <span className="navbar-container__link">Promocje</span>
+                    <span className="navbar-container__link">Bilety</span>
+                </div>
+                <div className="account-container align-right">
+                    <span className="account-container__link">Zaloguj</span>
+                    <span className="account-container__link">Zarejestruj</span>
+                </div>
             </header>
 
             <section className="films-container">

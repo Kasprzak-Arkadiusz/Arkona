@@ -11,18 +11,82 @@
     margin-top: 20px;
     margin-left: 12px;
     margin-right: 12px;
-
+    display: flex;
+    
     background-color: #1e1e25;
     border-radius: 25px;
+}
+
+.logo-container {
+    display: inherit;
+    position: relative;
+    width: 180px;
+    min-width: 180px;
+    margin-right: 10px;
+}
+
+.logo-container__logo {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 10px;
+}
+
+.logo-container__title {
+    width: auto;
+    height: inherit;
+    white-space: nowrap;
+    line-height: 60px;
+    margin-left: auto;
+
+    font-family: 'Gugi', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    text-align: center;
+
+    -webkit-text-fill-color: #FAFAFA;
+    -webkit-text-stroke-color: #3A6DF1;
+    -webkit-text-stroke-width: 1px;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.navbar-container {
+    height: inherit;
+    margin-right: 20px;
+}
+
+.navbar-container__link, .account-container__link{
+    white-space: nowrap;
+    line-height: 60px;
+    margin: 0 10px 0 10px;
+    
+    font-family: 'Gugi', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+
+    -webkit-text-fill-color: #FAFAFA;
+    -webkit-text-stroke-color: #3A6DF1;
+    -webkit-text-stroke-width: 1px;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.align-right{
+    text-align: right;
+}
+
+.account-container {
+    width: auto;
+    flex-grow: 1;
+    margin-right: 10px;
 }
 
 .films-container {
     width: auto;
     height: auto;
     min-height: 70px;
-    margin-top: 40px;
-    margin-left: 12px;
-    margin-right: 12px;
+    margin: 40px 12px 0 12px;
 
     background-color: #1f2126;
     border-radius: 50px;
@@ -42,8 +106,7 @@
 .on-screen-container__text {
     width: 100px;
     display: inline-block;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin: auto 5px auto 0;
     padding-top: 4px;
 
     font-family: 'Gugi', serif;
@@ -57,9 +120,7 @@
 .on-screen-container__icon {
     width: 25px;
     display: inline-block;
-    margin-left: 5px;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin: auto 0 auto 0;
     padding-top: 4px;
 
     font-family: 'Gugi', serif;
@@ -138,9 +199,7 @@
     width: auto;
     height: auto;
     min-height: 70px;
-    margin-top: 40px;
-    margin-left: 12px;
-    margin-right: 12px;
+    margin: 40px 12px 0 12px;
 
     background-color: #1f2126;
     border-radius: 50px;
@@ -164,8 +223,7 @@
 .offers-header-container__text {
     width: 150px;
     display: inline-block;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin: auto 5px auto 0;
     padding-top: 4px;
 
     font-family: 'Gugi', serif;
