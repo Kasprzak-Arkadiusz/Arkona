@@ -1,4 +1,4 @@
-.display-container {
+﻿.display-container {
     height: 100%;
     max-width: 1024px;
     min-width: 360px;
@@ -110,6 +110,7 @@
     justify-content: center;
 
     text-align: center;
+    text-decoration: none;
     font-family: 'Domine', serif;
     font-style: normal;
     font-weight: 200;
@@ -136,7 +137,7 @@
     height: 40px;
     display: flex;
     justify-content: center;
- 
+
     text-align: center;
 
     border-bottom-style: solid;
@@ -189,12 +190,13 @@
 }
 
 .offer-holder__text {
-    height: 235px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    width: 220px;
+    position: absolute;
+    left: 50%;
+    top: 90%;
     padding: 0 10px 10px 10px;
-    
+    transform:translate(-50%,-50%);
+
     font-family: 'Domine', serif;
     font-style: normal;
     font-weight: 400;
@@ -202,5 +204,5 @@
     line-height: 20px;
 
     color: #fafafa;
-    text-shadow: 4px 2px 4px rgba(0, 0, 0, 0.4);
+    text-shadow: 4px 2px 4px rgba(0, 0, 0, 0.8);
 }
