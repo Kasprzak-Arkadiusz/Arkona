@@ -48,7 +48,6 @@ function Home() {
                     <a className="see-more-container__action">Zobacz więcej</a>
                 </div>
             </section>
-
             <section className="offers-container">
                 <div className="offers-header-container">
                     <span className="offers-header-container__text">Oferty specjalne</span>
