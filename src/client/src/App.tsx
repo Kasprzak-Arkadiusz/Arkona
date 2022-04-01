@@ -1,8 +1,7 @@
 import React from 'react';
 import 'assets/index.css';
 import Navbar from 'components/layouts/Header/Navbar';
-
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 import Home from 'pages/Home/index';
 import Repertoire from 'pages/Repertoire/index';
 import Offers from 'pages/Offers/index';
@@ -22,6 +21,7 @@ function App() {
                     <Route path="/tickets" element={<Tickets />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/*" element={<Navigate to="/" />} />
                 </Routes>
             </Router>
         </div>
