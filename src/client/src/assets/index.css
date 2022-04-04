@@ -19,6 +19,48 @@ code {
 }
 
 #root {
+    text-align: center;
+    display: block;
+}
+
+.display-container {
+    max-width: 1024px;
+    min-width: 360px;
+    height: 100%;
+    margin: auto;
     justify-content: center;
+    text-align: center;
+}
+
+.container-header {
     display: flex;
+    justify-content: center;
+    text-align: center;
+    padding:10px 0 10px 0;
+
+    border-bottom-style: solid;
+    border-bottom-color: #121212;
+    border-bottom-width: 5px;
+}
+
+.container-header__text {
+    width: auto;
+    display: inline-block;
+    margin: auto 5px auto 0;
+
+    font-family: 'Gugi', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+
+    color: #fafafa;
+}
+
+.see-more-container {
+    height: 50px;
+    text-align: center;
+
+    border-top-style: solid;
+    border-top-color: #121212;
+    border-top-width: 5px;
 }

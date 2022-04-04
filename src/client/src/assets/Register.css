@@ -1,0 +1,236 @@
+﻿.register-container {
+    height: auto;
+    margin: 40px 12px auto 12px;
+    display: block;
+
+    background-color: #1f2126;
+    border-radius: 50px;
+}
+
+.register-form-container{
+    width: 340px;
+    height: auto;
+    margin: 10px auto auto auto;
+    display: block;
+    text-align: center;
+}
+
+.validation-text {
+    height: auto;
+    display: block;
+    margin: auto;
+    text-align: center;
+    padding: 0 10px 0 10px;
+    
+    font-family: 'Domine', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    
+
+    color: #FF0707;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.register-form-container__label {
+    height: 20px;
+    display: block;
+    text-align: center;
+    margin-top: 5px;
+    
+    font-family: 'Domine', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    
+    color: #fafafa;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.register-form-container_input {
+    width: calc(100% - 60px);
+    height: 30px;
+    display: inherit;
+    margin: 0 auto 5px auto;
+    border: 0;
+    border-radius: 15px;
+    padding: 0 25px 0 15px;
+
+    font-family: 'Domine', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+
+    color: #FAFAFA;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.75);
+    background: #C4C4C4;
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.register-form-container__button {
+    width: calc(100% / 3);
+    height: 30px;
+    text-align: center;
+    border-radius: 15px;
+    border: 0;
+    margin: 20px auto 10px auto; 
+    
+    font-family: 'Domine', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    text-decoration: none;
+    display: inline-block;
+    
+
+    color: #FAFAFA;
+    background-color: #C4C4C4;
+    mix-blend-mode: normal;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.85);
+}
+
+.register-text {
+    display: block;
+    margin-bottom: 10px;
+    
+    font-family: 'Domine', serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    align-items: center;
+    text-align: center;
+
+    color: #FAFAFA;
+}
+
+.external-provider-container{
+    width: 340px;
+    height: auto;
+    margin: 10px auto auto auto;
+    display: block;
+    text-align: center;
+}
+
+.external-provider-container__button {
+    width: calc(100% * 2 / 3);
+    height: 30px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto 20px auto;
+    
+    border: 0;
+    border-radius: 10px;
+    
+    cursor: pointer;
+}
+
+.facebook-button {
+    background-color: #4267B2;
+}
+
+.facebook-button__image {
+    border-radius: 4px;;
+}
+
+.facebook-button__span {
+    margin:0 auto 0 59px;
+
+    font-family: 'Domine', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    
+    color: #FFFFFF;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.75);
+}
+
+.google-button {
+    background-color: #BDBDBD;
+}
+
+.google-button__span {
+    margin:0 auto 0 70px;
+
+    font-family: 'Domine', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+
+    color: #FFFFFF;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.75);
+}
+
+.microsoft-button {
+    background-color: #FFFFFF;
+}
+
+
+.microsoft-button__span {
+    margin:0 auto 0 54px;
+    
+    font-family: 'Domine',serif ;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+
+.have-an-account-container{
+    width: 340px;
+    height: auto;
+    margin: 10px auto 0 auto;
+    display: block;
+    text-align: center;
+    padding: 0 0 10px 0;
+}
+
+.have-an-account-container__span {
+    font-family: 'Domine', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 14px;
+    text-align: right;
+    margin: 0 5px 0 auto;
+
+    color: #fafafa;
+}
+
+.have-an-account-container__action {
+    font-family: 'Domine', serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 14px;
+    text-align: right;
+    margin: 0 auto 0 5px;
+    text-decoration: none;
+
+    color: #fafafa;
+}
+
+@media only screen and (min-width: 640px) {
+    .display-container{
+        height: 100%;
+        max-width: 1024px;
+        width: 100%;
+    }
+}

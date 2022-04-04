@@ -1,5 +1,11 @@
 ﻿.header {
+    max-width: 1024px;
+    margin: auto;
+}
+
+.header-content {
     width: auto;
+    max-width: 1024px;
     height: 60px;
     margin: 20px 12px 0 12px;
     display: flex;
@@ -89,7 +95,7 @@
 }
 
 @media only screen and (max-width: 840px) {
-    .header {
+    .header-content {
         position: relative;
     }
 
@@ -97,7 +103,7 @@
         width: 100%;
         position: absolute;
         top: 60px;
-        left: -150%;
+        left: -200%;
         display: flex;
         flex-direction: column;
         text-align: center;
