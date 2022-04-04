@@ -5,6 +5,9 @@ import facebook from '../../assets/images/facebook-logo.png';
 import google from '../../assets/images/google-logo.png';
 import microsoft from '../../assets/images/microsoft-logo.png';
 
+import PasswordInput from 'components/PasswordInput';
+import ExternalLogin from './components/ExternalLogin'
+
 function Register() {
     return (
         <main className="display-container">
@@ -20,12 +23,10 @@ function Register() {
                     <span className="validation-text">
                         Hasło musi mieć minimum 8 znaków, w tym 1 znak specjalny oraz 1 liczbę
                     </span>
-                    <label className="register-form-container__label">Hasło:</label>
-                    <input type="password" className="register-form-container_input" />
+                    <PasswordInput inputId="password-input" title="Hasło:" />
 
                     <span className="validation-text">Hasła są różne!</span>
-                    <label className="register-form-container__label">Potwierdź hasło:</label>
-                    <input type="password" className="register-form-container_input" />
+                    <PasswordInput inputId="confirm-password-input" title="Potwierdź hasło:" />
 
                     <button type="submit" className="register-form-container__button">
                         Utwórz konto
@@ -34,18 +35,9 @@ function Register() {
                 <section className="external-provider-container">
                     <span className="register-text">lub</span>
                     <span className="register-text">zarejestruj się za pomocą:</span>
-                    <button className="external-provider-container__button facebook-button">
-                        <img src={facebook} alt="" className="facebook-button__image" />
-                        <span className="facebook-button__span">Facebooka</span>
-                    </button>
-                    <button className="external-provider-container__button google-button">
-                        <img src={google} alt="" />
-                        <span className="google-button__span">Google</span>
-                    </button>
-                    <button className="external-provider-container__button microsoft-button">
-                        <img src={microsoft} alt="" />
-                        <span className="microsoft-button__span">Microsoftu</span>
-                    </button>
+                    <ExternalLogin imgSource={facebook} providerName="Facebook" buttonText="Facebooka"/>
+                    <ExternalLogin imgSource={google} providerName="Google" buttonText="Google"/>
+                    <ExternalLogin imgSource={microsoft} providerName="Microsoft" buttonText="Microsoftu"/>
                 </section>
                 <section className="have-an-account-container">
                     <span className="have-an-account-container__span">Masz już konto?</span>
@@ -53,7 +45,7 @@ function Register() {
                         Zaloguj się
                     </Link>
                 </section>
-                <div className="see-more-container"/>
+                <div className="see-more-container" />
             </div>
         </main>
     );

@@ -9,30 +9,14 @@ export interface SvgIconProperties {
 
 export interface SvgIcon extends FC<SvgIconProperties> {}
 
-export const Logo: SvgIcon = ({
-    width = '48',
-    height = '48',
-    className = '',
-}): JSX.Element => {
+export const Logo: SvgIcon = ({ width = '48', height = '48', className = '' }): JSX.Element => {
     return (
         <div className={className}>
-            <svg
-                width={width}
-                height={height}
-                viewBox="0 0 48 48"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width={width} height={height} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g filter="url(#filter0_i_17_8)">
                     <circle cx="24" cy="24" r="24" fill="#1E1E25" />
                 </g>
-                <circle
-                    cx="24"
-                    cy="24"
-                    r="23"
-                    stroke="#3A6DF1"
-                    strokeWidth="2"
-                />
+                <circle cx="24" cy="24" r="23" stroke="#3A6DF1" strokeWidth="2" />
                 {/*Letter 'A'*/}
                 <g filter="url(#filter1_dd_17_8)">
                     <path
@@ -69,11 +53,7 @@ export const Logo: SvgIcon = ({
                             type="matrix"
                             values="0 0 0 0 0.980392 0 0 0 0 0.980392 0 0 0 0 0.980392 0 0 0 0.25 0"
                         />
-                        <feBlend
-                            mode="normal"
-                            in2="BackgroundImageFix"
-                            result="effect1_dropShadow_17_8"
-                        />
+                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_17_8" />
                         <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"
@@ -83,21 +63,9 @@ export const Logo: SvgIcon = ({
                         <feOffset dy="4" />
                         <feGaussianBlur stdDeviation="2" />
                         <feComposite in2="hardAlpha" operator="out" />
-                        <feColorMatrix
-                            type="matrix"
-                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
-                        />
-                        <feBlend
-                            mode="normal"
-                            in2="effect1_dropShadow_17_8"
-                            result="effect2_dropShadow_17_8"
-                        />
-                        <feBlend
-                            mode="normal"
-                            in="SourceGraphic"
-                            in2="effect2_dropShadow_17_8"
-                            result="shape"
-                        />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
+                        <feBlend mode="normal" in2="effect1_dropShadow_17_8" result="effect2_dropShadow_17_8" />
+                        <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_17_8" result="shape" />
                     </filter>
                     <linearGradient
                         id="paint0_linear_17_8"

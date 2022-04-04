@@ -2,18 +2,17 @@
     height: auto;
     margin: 40px 12px auto 12px;
     text-align: center;
-    
+
     background-color: #1f2126;
     border-radius: 50px;
 }
 
-.register-form-container{
+.register-form-container {
     width: 340px;
     height: auto;
     margin: 10px auto auto auto;
-    display: block;
 
-    font-family: 'Domine',serif ;
+    font-family: 'Domine', serif;
     font-style: normal;
     font-weight: 400;
 }
@@ -23,12 +22,11 @@
     display: block;
     margin: auto;
     padding: 5px 10px 5px 10px;
-    
+
     font-size: 13px;
     line-height: 14px;
-    
 
-    color: #FF0707;
+    color: #ff0707;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
@@ -36,13 +34,18 @@
     height: 20px;
     display: block;
     margin-top: 5px;
-    
+
     font-size: 14px;
     line-height: 16px;
-    
+
     color: #fafafa;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
+
+.register-form-input-container {
+    height: 50px;
+}
+
 
 .register-form-container_input {
     width: calc(100% - 60px);
@@ -53,16 +56,16 @@
     border-radius: 15px;
     padding: 0 25px 0 15px;
 
-    font-family: 'Domine', serif ;
+    font-family: 'Domine', serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 16px;
     letter-spacing: 1px;
 
-    color: #FAFAFA;
+    color: #fafafa;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.75);
-    background: #C4C4C4;
+    background: #c4c4c4;
     box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
@@ -73,16 +76,16 @@
     border: 0;
     margin: 20px auto 10px auto;
 
-    font-family: 'Domine', serif ;
+    font-family: 'Domine', serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 16px;
     text-decoration: none;
     display: inline-block;
-    
-    color: #FAFAFA;
-    background-color: #C4C4C4;
+
+    color: #fafafa;
+    background-color: #c4c4c4;
     mix-blend-mode: normal;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.85);
 }
@@ -90,17 +93,28 @@
 .register-text {
     display: block;
     margin-bottom: 10px;
-    
+
     font-family: 'Domine', serif;
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
     line-height: 16px;
 
-    color: #FAFAFA;
+    color: #fafafa;
 }
 
-.external-provider-container{
+.register-form-icon-container {
+    display: inline-block;
+    top: -32px;
+    position: relative;
+    transform: translateX(140px);
+}
+
+.register-form-container__icon {
+    
+}
+
+.external-provider-container {
     width: 340px;
     height: auto;
     margin: 10px auto auto auto;
@@ -114,56 +128,55 @@
     align-items: center;
     margin: 0 auto 20px auto;
 
-    font-family: 'Domine', serif ;
+    font-family: 'Domine', serif;
     font-style: normal;
     font-weight: 400;
-    
+
     border: 0;
     border-radius: 10px;
-    
+
     cursor: pointer;
 }
 
 .facebook-button {
-    background-color: #4267B2;
+    background-color: #4267b2;
 }
 
 .facebook-button__image {
-    border-radius: 4px;;
+    border-radius: 4px;
 }
 
 .facebook-button__span {
-    margin:0 auto 0 59px;
-    
+    margin: 0 auto 0 59px;
+
     font-size: 12px;
     line-height: 14px;
-    
-    color: #FFFFFF;
+
+    color: #ffffff;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.75);
 }
 
 .google-button {
-    background-color: #BDBDBD;
+    background-color: #bdbdbd;
 }
 
 .google-button__span {
-    margin:0 auto 0 70px;
-    
+    margin: 0 auto 0 70px;
+
     font-size: 12px;
     line-height: 14px;
 
-    color: #FFFFFF;
+    color: #ffffff;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.75);
 }
 
 .microsoft-button {
-    background-color: #FFFFFF;
+    background-color: #ffffff;
 }
 
-
 .microsoft-button__span {
-    margin:0 auto 0 54px;
-    
+    margin: 0 auto 0 54px;
+
     font-size: 14px;
     line-height: 16px;
     display: flex;
@@ -173,9 +186,7 @@
 
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
 }
-
-
-.have-an-account-container{
+.have-an-account-container {
     width: 340px;
     height: auto;
     margin: 10px auto 0 auto;
@@ -187,10 +198,10 @@
     font-size: 14px;
     line-height: 14px;
     margin: 0 5px 0 auto;
-    
-    font-family: 'Domine', serif ;
+
+    font-family: 'Domine', serif;
     font-style: normal;
-    font-weight: 400;    
+    font-weight: 400;
 
     color: #fafafa;
 }
