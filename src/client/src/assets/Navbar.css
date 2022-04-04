@@ -6,6 +6,7 @@
 .header-content {
     width: auto;
     max-width: 1024px;
+    min-width: 336px;
     height: 60px;
     margin: 20px 12px 0 12px;
     display: flex;
@@ -32,8 +33,6 @@
 .logo-container__title {
     width: auto;
     margin-left: auto;
-    height: inherit;
-    white-space: nowrap;
     line-height: 60px;
 
     font-family: 'Gugi', serif;
@@ -45,7 +44,7 @@
     -webkit-text-fill-color: #fafafa;
     -webkit-text-stroke-color: #3a6df1;
     -webkit-text-stroke-width: 1px;
-    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 1);
 }
 
 .nav-links-active {
@@ -62,8 +61,7 @@
 }
 
 .text-link {
-    color: inherit;
-    text-decoration: inherit;
+    text-decoration: none;
 }
 
 .navbar-container__link,

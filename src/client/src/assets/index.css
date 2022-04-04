@@ -19,7 +19,6 @@ code {
 }
 
 #root {
-    text-align: center;
     display: block;
 }
 
@@ -28,14 +27,11 @@ code {
     min-width: 360px;
     height: 100%;
     margin: auto;
-    justify-content: center;
-    text-align: center;
 }
 
 .container-header {
     display: flex;
     justify-content: center;
-    text-align: center;
     padding:10px 0 10px 0;
 
     border-bottom-style: solid;
@@ -45,7 +41,6 @@ code {
 
 .container-header__text {
     width: auto;
-    display: inline-block;
     margin: auto 5px auto 0;
 
     font-family: 'Gugi', serif;
@@ -58,7 +53,6 @@ code {
 
 .see-more-container {
     height: 50px;
-    text-align: center;
 
     border-top-style: solid;
     border-top-color: #121212;
