@@ -1,0 +1,155 @@
+﻿.header {
+    max-width: 1024px;
+    margin: auto;
+}
+
+.header-content {
+    width: auto;
+    max-width: 1024px;
+    min-width: 336px;
+    height: 60px;
+    margin: 20px 12px 0 12px;
+    display: flex;
+
+    background-color: #1e1e25;
+    border-radius: 25px;
+}
+
+.logo-container {
+    width: 180px;
+    min-width: 180px;
+    margin-right: 10px;
+    display: inherit;
+    position: relative;
+}
+
+.logo-container__logo {
+    margin-left: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.logo-container__title {
+    width: auto;
+    margin-left: auto;
+    line-height: 60px;
+
+    font-family: 'Gugi', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    text-align: center;
+
+    -webkit-text-fill-color: #fafafa;
+    -webkit-text-stroke-color: #3a6df1;
+    -webkit-text-stroke-width: 1px;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 1);
+}
+
+.nav-links-active {
+    width: 100%;
+    display: flex;
+    list-style-type: none;
+}
+
+.nav-links {
+    width: 100%;
+    display: flex;
+    padding-left: 0;
+    list-style-type: none;
+}
+
+.text-link {
+    text-decoration: none;
+}
+
+.navbar-container__link,
+.account-container__link {
+    margin: 0 10px 0 10px;
+    white-space: nowrap;
+
+    font-family: 'Gugi', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+
+    -webkit-text-fill-color: #fafafa;
+    -webkit-text-stroke-color: #3a6df1;
+    -webkit-text-stroke-width: 1px;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+.nav-icon {
+    display: none;
+    cursor: pointer;
+}
+
+#login-link {
+    margin-left: auto;
+}
+
+#register-link {
+    margin-right: 20px;
+}
+
+@media only screen and (max-width: 840px) {
+    .header-content {
+        position: relative;
+    }
+
+    .nav-links {
+        width: 100%;
+        position: absolute;
+        top: 60px;
+        left: -200%;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        list-style-type: none;
+        transition: 1s all;
+    }
+
+    .nav-links-active {
+        position: absolute;
+        top: 60px;
+        left: -40px;
+        flex-direction: column;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        text-align: center;
+        transition: 1s all;
+    }
+
+    .nav-icon {
+        display: flex;
+        margin: 14px 20px 14px auto;
+
+        font-size: 32px;
+
+        color: #fafafa;
+    }
+
+    .nav-link {
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        background-color: #1e1e25;
+    }
+
+    #first-link {
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+    }
+
+    #login-link {
+        margin-left: 0;
+    }
+
+    #register-link {
+        margin-right: 0;
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
+}
