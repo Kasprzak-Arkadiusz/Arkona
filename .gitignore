@@ -269,3 +269,7 @@ _Pvt_Extensions
 
 # EF generated scripts
 src/Infrastructure/Persistence/Migrations/Scripts/
+
+# prettier files
+src/client/.prettierrc.js
+src/client/.prettierignore
