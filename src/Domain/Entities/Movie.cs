@@ -1,6 +1,4 @@
-﻿using Domain.ValueObjects;
-
-namespace Domain.Entities;
+﻿namespace Domain.Entities;
 
 public class Movie
 {
@@ -12,18 +10,40 @@ public class Movie
     public string Description { get; private set; }
     public AgeConstraint AgeConstraint { get; private set; }
     public ICollection<MovieGenre> MovieGenres { get; private set; }
-    public ICollection<Seance> Seances { get; set; }
+    public ICollection<Seance> Seances { get; private set; }
 
-    private Movie() { }
-    
-    public Movie(string title, DateOnly releaseDate, short duration,
-        string description, AgeConstraint ageConstraint, byte[] image)
+    private Movie(string title, DateOnly releaseDate, short duration,
+        string description, AgeConstraint ageConstraint, ICollection<MovieGenre> movieGenres, byte[]? image = null)
     {
         Title = title;
         ReleaseDate = releaseDate;
         Duration = duration;
         Description = description;
         AgeConstraint = ageConstraint;
-        Image = image;
+        MovieGenres = movieGenres;
+        Seances = new List<Seance>();
+
+        if (image is not null)
+            Image = image;
+    }
+
+    public static Movie Create(string title, DateOnly releaseDate, short duration,
+        string description, ICollection<MovieGenre>? movieGenres = null, byte[]? image = null,
+        AgeConstraint? ageConstraint = null)
+    {
+        return new Movie(title, releaseDate, duration, description, ageConstraint, movieGenres, image);
+    }
+
+    public void Update(string? title = null, DateOnly? releaseDate = null, short? duration = null,
+        string? description = null, AgeConstraint? ageConstraint = null, ICollection<MovieGenre>? movieGenres = null,
+        byte[]? image = null)
+    {
+        Title = title ?? Title;
+        ReleaseDate = releaseDate ?? ReleaseDate;
+        Duration = duration ?? Duration;
+        Description = description ?? Description;
+        AgeConstraint = ageConstraint ?? AgeConstraint;
+        MovieGenres = movieGenres ?? MovieGenres;
+        Image = image ?? Image;
     }
 }

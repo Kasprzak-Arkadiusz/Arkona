@@ -2,8 +2,8 @@
 
 public class MovieGenre
 {
-    public byte GenreId { get;  set; }
-    public Genre Genre { get; set; }
-    public int MovieId { get; set; }
-    public Movie Movie { get; set; }
+    public byte GenreId { get; private set; }
+    public Genre Genre { get; private set; }
+    public int MovieId { get; private set; }
+    public Movie Movie { get; private set; }
 }
