@@ -10,6 +10,8 @@ public class CinemaHall
     public IEnumerable<Seance>? Seances { get; }
     public ICollection<Seat> Seats { get; }
 
+    private CinemaHall() { }
+
     private CinemaHall(byte hallNumber, short numberOfSeats, short numberOfSeatsInRow)
     {
         HallNumber = hallNumber;
@@ -44,7 +46,7 @@ public class CinemaHall
 
         var movie = Movie.Create("", new DateOnly(), 0, "");
         movie.Update();
-        
+
         return new CinemaHall(hallNumber, numberOfSeats, numberOfSeatsInRow);
     }
 }

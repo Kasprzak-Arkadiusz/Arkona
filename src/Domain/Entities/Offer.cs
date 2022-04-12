@@ -1,28 +1,33 @@
-﻿namespace Domain.Entities;
+﻿using Domain.ValueObjects;
+
+namespace Domain.Entities;
 
 public abstract class Offer
 {
     public short Id { get; private set; }
     public string Name { get; private set; }
-    
-    // TODO Extract to ValueObject
-    public DateOnly ValidFrom { get; private set; }
-    public DateOnly ValidTo { get; private set; }
-    
+    public Period ValidPeriod { get; private set; }
     public string Description { get; private set; }
     public decimal DiscountValue { get; private set; }
 
-    protected Offer(string name, string description, decimal discountValue, DateOnly validFrom, DateOnly validTo)
+    protected Offer() { }
+
+    protected Offer(string name, string description, decimal discountValue, Period validPeriod)
     {
         Name = name;
         Description = description;
         DiscountValue = discountValue;
-        ValidFrom = validFrom;
-        ValidTo = validTo;
+        ValidPeriod = validPeriod;
+        ValidPeriod = validPeriod;
     }
 
     protected void ExtendTheOffer(DateOnly validTo)
     {
-        ValidTo = validTo;
+        ValidPeriod.ExtendPeriod(validTo);
+    }
+
+    protected void ShortenTheOffer(DateOnly validTo)
+    {
+        ValidPeriod.ShortenPeriod(validTo);
     }
 }

@@ -2,9 +2,10 @@
 
 public record Price
 {
-    
     public decimal BasePrice { get; private set; }
     public decimal DiscountedPrice { get; private set; }
+
+    private Price() { }
 
     private Price(decimal? discountValue)
     {

@@ -19,13 +19,20 @@ public class OfferConfiguration : IEntityTypeConfiguration<Offer>
         builder.Property(m => m.DiscountValue)
             .HasPrecision(3, 2)
             .IsRequired();
-        builder.Property(o => o.ValidFrom)
-            .HasColumnType("date")
-            .HasConversion<DateOnlyConverter, DateOnlyComparer>()
-            .IsRequired();
-        builder.Property(o => o.ValidTo)
-            .HasColumnType("date")
-            .HasConversion<DateOnlyConverter, DateOnlyComparer>()
-            .IsRequired();
+
+        builder.OwnsOne(o => o.ValidPeriod,
+            navigationBuilder =>
+            {
+                navigationBuilder.Property(p => p.ValidFrom)
+                    .HasColumnName("ValidFrom")
+                    .HasColumnType("date")
+                    .HasConversion<DateOnlyConverter, DateOnlyComparer>()
+                    .IsRequired();
+                navigationBuilder.Property(p => p.ValidTo)
+                    .HasColumnName("ValidTo")
+                    .HasColumnType("date")
+                    .HasConversion<DateOnlyConverter, DateOnlyComparer>()
+                    .IsRequired();
+            });
     }
 }

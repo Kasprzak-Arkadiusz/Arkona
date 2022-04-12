@@ -7,7 +7,9 @@ public class Seance
     public Movie Movie { get; private set; }
     public CinemaHall CinemaHall { get; private set; }
     public ICollection<SeanceSeat> SeanceSeats { get; private set; }
-    
+
+    private Seance() { }
+
     private Seance(DateTime startDateTime, Movie movie, CinemaHall cinemaHall)
     {
         StartDateTime = startDateTime;

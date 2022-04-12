@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities;
+﻿using Domain.ValueObjects;
+
+namespace Domain.Entities;
 
 public class AmountOffer : Offer
 {
@@ -6,9 +8,10 @@ public class AmountOffer : Offer
     public byte DiscountedNumberOfTickets { get; private set; }
     public IEnumerable<Order>? Orders { get; }
 
+    private AmountOffer() { }
+
     private AmountOffer(string name, string description, decimal discountValue, byte requiredNumberOfTickets,
-        byte discountedNumberOfTickets, DateOnly validFrom, DateOnly validTo) : base(name, description, discountValue,
-        validFrom, validTo)
+        byte discountedNumberOfTickets, Period validPeriod) : base(name, description, discountValue, validPeriod)
     {
         RequiredNumberOfTickets = requiredNumberOfTickets;
         DiscountedNumberOfTickets = discountedNumberOfTickets;
@@ -16,9 +19,9 @@ public class AmountOffer : Offer
     }
 
     public static AmountOffer Create(string name, string description, decimal discountValue,
-        byte requiredNumberOfTickets, byte discountedNumberOfTickets, DateOnly validFrom, DateOnly validTo)
+        byte requiredNumberOfTickets, byte discountedNumberOfTickets, Period validPeriod)
     {
         return new AmountOffer(name, description, discountValue, requiredNumberOfTickets, discountedNumberOfTickets,
-            validFrom, validTo);
+            validPeriod);
     }
 }

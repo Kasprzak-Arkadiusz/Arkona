@@ -2,7 +2,7 @@
 
 public class TicketDiscount
 {
-    public byte Id { get; set; }
+    public byte Id { get; private set; }
     public string Name { get; private set; }
     public string Description { get; private set; }
     public decimal DiscountValue { get; private set; }

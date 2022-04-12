@@ -5,7 +5,7 @@ public class Seat
     public int Id { get; private set; }
     public short Number { get; private set; }
     public char Row { get; private set; }
-    public CinemaHall CinemaHall { get; set; }
+    public CinemaHall CinemaHall { get; }
     public IEnumerable<SeanceSeat> SeanceSeats { get; }
 
     private Seat(short number, char row)

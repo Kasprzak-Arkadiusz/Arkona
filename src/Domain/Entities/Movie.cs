@@ -12,6 +12,8 @@ public class Movie
     public ICollection<MovieGenre>? MovieGenres { get; private set; }
     public ICollection<Seance> Seances { get; private set; }
 
+    private Movie() { }
+
     private Movie(string title, DateOnly releaseDate, short duration,
         string description, AgeConstraint? ageConstraint, ICollection<MovieGenre>? movieGenres, byte[]? image = null)
     {

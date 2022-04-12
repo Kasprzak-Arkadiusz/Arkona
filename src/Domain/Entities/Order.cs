@@ -12,6 +12,8 @@ public class Order
     public AmountOffer? AmountOffer { get; private set; }
     public MovieGenreOffer? MovieGenreOffer { get; private set; }
 
+    private Order() { }
+
     private Order(DateTime dateOfOrder, AgeOffer? ageOffer = null, AmountOffer? amountOffer = null,
         MovieGenreOffer? movieGenreOffer = null)
     {

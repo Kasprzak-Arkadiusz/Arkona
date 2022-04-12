@@ -11,14 +11,16 @@ public class Ticket
     public TicketDiscount? TicketDiscount { get; private set; }
     public int SeanceSeatId { get; private set; }
     public SeanceSeat SeanceSeat { get; private set; }
-    public Order Order { get; private set; }
+    public Order Order { get; }
+
+    private Ticket() { }
 
     private Ticket(SeanceSeat seanceSeat, TicketDiscount? ticketDiscount = null)
     {
         Price = Price.Create(ticketDiscount?.DiscountValue);
         SeanceSeat = seanceSeat;
         TicketDiscount = ticketDiscount;
-        
+
         var rand = new Random();
         Number = UserFriendlyNumberGenerator.Generate(SeanceSeat.Id, DateTime.Now.Millisecond, rand.Next(0, 10));
     }
