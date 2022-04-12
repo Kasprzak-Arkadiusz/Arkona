@@ -1,10 +1,10 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Services;
+
+namespace Domain.Entities;
 
 public class Order
 {
     public int Id { get; private set; }
-
-    // TODO Calculate number based on id in a separate service
     public string Number { get; private set; }
     public DateTime DateTimeOfOrder { get; private set; }
     public ICollection<Ticket> Tickets { get; private set; }
@@ -17,6 +17,9 @@ public class Order
     {
         DateTimeOfOrder = dateOfOrder;
         Tickets = new List<Ticket>();
+        var rand = new Random();
+        Number = UserFriendlyNumberGenerator.Generate(Tickets.First().Id, DateTime.Now.Millisecond,
+            rand.Next(0, 10));
         AgeOffer = ageOffer;
         AmountOffer = amountOffer;
         MovieGenreOffer = movieGenreOffer;

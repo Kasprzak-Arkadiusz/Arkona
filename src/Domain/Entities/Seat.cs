@@ -12,6 +12,7 @@ public class Seat
     {
         Number = number;
         Row = row;
+        SeanceSeats = new List<SeanceSeat>();
     }
 
     public static Seat Create(short number, char row)

@@ -3,17 +3,17 @@
 public class Movie
 {
     public int Id { get; private set; }
-    public byte[] Image { get; private set; }
+    public byte[]? Image { get; private set; }
     public string Title { get; private set; }
     public DateOnly ReleaseDate { get; private set; }
     public short Duration { get; private set; }
     public string Description { get; private set; }
-    public AgeConstraint AgeConstraint { get; private set; }
-    public ICollection<MovieGenre> MovieGenres { get; private set; }
+    public AgeConstraint? AgeConstraint { get; private set; }
+    public ICollection<MovieGenre>? MovieGenres { get; private set; }
     public ICollection<Seance> Seances { get; private set; }
 
     private Movie(string title, DateOnly releaseDate, short duration,
-        string description, AgeConstraint ageConstraint, ICollection<MovieGenre> movieGenres, byte[]? image = null)
+        string description, AgeConstraint? ageConstraint, ICollection<MovieGenre>? movieGenres, byte[]? image = null)
     {
         Title = title;
         ReleaseDate = releaseDate;
@@ -22,9 +22,7 @@ public class Movie
         AgeConstraint = ageConstraint;
         MovieGenres = movieGenres;
         Seances = new List<Seance>();
-
-        if (image is not null)
-            Image = image;
+        Image = image;
     }
 
     public static Movie Create(string title, DateOnly releaseDate, short duration,

@@ -14,6 +14,9 @@ public class Seance
         Movie = movie;
         CinemaHall = cinemaHall;
         SeanceSeats = new List<SeanceSeat>();
+
+        foreach (var seat in CinemaHall.Seats)
+            SeanceSeats.Add(SeanceSeat.Create(this, seat));
     }
 
     public static Seance Create(DateTime startDateTime, Movie movie, CinemaHall cinemaHall)
