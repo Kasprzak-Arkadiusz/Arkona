@@ -1,13 +1,18 @@
 using API.Services;
-using Infrastructure.Persistence;
+using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Additional configuration is required to successfully run gRPC on macOS.
 // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
 
+var configuration = builder.Configuration;
+
 // Add services to the container.
-builder.Services.AddInfrastructure();
+var infrastructureSettings = new InfrastructureSettings();
+configuration.Bind(nameof(InfrastructureSettings), infrastructureSettings);
+builder.Services.AddInfrastructure(infrastructureSettings);
+
 builder.Services.AddGrpc();
 
 var app = builder.Build();
