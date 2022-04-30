@@ -8,9 +8,11 @@ public class AgeOfferConfiguration : IEntityTypeConfiguration<AgeOffer>
 {
     public void Configure(EntityTypeBuilder<AgeOffer> builder)
     {
-        builder.HasOne(ao => ao.AgeConstraint)
+        builder.Property(ao => ao.AgeRestrictionId)
+            .HasConversion<int>();
+        builder.HasOne(ao => ao.AgeRestriction)
             .WithOne(ac => ac.AgeOffer)
-            .HasForeignKey<AgeOffer>(ao => ao.AgeConstraintId);
+            .HasForeignKey<AgeOffer>(ao => ao.AgeRestrictionId);
         builder.HasMany(ao => ao.Orders)
             .WithOne(o => o.AgeOffer)
             .IsRequired(false)

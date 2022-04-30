@@ -6,6 +6,7 @@ namespace Infrastructure;
 public class InfrastructureSettings
 {
     private string _dbConnectionString;
+    public bool SeedWithCustomData { get; set; }
 
     public string DbConnectionString
     {

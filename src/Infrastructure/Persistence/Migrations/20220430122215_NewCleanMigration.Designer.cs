@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220328120437_ChangeToNotRequiredRelation")]
-    partial class ChangeToNotRequiredRelation
+    [Migration("20220430122215_NewCleanMigration")]
+    partial class NewCleanMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,20 +24,54 @@ namespace Infrastructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Domain.Entities.AgeConstraint", b =>
+            modelBuilder.Entity("Domain.Entities.AgeRestriction", b =>
                 {
-                    b.Property<byte>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<byte>("Id"), 1L, 1);
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<byte>("MinAge")
                         .HasColumnType("tinyint");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("AgeConstraints", (string)null);
+                    b.ToTable("AgeRestrictions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 0,
+                            MinAge = (byte)0,
+                            Name = "Bez ograniczeń"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            MinAge = (byte)3,
+                            Name = "Od lat 3"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            MinAge = (byte)7,
+                            Name = "Od lat 7"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            MinAge = (byte)13,
+                            Name = "Od lat 13"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            MinAge = (byte)15,
+                            Name = "Od lat 15"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.CinemaHall", b =>
@@ -63,11 +97,8 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Genre", b =>
                 {
-                    b.Property<byte>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<byte>("Id"), 1L, 1);
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -77,6 +108,98 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 0,
+                            Name = "Akcja"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Name = "Animowany"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Biograficzny"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Dramat"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Familijny"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Fantasy"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Horror"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Komedia"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Komedia romantyczna"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Kryminał"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Musical"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Obyczajowy"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Przygodowy"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Romans"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Science Fiction"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "Sensacyjny"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "Thriller"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "Fantastyka"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Movie", b =>
@@ -87,8 +210,8 @@ namespace Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<byte>("AgeConstraintId")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("AgeRestrictionId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -112,7 +235,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AgeConstraintId");
+                    b.HasIndex("AgeRestrictionId");
 
                     b.ToTable("Movies");
                 });
@@ -122,8 +245,8 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
 
-                    b.Property<byte>("GenreId")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int");
 
                     b.HasKey("MovieId", "GenreId");
 
@@ -269,15 +392,9 @@ namespace Infrastructure.Persistence.Migrations
                         .HasMaxLength(1)
                         .HasColumnType("char(1)");
 
-                    b.Property<int>("TicketId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CinemaHallId");
-
-                    b.HasIndex("TicketId")
-                        .IsUnique();
 
                     b.ToTable("Seats");
                 });
@@ -303,13 +420,51 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<int>("SeanceId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SeatId")
+                        .HasColumnType("int");
+
+                    b.Property<byte?>("TicketDiscountId")
+                        .HasColumnType("tinyint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
                     b.HasIndex("SeanceId");
 
+                    b.HasIndex("SeatId")
+                        .IsUnique();
+
+                    b.HasIndex("TicketDiscountId");
+
                     b.ToTable("Tickets");
+                });
+
+            modelBuilder.Entity("Domain.Entities.TicketDiscount", b =>
+                {
+                    b.Property<byte>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<byte>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<decimal>("DiscountValue")
+                        .HasPrecision(3, 2)
+                        .HasColumnType("decimal(3,2)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TicketDiscount");
                 });
 
             modelBuilder.Entity("Domain.Entities.UsedTicket", b =>
@@ -354,12 +509,12 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.HasBaseType("Domain.Entities.Offer");
 
-                    b.Property<byte>("AgeConstraintId")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("AgeRestrictionId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("AgeConstraintId")
+                    b.HasIndex("AgeRestrictionId")
                         .IsUnique()
-                        .HasFilter("[AgeConstraintId] IS NOT NULL");
+                        .HasFilter("[AgeRestrictionId] IS NOT NULL");
 
                     b.HasDiscriminator().HasValue("AgeOffer");
                 });
@@ -381,8 +536,8 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.HasBaseType("Domain.Entities.Offer");
 
-                    b.Property<byte>("GenreId")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int");
 
                     b.HasIndex("GenreId")
                         .IsUnique()
@@ -393,13 +548,13 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Movie", b =>
                 {
-                    b.HasOne("Domain.Entities.AgeConstraint", "AgeConstraint")
+                    b.HasOne("Domain.Entities.AgeRestriction", "AgeRestriction")
                         .WithMany("Movies")
-                        .HasForeignKey("AgeConstraintId")
+                        .HasForeignKey("AgeRestrictionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AgeConstraint");
+                    b.Navigation("AgeRestriction");
                 });
 
             modelBuilder.Entity("Domain.Entities.MovieGenre", b =>
@@ -487,14 +642,7 @@ namespace Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Ticket", "Ticket")
-                        .WithOne("Seat")
-                        .HasForeignKey("Domain.Entities.Seat", "TicketId")
-                        .IsRequired();
-
                     b.Navigation("CinemaHall");
-
-                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("Domain.Entities.Ticket", b =>
@@ -510,6 +658,15 @@ namespace Infrastructure.Persistence.Migrations
                         .HasForeignKey("SeanceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Domain.Entities.Seat", "Seat")
+                        .WithOne("Ticket")
+                        .HasForeignKey("Domain.Entities.Ticket", "SeatId")
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.TicketDiscount", "TicketDiscount")
+                        .WithMany("Tickets")
+                        .HasForeignKey("TicketDiscountId");
 
                     b.OwnsOne("Domain.ValueObjects.Price", "Price", b1 =>
                         {
@@ -534,36 +691,6 @@ namespace Infrastructure.Persistence.Migrations
                                 .HasForeignKey("TicketId");
                         });
 
-                    b.OwnsOne("Domain.ValueObjects.TicketDiscount", "TicketDiscount", b1 =>
-                        {
-                            b1.Property<int>("TicketId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("Description")
-                                .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)")
-                                .HasColumnName("DiscountDescription");
-
-                            b1.Property<decimal>("DiscountValue")
-                                .HasPrecision(3, 2)
-                                .HasColumnType("decimal(3,2)")
-                                .HasColumnName("DiscountValue");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)")
-                                .HasColumnName("DiscountName");
-
-                            b1.HasKey("TicketId");
-
-                            b1.ToTable("Tickets");
-
-                            b1.WithOwner()
-                                .HasForeignKey("TicketId");
-                        });
-
                     b.Navigation("Order");
 
                     b.Navigation("Price")
@@ -571,8 +698,9 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Navigation("Seance");
 
-                    b.Navigation("TicketDiscount")
-                        .IsRequired();
+                    b.Navigation("Seat");
+
+                    b.Navigation("TicketDiscount");
                 });
 
             modelBuilder.Entity("Domain.Entities.UsedTicket", b =>
@@ -606,13 +734,13 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.AgeOffer", b =>
                 {
-                    b.HasOne("Domain.Entities.AgeConstraint", "AgeConstraint")
+                    b.HasOne("Domain.Entities.AgeRestriction", "AgeRestriction")
                         .WithOne("AgeOffer")
-                        .HasForeignKey("Domain.Entities.AgeOffer", "AgeConstraintId")
+                        .HasForeignKey("Domain.Entities.AgeOffer", "AgeRestrictionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AgeConstraint");
+                    b.Navigation("AgeRestriction");
                 });
 
             modelBuilder.Entity("Domain.Entities.MovieGenreOffer", b =>
@@ -626,7 +754,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Genre");
                 });
 
-            modelBuilder.Entity("Domain.Entities.AgeConstraint", b =>
+            modelBuilder.Entity("Domain.Entities.AgeRestriction", b =>
                 {
                     b.Navigation("AgeOffer")
                         .IsRequired();
@@ -671,12 +799,14 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Seat", b =>
                 {
                     b.Navigation("SeanceSeats");
+
+                    b.Navigation("Ticket")
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Ticket", b =>
+            modelBuilder.Entity("Domain.Entities.TicketDiscount", b =>
                 {
-                    b.Navigation("Seat")
-                        .IsRequired();
+                    b.Navigation("Tickets");
                 });
 
             modelBuilder.Entity("Domain.Entities.AgeOffer", b =>

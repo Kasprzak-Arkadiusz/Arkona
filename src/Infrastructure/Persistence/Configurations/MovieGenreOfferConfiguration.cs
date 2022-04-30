@@ -8,6 +8,8 @@ public class MovieGenreOfferConfiguration : IEntityTypeConfiguration<MovieGenreO
 {
     public void Configure(EntityTypeBuilder<MovieGenreOffer> builder)
     {
+        builder.Property(mgo => mgo.GenreId)
+            .HasConversion<int>();
         builder.HasOne(mgo => mgo.Genre)
             .WithOne(g => g.MovieGenreOffer)
             .HasForeignKey<MovieGenreOffer>(mgo => mgo.GenreId);

@@ -1,10 +1,10 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Enums;
 
 namespace Domain.Entities;
 
 public class MovieGenreOffer : Offer
 {
-    public byte GenreId { get; set; }
+    public GenreId GenreId { get; set; }
     public Genre Genre { get; private set; }
     public ICollection<Order>? Orders { get; set; }
 

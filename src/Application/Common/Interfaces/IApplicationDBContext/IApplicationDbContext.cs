@@ -5,7 +5,7 @@ namespace Application.Common.Interfaces.IApplicationDBContext;
 
 public interface IApplicationDbContext
 {
-    public DbSet<AgeConstraint> AgeConstraints { get; set; }
+    public DbSet<AgeRestriction> AgeConstraints { get; set; }
     public DbSet<AgeOffer> AgeOffers { get; set; }
     public DbSet<AmountOffer> AmountOffers { get; set; }
     public DbSet<CinemaHall> CinemaHalls { get; set; }

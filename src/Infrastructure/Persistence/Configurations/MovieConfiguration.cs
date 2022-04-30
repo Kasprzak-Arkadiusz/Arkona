@@ -22,7 +22,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         builder.Property(m => m.Description)
             .HasMaxLength(1000)
             .IsRequired();
-        builder.HasOne(m => m.AgeConstraint)
+        builder.HasOne(m => m.AgeRestriction)
             .WithMany(ac => ac.Movies);
     }
 }

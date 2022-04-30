@@ -8,6 +8,8 @@ public class MovieGenreConfiguration : IEntityTypeConfiguration<MovieGenre>
 {
     public void Configure(EntityTypeBuilder<MovieGenre> builder)
     {
+        builder.Property(mg => mg.GenreId)
+            .HasConversion<int>();
         builder.HasKey(mg => new {mg.MovieId, mg.GenreId});
         builder.HasOne(mg => mg.Movie)
             .WithMany(m => m.MovieGenres)
