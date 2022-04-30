@@ -769,7 +769,8 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.AgeRestriction", b =>
                 {
-                    b.Navigation("AgeOffer");
+                    b.Navigation("AgeOffer")
+                        .IsRequired();
 
                     b.Navigation("Movies");
                 });

@@ -10,6 +10,8 @@ public class CinemaHall
     public IEnumerable<Seance>? Seances { get; }
     public ICollection<Seat> Seats { get; }
 
+    private CinemaHall() { }
+
     private CinemaHall(byte hallNumber, short numberOfSeats, short numberOfSeatsInRow)
     {
         HallNumber = hallNumber;

@@ -8,6 +8,8 @@ public class AmountOffer : Offer
     public byte DiscountedNumberOfTickets { get; private set; }
     public IEnumerable<Order>? Orders { get; }
 
+    private AmountOffer() { }
+    
     private AmountOffer(string name, string description, decimal discountValue, byte requiredNumberOfTickets,
         byte discountedNumberOfTickets, Period validPeriod) : base(name, description, discountValue, validPeriod)
     {

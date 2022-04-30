@@ -88,7 +88,7 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ReleaseDate = table.Column<DateTime>(type: "date", nullable: false),
                     Duration = table.Column<short>(type: "smallint", nullable: false),
@@ -112,7 +112,7 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Number = table.Column<byte>(type: "tinyint", nullable: false),
+                    Number = table.Column<short>(type: "smallint", nullable: false),
                     Row = table.Column<string>(type: "char(1)", maxLength: 1, nullable: false),
                     CinemaHallId = table.Column<byte>(type: "tinyint", nullable: false)
                 },
@@ -248,12 +248,14 @@ namespace Infrastructure.Persistence.Migrations
                 name: "SeanceSeat",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     SeanceId = table.Column<int>(type: "int", nullable: false),
                     SeatId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SeanceSeat", x => new { x.SeanceId, x.SeatId });
+                    table.PrimaryKey("PK_SeanceSeat", x => x.Id);
                     table.ForeignKey(
                         name: "FK_SeanceSeat_Seances_SeanceId",
                         column: x => x.SeanceId,
@@ -277,8 +279,7 @@ namespace Infrastructure.Persistence.Migrations
                     BasePrice = table.Column<decimal>(type: "decimal(4,2)", precision: 4, scale: 2, nullable: false),
                     DiscountedPrice = table.Column<decimal>(type: "decimal(4,2)", precision: 4, scale: 2, nullable: false),
                     TicketDiscountId = table.Column<byte>(type: "tinyint", nullable: true),
-                    SeatId = table.Column<int>(type: "int", nullable: false),
-                    SeanceId = table.Column<int>(type: "int", nullable: false),
+                    SeanceSeatId = table.Column<int>(type: "int", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -291,15 +292,9 @@ namespace Infrastructure.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tickets_Seances_SeanceId",
-                        column: x => x.SeanceId,
-                        principalTable: "Seances",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Tickets_Seats_SeatId",
-                        column: x => x.SeatId,
-                        principalTable: "Seats",
+                        name: "FK_Tickets_SeanceSeat_SeanceSeatId",
+                        column: x => x.SeanceSeatId,
+                        principalTable: "SeanceSeat",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Tickets_TicketDiscount_TicketDiscountId",
@@ -395,6 +390,11 @@ namespace Infrastructure.Persistence.Migrations
                 column: "MovieId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SeanceSeat_SeanceId",
+                table: "SeanceSeat",
+                column: "SeanceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SeanceSeat_SeatId",
                 table: "SeanceSeat",
                 column: "SeatId");
@@ -410,14 +410,9 @@ namespace Infrastructure.Persistence.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_SeanceId",
+                name: "IX_Tickets_SeanceSeatId",
                 table: "Tickets",
-                column: "SeanceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tickets_SeatId",
-                table: "Tickets",
-                column: "SeatId",
+                column: "SeanceSeatId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -432,9 +427,6 @@ namespace Infrastructure.Persistence.Migrations
                 name: "MovieGenre");
 
             migrationBuilder.DropTable(
-                name: "SeanceSeat");
-
-            migrationBuilder.DropTable(
                 name: "Tickets");
 
             migrationBuilder.DropTable(
@@ -444,10 +436,7 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Seances");
-
-            migrationBuilder.DropTable(
-                name: "Seats");
+                name: "SeanceSeat");
 
             migrationBuilder.DropTable(
                 name: "TicketDiscount");
@@ -456,13 +445,19 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Offers");
 
             migrationBuilder.DropTable(
+                name: "Seances");
+
+            migrationBuilder.DropTable(
+                name: "Seats");
+
+            migrationBuilder.DropTable(
+                name: "Genres");
+
+            migrationBuilder.DropTable(
                 name: "Movies");
 
             migrationBuilder.DropTable(
                 name: "CinemaHalls");
-
-            migrationBuilder.DropTable(
-                name: "Genres");
 
             migrationBuilder.DropTable(
                 name: "AgeRestrictions");

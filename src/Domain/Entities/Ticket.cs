@@ -13,6 +13,8 @@ public class Ticket
     public SeanceSeat SeanceSeat { get; private set; }
     public Order Order { get; }
 
+    private Ticket() { }
+
     private Ticket(SeanceSeat seanceSeat, TicketDiscount? ticketDiscount = null)
     {
         Price = Price.Create(ticketDiscount?.DiscountValue);

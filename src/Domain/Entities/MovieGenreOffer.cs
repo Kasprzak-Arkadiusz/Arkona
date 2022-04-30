@@ -9,6 +9,8 @@ public class MovieGenreOffer : Offer
     public Genre Genre { get; private set; }
     public ICollection<Order> Orders { get; private set; }
 
+    private MovieGenreOffer() { }
+
     private MovieGenreOffer(string name, string description, decimal discountValue, Genre genre, Period validPeriod) :
         base(name, description, discountValue, validPeriod)
     {
