@@ -9,8 +9,6 @@ public class SeanceSeat
     public int SeatId { get; private set; }
     public Ticket? Ticket { get; private set; }
 
-    private SeanceSeat() { }
-
     private SeanceSeat(Seance seance, Seat seat, Ticket? ticket = null)
     {
         Seance = seance;

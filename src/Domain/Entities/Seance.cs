@@ -8,8 +8,6 @@ public class Seance
     public CinemaHall CinemaHall { get; private set; }
     public ICollection<SeanceSeat> SeanceSeats { get; private set; }
 
-    private Seance() { }
-
     private Seance(DateTime startDateTime, Movie movie, CinemaHall cinemaHall)
     {
         StartDateTime = startDateTime;
@@ -18,7 +16,9 @@ public class Seance
         SeanceSeats = new List<SeanceSeat>();
 
         foreach (var seat in CinemaHall.Seats)
+        {
             SeanceSeats.Add(SeanceSeat.Create(this, seat));
+        }
     }
 
     public static Seance Create(DateTime startDateTime, Movie movie, CinemaHall cinemaHall)

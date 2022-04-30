@@ -8,8 +8,8 @@ public class AgeRestriction
     public string Name { get; private set; }
     public byte MinAge { get; private set; }
 
-    public ICollection<Movie> Movies { get; set; }
-    public AgeOffer AgeOffer { get; set; }
+    public ICollection<Movie> Movies { get; private set; }
+    public AgeOffer AgeOffer { get; private set; }
 
     private AgeRestriction(AgeRestrictionId id, string name, byte minAge)
     {

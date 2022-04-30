@@ -16,11 +16,15 @@ public record Period
     public static Period Create(DateOnly validFrom, DateOnly validTo, DateOnly now)
     {
         if (validTo <= validFrom)
+        {
             throw new InvalidDateException(
                 $"Parameter '{nameof(validTo)}' cannot be earlier than parameter '{validTo}'.");
+        }
 
         if (validTo <= now)
+        {
             throw new InvalidDateException($"Parameter '{nameof(validTo)}' cannot be earlier than now");
+        }
 
         return new Period(validFrom, validTo);
     }
@@ -28,7 +32,9 @@ public record Period
     public void ExtendPeriod(DateOnly validTo)
     {
         if (validTo <= ValidTo)
+        {
             throw new InvalidDateException("The date provided should be later than the current value.");
+        }
 
         ValidTo = validTo;
     }
@@ -36,6 +42,8 @@ public record Period
     public void ShortenPeriod(DateOnly validTo)
     {
         if (validTo < ValidFrom)
+        {
             throw new InvalidDateException("The given date cannot be earlier than the starting date of the offer.");
+        }
     }
 }

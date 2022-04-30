@@ -9,8 +9,6 @@ public class AgeOffer : Offer
     public AgeRestrictionId AgeRestrictionId { get; private set; }
     public ICollection<Order> Orders { get; set; }
 
-    private AgeOffer() { }
-
     private AgeOffer(string name, string description, decimal discountValue, AgeRestriction ageRestriction,
         Period validPeriod)
         : base(name, description, discountValue, validPeriod)
