@@ -22,9 +22,9 @@ public class TicketConfiguration : IEntityTypeConfiguration<Ticket>
                     .HasColumnName("DiscountedPrice")
                     .HasPrecision(4, 2);
             });
-        builder.HasOne(t => t.Seat)
+        builder.HasOne(t => t.SeanceSeat)
             .WithOne(s => s.Ticket)
-            .HasForeignKey<Ticket>(t => t.SeatId)
+            .HasForeignKey<Ticket>(t => t.SeanceSeatId)
             .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }

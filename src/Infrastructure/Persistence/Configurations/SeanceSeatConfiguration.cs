@@ -8,7 +8,9 @@ public class SeanceSeatConfiguration : IEntityTypeConfiguration<SeanceSeat>
 {
     public void Configure(EntityTypeBuilder<SeanceSeat> builder)
     {
-        builder.HasKey(ss => new {ss.SeanceId, ss.SeatId});
+        builder.HasKey(ss => ss.Id);
+
+
         builder.HasOne(ss => ss.Seance)
             .WithMany(s => s.SeanceSeats)
             .HasForeignKey(ss => ss.SeanceId)

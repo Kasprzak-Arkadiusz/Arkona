@@ -3,16 +3,20 @@
 public class Seat
 {
     public int Id { get; private set; }
-    public byte Number { get; private set; }
+    public short Number { get; private set; }
     public char Row { get; private set; }
-    public CinemaHall CinemaHall { get; set; }
-    public Ticket Ticket { get; set; }
-    public ICollection<SeanceSeat> SeanceSeats { get; set; }
+    public CinemaHall CinemaHall { get; }
+    public IEnumerable<SeanceSeat> SeanceSeats { get; }
 
-    private Seat() { }
-    public Seat(byte number, char row)
+    private Seat(short number, char row)
     {
         Number = number;
         Row = row;
+        SeanceSeats = new List<SeanceSeat>();
+    }
+
+    public static Seat Create(short number, char row)
+    {
+        return new Seat(number, row);
     }
 }

@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220412152527_ExtractDatesToValueObject")]
+    partial class ExtractDatesToValueObject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,54 +24,20 @@ namespace Infrastructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Domain.Entities.AgeRestriction", b =>
+            modelBuilder.Entity("Domain.Entities.AgeConstraint", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<byte>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<byte>("Id"), 1L, 1);
 
                     b.Property<byte>("MinAge")
                         .HasColumnType("tinyint");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("AgeRestrictions", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 0,
-                            MinAge = (byte)0,
-                            Name = "Bez ograniczeń"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            MinAge = (byte)3,
-                            Name = "Od lat 3"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            MinAge = (byte)7,
-                            Name = "Od lat 7"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            MinAge = (byte)13,
-                            Name = "Od lat 13"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            MinAge = (byte)15,
-                            Name = "Od lat 15"
-                        });
+                    b.ToTable("AgeConstraints", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.CinemaHall", b =>
@@ -95,8 +63,11 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Genre", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<byte>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<byte>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -106,98 +77,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 0,
-                            Name = "Akcja"
-                        },
-                        new
-                        {
-                            Id = 1,
-                            Name = "Animowany"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Biograficzny"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Dramat"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Familijny"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Fantasy"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Horror"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Komedia"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Komedia romantyczna"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "Kryminał"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "Musical"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Name = "Obyczajowy"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Name = "Przygodowy"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Name = "Romans"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Name = "Science Fiction"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Name = "Sensacyjny"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Name = "Thriller"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Name = "Fantastyka"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Movie", b =>
@@ -208,8 +87,8 @@ namespace Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AgeRestrictionId")
-                        .HasColumnType("int");
+                    b.Property<byte?>("AgeConstraintId")
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -232,7 +111,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AgeRestrictionId");
+                    b.HasIndex("AgeConstraintId");
 
                     b.ToTable("Movies");
                 });
@@ -242,8 +121,8 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
 
-                    b.Property<int>("GenreId")
-                        .HasColumnType("int");
+                    b.Property<byte>("GenreId")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("MovieId", "GenreId");
 
@@ -503,12 +382,12 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.HasBaseType("Domain.Entities.Offer");
 
-                    b.Property<int>("AgeRestrictionId")
-                        .HasColumnType("int");
+                    b.Property<byte>("AgeConstraintId")
+                        .HasColumnType("tinyint");
 
-                    b.HasIndex("AgeRestrictionId")
+                    b.HasIndex("AgeConstraintId")
                         .IsUnique()
-                        .HasFilter("[AgeRestrictionId] IS NOT NULL");
+                        .HasFilter("[AgeConstraintId] IS NOT NULL");
 
                     b.HasDiscriminator().HasValue("AgeOffer");
                 });
@@ -530,8 +409,8 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.HasBaseType("Domain.Entities.Offer");
 
-                    b.Property<int>("GenreId")
-                        .HasColumnType("int");
+                    b.Property<byte>("GenreId")
+                        .HasColumnType("tinyint");
 
                     b.HasIndex("GenreId")
                         .IsUnique()
@@ -542,13 +421,11 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Movie", b =>
                 {
-                    b.HasOne("Domain.Entities.AgeRestriction", "AgeRestriction")
+                    b.HasOne("Domain.Entities.AgeConstraint", "AgeConstraint")
                         .WithMany("Movies")
-                        .HasForeignKey("AgeRestrictionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AgeConstraintId");
 
-                    b.Navigation("AgeRestriction");
+                    b.Navigation("AgeConstraint");
                 });
 
             modelBuilder.Entity("Domain.Entities.MovieGenre", b =>
@@ -747,13 +624,13 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.AgeOffer", b =>
                 {
-                    b.HasOne("Domain.Entities.AgeRestriction", "AgeRestriction")
+                    b.HasOne("Domain.Entities.AgeConstraint", "AgeConstraint")
                         .WithOne("AgeOffer")
-                        .HasForeignKey("Domain.Entities.AgeOffer", "AgeRestrictionId")
+                        .HasForeignKey("Domain.Entities.AgeOffer", "AgeConstraintId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AgeRestriction");
+                    b.Navigation("AgeConstraint");
                 });
 
             modelBuilder.Entity("Domain.Entities.MovieGenreOffer", b =>
@@ -767,7 +644,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Genre");
                 });
 
-            modelBuilder.Entity("Domain.Entities.AgeRestriction", b =>
+            modelBuilder.Entity("Domain.Entities.AgeConstraint", b =>
                 {
                     b.Navigation("AgeOffer");
 

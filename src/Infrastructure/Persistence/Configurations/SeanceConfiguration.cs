@@ -11,7 +11,5 @@ public class SeanceConfiguration : IEntityTypeConfiguration<Seance>
         builder.Property(s => s.StartDateTime)
             .HasColumnType("smalldatetime")
             .IsRequired();
-        builder.HasMany(s => s.Tickets)
-            .WithOne(t => t.Seance);
     }
 }

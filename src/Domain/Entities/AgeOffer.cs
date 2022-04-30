@@ -7,13 +7,21 @@ public class AgeOffer : Offer
 {
     public AgeRestriction AgeRestriction { get; private set; }
     public AgeRestrictionId AgeRestrictionId { get; private set; }
-    public ICollection<Order>? Orders { get; set; }
+    public ICollection<Order> Orders { get; set; }
 
     private AgeOffer() { }
-    
-    public AgeOffer(string name, string description, decimal discountValue, AgeRestriction ageRestriction) 
-        : base(name, description, discountValue)
+
+    private AgeOffer(string name, string description, decimal discountValue, AgeRestriction ageRestriction,
+        Period validPeriod)
+        : base(name, description, discountValue, validPeriod)
     {
         AgeRestriction = ageRestriction;
+        Orders = new List<Order>();
+    }
+
+    public static AgeOffer Create(string name, string description, decimal discountValue, AgeRestriction ageRestriction,
+        Period validPeriod)
+    {
+        return new AgeOffer(name, description, discountValue, ageRestriction, validPeriod);
     }
 }
