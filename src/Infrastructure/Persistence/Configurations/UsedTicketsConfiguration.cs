@@ -9,8 +9,7 @@ public class UsedTicketsConfiguration : IEntityTypeConfiguration<UsedTicket>
     public void Configure(EntityTypeBuilder<UsedTicket> builder)
     {
         builder.Property(ut => ut.Number)
-            .HasComputedColumnSql("FORMAT([Id],'d9')")
-            .HasMaxLength(9);
+            .HasMaxLength(16);
         builder.Property(ut => ut.MovieTitle)
             .HasMaxLength(100)
             .IsRequired();
@@ -19,10 +18,10 @@ public class UsedTicketsConfiguration : IEntityTypeConfiguration<UsedTicket>
             .IsRequired();
         builder.Property(ut => ut.DiscountName)
             .HasMaxLength(50)
-            .IsRequired();
+            .IsRequired(false);
         builder.Property(ut => ut.OfferName)
             .HasMaxLength(50)
-            .IsRequired();
+            .IsRequired(false);
         builder.OwnsOne(ut => ut.Price,
             navigationBuilder =>
             {

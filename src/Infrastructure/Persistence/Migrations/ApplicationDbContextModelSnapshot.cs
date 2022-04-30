@@ -307,10 +307,8 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasMaxLength(9)
-                        .HasColumnType("nvarchar(9)")
-                        .HasComputedColumnSql("FORMAT([Id],'d9')");
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.HasKey("Id");
 
@@ -408,10 +406,8 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasMaxLength(9)
-                        .HasColumnType("nvarchar(9)")
-                        .HasComputedColumnSql("FORMAT([Id],'d9')");
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -458,7 +454,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TicketDiscount");
+                    b.ToTable("TicketDiscounts");
                 });
 
             modelBuilder.Entity("Domain.Entities.UsedTicket", b =>
@@ -470,7 +466,6 @@ namespace Infrastructure.Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("DiscountName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -481,13 +476,10 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasMaxLength(9)
-                        .HasColumnType("nvarchar(9)")
-                        .HasComputedColumnSql("FORMAT([Id],'d9')");
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<string>("OfferName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 

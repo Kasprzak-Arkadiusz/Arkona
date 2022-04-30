@@ -12,8 +12,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             .HasColumnType("datetime")
             .IsRequired();
         builder.Property(o => o.Number)
-            .HasMaxLength(9)
-            .HasComputedColumnSql("FORMAT([Id],'d9')");
+            .HasMaxLength(16);
         builder.HasMany(o => o.Tickets)
             .WithOne(t => t.Order)
             .IsRequired()

@@ -9,8 +9,7 @@ public class TicketConfiguration : IEntityTypeConfiguration<Ticket>
     public void Configure(EntityTypeBuilder<Ticket> builder)
     {
         builder.Property(t => t.Number)
-            .HasComputedColumnSql("FORMAT([Id],'d9')")
-            .HasMaxLength(9);
+            .HasMaxLength(16);
         builder.OwnsOne(t => t.Price,
             navigationBuilder =>
             {

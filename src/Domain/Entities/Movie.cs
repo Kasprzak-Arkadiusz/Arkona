@@ -15,21 +15,21 @@ public class Movie
     private Movie() { }
 
     private Movie(string title, DateOnly releaseDate, short duration,
-        string description, AgeRestriction ageRestriction, ICollection<MovieGenre> movieGenres, byte[] image)
+        string description, AgeRestriction ageRestriction, IEnumerable<Genre> genres, byte[]? image = null)
     {
         Title = title;
         ReleaseDate = releaseDate;
         Duration = duration;
         Description = description;
         AgeRestriction = ageRestriction;
-        MovieGenres = movieGenres;
+        MovieGenres = genres.Select(genre => MovieGenre.Create(genre, this)).ToList();
         Seances = new List<Seance>();
         Image = image;
     }
 
     public static Movie Create(string title, DateOnly releaseDate, short duration,
-        string description, ICollection<MovieGenre> movieGenres, byte[] image,
-        AgeRestriction ageRestriction)
+        string description, AgeRestriction ageRestriction, IEnumerable<Genre> movieGenres, byte[]? image = null
+        )
     {
         return new Movie(title, releaseDate, duration, description, ageRestriction, movieGenres, image);
     }

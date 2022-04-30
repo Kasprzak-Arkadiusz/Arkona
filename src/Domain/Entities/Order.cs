@@ -1,4 +1,5 @@
 ﻿using Domain.Services;
+using Domain.Utils;
 
 namespace Domain.Entities;
 
@@ -14,22 +15,42 @@ public class Order
 
     private Order() { }
 
-    private Order(DateTime dateOfOrder, AgeOffer? ageOffer = null, AmountOffer? amountOffer = null,
+    private Order(DateTime dateOfOrder, ICollection<Ticket> tickets, AgeOffer? ageOffer = null, AmountOffer? amountOffer = null,
         MovieGenreOffer? movieGenreOffer = null)
     {
         DateTimeOfOrder = dateOfOrder;
-        Tickets = new List<Ticket>();
+        Tickets = tickets;
         var rand = new Random();
-        Number = UserFriendlyNumberGenerator.Generate(Tickets.First().Id, DateTime.Now.Millisecond,
+        Number = UserFriendlyNumberGenerator.Generate(Tickets.First().Id, DateTime.Now.ToUnixMilliseconds(),
             rand.Next(0, 10));
         AgeOffer = ageOffer;
         AmountOffer = amountOffer;
         MovieGenreOffer = movieGenreOffer;
     }
 
-    public static Order Create(DateTime dateOfOrder, AgeOffer? ageOffer = null, AmountOffer? amountOffer = null,
+    public static Order Create(DateTime dateOfOrder, ICollection<Ticket> tickets,  AgeOffer? ageOffer = null, AmountOffer? amountOffer = null,
         MovieGenreOffer? movieGenreOffer = null)
     {
-        return new Order(dateOfOrder, ageOffer, amountOffer, movieGenreOffer);
+        return new Order(dateOfOrder, tickets, ageOffer, amountOffer, movieGenreOffer);
+    }
+
+    public string? GetOfferName()
+    {
+        if (AgeOffer is not null)
+        {
+            return AgeOffer.Name;
+        }
+
+        if (AmountOffer is not null)
+        {
+            return AmountOffer.Name;
+        }
+
+        if (MovieGenreOffer is not null)
+        {
+            return MovieGenreOffer.Name;
+        }
+
+        return null;
     }
 }

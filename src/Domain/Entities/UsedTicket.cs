@@ -9,13 +9,23 @@ public class UsedTicket
     public string MovieTitle { get; }
     public DateTime SeanceDateTime { get; }
     public Price Price { get; }
-    public string DiscountName { get; }
-    public string OfferName { get; }
+    public string? DiscountName { get; }
+    public string? OfferName { get; }
 
     private UsedTicket() { }
 
+    private UsedTicket(Ticket ticket, Seance seance)
+    {
+        Number = ticket.Number;
+        MovieTitle = seance.Movie.Title;
+        SeanceDateTime = seance.StartDateTime;
+        Price = ticket.Price;
+        DiscountName = ticket.TicketDiscount?.Name;
+        OfferName = ticket.Order.GetOfferName();
+    }
+    
     private UsedTicket(string number, string movieTitle, DateTime seanceDateTime,
-        Price price, string discountName, string offerName)
+        Price price, string? discountName, string? offerName)
     {
         Number = number;
         MovieTitle = movieTitle;
@@ -26,8 +36,13 @@ public class UsedTicket
     }
 
     public static UsedTicket Create(string number, string movieTitle, DateTime seanceDateTime,
-        Price price, string discountName, string offerName)
+        Price price, string? discountName, string? offerName)
     {
         return new UsedTicket(number, movieTitle, seanceDateTime, price, discountName, offerName);
+    }
+
+    public static UsedTicket Create(Ticket ticket, Seance seance)
+    {
+        return new UsedTicket(ticket, seance);
     }
 }

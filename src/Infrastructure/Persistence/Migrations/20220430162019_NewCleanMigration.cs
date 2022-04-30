@@ -49,7 +49,7 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TicketDiscount",
+                name: "TicketDiscounts",
                 columns: table => new
                 {
                     Id = table.Column<byte>(type: "tinyint", nullable: false)
@@ -60,7 +60,7 @@ namespace Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TicketDiscount", x => x.Id);
+                    table.PrimaryKey("PK_TicketDiscounts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,13 +69,13 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Number = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false, computedColumnSql: "FORMAT([Id],'d9')"),
+                    Number = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     MovieTitle = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     SeanceDateTime = table.Column<DateTime>(type: "smalldatetime", nullable: false),
                     BasePrice = table.Column<decimal>(type: "decimal(4,2)", precision: 4, scale: 2, nullable: false),
                     DiscountedPrice = table.Column<decimal>(type: "decimal(4,2)", precision: 4, scale: 2, nullable: false),
-                    DiscountName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    OfferName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    DiscountName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    OfferName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -218,7 +218,7 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Number = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false, computedColumnSql: "FORMAT([Id],'d9')"),
+                    Number = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     DateTimeOfOrder = table.Column<DateTime>(type: "datetime", nullable: false),
                     AgeOfferId = table.Column<short>(type: "smallint", nullable: true),
                     AmountOfferId = table.Column<short>(type: "smallint", nullable: true),
@@ -275,7 +275,7 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Number = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false, computedColumnSql: "FORMAT([Id],'d9')"),
+                    Number = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     BasePrice = table.Column<decimal>(type: "decimal(4,2)", precision: 4, scale: 2, nullable: false),
                     DiscountedPrice = table.Column<decimal>(type: "decimal(4,2)", precision: 4, scale: 2, nullable: false),
                     TicketDiscountId = table.Column<byte>(type: "tinyint", nullable: true),
@@ -297,9 +297,9 @@ namespace Infrastructure.Persistence.Migrations
                         principalTable: "SeanceSeat",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Tickets_TicketDiscount_TicketDiscountId",
+                        name: "FK_Tickets_TicketDiscounts_TicketDiscountId",
                         column: x => x.TicketDiscountId,
-                        principalTable: "TicketDiscount",
+                        principalTable: "TicketDiscounts",
                         principalColumn: "Id");
                 });
 
@@ -439,7 +439,7 @@ namespace Infrastructure.Persistence.Migrations
                 name: "SeanceSeat");
 
             migrationBuilder.DropTable(
-                name: "TicketDiscount");
+                name: "TicketDiscounts");
 
             migrationBuilder.DropTable(
                 name: "Offers");

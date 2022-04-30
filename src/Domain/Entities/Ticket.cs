@@ -1,4 +1,5 @@
 ﻿using Domain.Services;
+using Domain.Utils;
 using Domain.ValueObjects;
 
 namespace Domain.Entities;
@@ -22,7 +23,8 @@ public class Ticket
         TicketDiscount = ticketDiscount;
 
         var rand = new Random();
-        Number = UserFriendlyNumberGenerator.Generate(SeanceSeat.Id, DateTime.Now.Millisecond, rand.Next(0, 10));
+        Number = UserFriendlyNumberGenerator.Generate(SeanceSeat.Id, DateTime.Now.ToUnixMilliseconds(),
+            rand.Next(0, 10));
     }
 
     public static Ticket Create(SeanceSeat seanceSeat, TicketDiscount? ticketDiscount = null)
