@@ -4,7 +4,7 @@ using Infrastructure.Persistence.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Persistence.Configuration;
+namespace Infrastructure.Persistence.Configurations;
 
 public class MovieConfiguration : IEntityTypeConfiguration<Movie>
 {
