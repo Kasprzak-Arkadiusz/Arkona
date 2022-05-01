@@ -1,11 +1,13 @@
 ﻿using System.Reflection;
 using Application.Common.Interfaces.IApplicationDBContext;
 using Domain.Entities;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
-public class ApplicationDbContext : DbContext, IApplicationDbContext
+public class ApplicationDbContext : IdentityDbContext<AppUser>, IApplicationDbContext
 {
     public ApplicationDbContext() { }
 
@@ -26,18 +28,12 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Ticket> Tickets { get; set; }
     public DbSet<TicketDiscount> TicketDiscounts { get; set; }
     public DbSet<UsedTicket> UsedTickets { get; set; }
+    public DbSet<AppUser> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var connectionString = Environment.GetEnvironmentVariable("ArkonaConnectionString");
-        optionsBuilder.UseSqlServer(connectionString, sqlOptions => { sqlOptions.EnableRetryOnFailure(); });
-        base.OnConfiguring(optionsBuilder);
     }
 
     public async Task<int> SaveChangesAsync()

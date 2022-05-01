@@ -8,6 +8,8 @@ public class Order
     public int Id { get; private set; }
     public string Number { get; private set; }
     public DateTime DateTimeOfOrder { get; private set; }
+    // TODO Include in constructor
+    public string UserId { get; private set; }
     public ICollection<Ticket> Tickets { get; private set; }
     public AgeOffer? AgeOffer { get; private set; }
     public AmountOffer? AmountOffer { get; private set; }

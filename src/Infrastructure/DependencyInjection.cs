@@ -12,6 +12,7 @@ public static class DependencyInjection
     {
         services.AddSingleton(settings);
 
+        services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
         services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
             options.UseSqlServer(settings.DbConnectionString)
         );

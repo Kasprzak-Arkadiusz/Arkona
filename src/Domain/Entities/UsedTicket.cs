@@ -11,6 +11,8 @@ public class UsedTicket
     public Price Price { get; }
     public string? DiscountName { get; }
     public string? OfferName { get; }
+    // TODO Include in constructor
+    public string UserId { get; }
 
     private UsedTicket() { }
 
