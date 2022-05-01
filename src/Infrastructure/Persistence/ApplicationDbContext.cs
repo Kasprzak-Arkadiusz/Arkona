@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Application.Common.Interfaces.IApplicationDBContext;
 using Domain.Entities;
-using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
@@ -44,10 +43,5 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public async Task<int> SaveChangesAsync()
     {
         return await base.SaveChangesAsync();
-    }
-
-    public async Task BulkInsertAsync<T>(IList<T> entities, BulkConfig bulkConfig = null, Action<decimal> progress = null) where T : class
-    {
-        await ((DbContext)this).BulkInsertAsync<T>(entities, bulkConfig, progress);
     }
 }
