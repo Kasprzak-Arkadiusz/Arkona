@@ -1,6 +1,8 @@
+using System.Reflection;
 using System.Text;
 using API.Services;
 using Application;
+using Application.Common.Interfaces;
 using Infrastructure;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
@@ -24,10 +26,6 @@ builder.Services.AddInfrastructure(infrastructureSettings);
 var applicationSettings = new ApplicationSettings();
 configuration.Bind(nameof(ApplicationSettings), applicationSettings);
 builder.Services.AddApplication(applicationSettings);
-
-builder.Services.AddIdentity<AppUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
@@ -71,6 +69,8 @@ if (infrastructureSettings.SeedWithCustomData)
 {
     using var scope = app.Services.CreateScope();
     var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var authenticationService = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
+    await IdentitySeeder.SeedAsync(dataContext, authenticationService);
     await DatabaseSeeder.SeedAsync(dataContext);
 }
 
