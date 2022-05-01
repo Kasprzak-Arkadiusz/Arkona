@@ -34,5 +34,10 @@ public class OfferConfiguration : IEntityTypeConfiguration<Offer>
                     .HasConversion<DateOnlyConverter, DateOnlyComparer>()
                     .IsRequired();
             });
+
+        builder.HasMany(o => o.Orders)
+            .WithOne(o => o.Offer)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }

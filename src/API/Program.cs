@@ -70,8 +70,8 @@ if (infrastructureSettings.SeedWithCustomData)
     using var scope = app.Services.CreateScope();
     var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     var authenticationService = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
-    await IdentitySeeder.SeedAsync(dataContext, authenticationService);
-    await DatabaseSeeder.SeedAsync(dataContext);
+    var userIds = await IdentitySeeder.SeedAsync(dataContext, authenticationService);
+    await DatabaseSeeder.SeedAsync(dataContext, userIds);
 }
 
 app.Run();

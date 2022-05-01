@@ -10,12 +10,18 @@ public static class DatabaseSeeder
 {
     private static IApplicationDbContext _context;
 
-    public static async Task SeedAsync(IApplicationDbContext context)
+    public static async Task SeedAsync(ApplicationDbContext context, IEnumerable<string> userIds)
     {
         _context = context;
         if (_context.TicketDiscounts.Any())
         {
             return;
+        }
+
+        var userIdList = userIds.ToList();
+        if (!userIdList.Any())
+        {
+            userIdList = context.Users.Select(u => u.Id).Take(2).ToList();
         }
 
         var cinemaHalls = await SeedCinemaHalls();
@@ -26,8 +32,8 @@ public static class DatabaseSeeder
         var seances = await SeedSeances(movies, cinemaHalls);
         var offers = await SeedOffers(genres, ageRestrictions);
         var tickets = await SeedTickets(seances, ticketDiscounts);
-        await SeedOrders(tickets, offers);
-        await SeedUsedTickets();
+        await SeedOrders(tickets, offers, userIdList);
+        await SeedUsedTickets(userIdList);
 
         await _context.SaveChangesAsync();
     }
@@ -208,7 +214,8 @@ public static class DatabaseSeeder
         return tickets;
     }
 
-    private static async Task SeedOrders(IReadOnlyList<Ticket> tickets, IReadOnlyList<Offer> offers)
+    private static async Task SeedOrders(IReadOnlyList<Ticket> tickets, IReadOnlyList<Offer> offers,
+        IReadOnlyList<string> userIds)
     {
         var orders = new List<Order>
         {
@@ -217,32 +224,32 @@ public static class DatabaseSeeder
                 {
                     tickets[0], tickets[1], tickets[2]
                 },
-                null, null, (MovieGenreOffer)offers[0]),
+                userIds[0], offers[0]),
             Order.Create(new DateTime(2022, 03, 28, 13, 59, 13),
                 new List<Ticket>
                 {
                     tickets[3], tickets[4]
-                }, (AgeOffer)offers[1]),
+                }, userIds[0], offers[1]),
             Order.Create(new DateTime(2022, 03, 25, 07, 13, 20),
                 new List<Ticket>
                 {
                     tickets[5]
-                }),
+                }, userIds[0]),
             Order.Create(new DateTime(2022, 03, 26, 21, 18, 31),
                 new List<Ticket>
                 {
                     tickets[6], tickets[7]
-                })
+                }, userIds[0])
         };
 
         await _context.Orders.AddRangeAsync(orders);
     }
 
-    private static async Task SeedUsedTickets()
+    private static async Task SeedUsedTickets(IReadOnlyList<string> userIds)
     {
-        var usedTicket = UsedTicket.Create("1164-756790-3777", "Batman",
-                new DateTime(2022, 03, 13, 15, 30, 0),
-                Price.Create(0), null, null);
+        var usedTicket = UsedTicket.Create("1164-756790-3777", userIds[0], "Batman",
+            new DateTime(2022, 03, 13, 15, 30, 0),
+            Price.Create(), null, null);
 
         await _context.UsedTickets.AddAsync(usedTicket);
     }

@@ -6,7 +6,6 @@ public class AmountOffer : Offer
 {
     public byte RequiredNumberOfTickets { get; private set; }
     public byte DiscountedNumberOfTickets { get; private set; }
-    public IEnumerable<Order>? Orders { get; }
 
     private AmountOffer() { }
     
@@ -15,7 +14,6 @@ public class AmountOffer : Offer
     {
         RequiredNumberOfTickets = requiredNumberOfTickets;
         DiscountedNumberOfTickets = discountedNumberOfTickets;
-        Orders = new List<Order>();
     }
 
     public static AmountOffer Create(string name, string description, decimal discountValue,
@@ -23,5 +21,18 @@ public class AmountOffer : Offer
     {
         return new AmountOffer(name, description, discountValue, requiredNumberOfTickets, discountedNumberOfTickets,
             validPeriod);
+    }
+
+    public override void ApplyOffer(List<Ticket> tickets)
+    {
+        if (tickets.Count < RequiredNumberOfTickets)
+        {
+            return;
+        }
+
+        for (var i = 0; i < DiscountedNumberOfTickets; i++)
+        {
+            tickets[i].Price.ApplyDiscount(DiscountValue);
+        }
     }
 }

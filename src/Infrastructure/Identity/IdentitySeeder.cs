@@ -7,11 +7,12 @@ namespace Infrastructure.Identity;
 
 public static class IdentitySeeder
 {
-    public static async Task SeedAsync(ApplicationDbContext context, IAuthenticationService authenticationService)
+    public static async Task<IEnumerable<string>> SeedAsync(ApplicationDbContext context,
+        IAuthenticationService authenticationService)
     {
         if (context.Users.Any())
         {
-            return;
+            return Enumerable.Empty<string>();
         }
 
         var registerParameters = new List<RegisterParams>
@@ -20,17 +21,22 @@ public static class IdentitySeeder
             new("Małgorzata", "Nowak", "MalgorzataNowakArkona@gmail.com", "7&HjLDhW!ikDhQHJ", Role.Worker)
         };
 
+        var userIds = new List<string>();
         foreach (var registerParameter in registerParameters)
         {
-            await SeedUser(authenticationService, registerParameter);
+            userIds.Add(await SeedUser(authenticationService, registerParameter));
         }
+
+        return userIds;
     }
 
-    private static async Task SeedUser(IAuthenticationService authenticationService, RegisterParams parameters)
+    private static async Task<string> SeedUser(IAuthenticationService authenticationService, RegisterParams parameters)
     {
         var userId = await authenticationService.RegisterUserAsync(parameters);
         var emailConfirmationToken = await authenticationService.GenerateEmailConfirmationTokenAsync(userId);
         await authenticationService.ConfirmUserEmail(userId, emailConfirmationToken);
         await authenticationService.AddToRoleAsync(userId, parameters.Role);
+
+        return userId;
     }
 }
