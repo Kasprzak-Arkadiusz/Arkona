@@ -22,6 +22,11 @@ public class AuthenticationService : IAuthenticationService
         _mapper = mapper;
     }
 
+    public async Task<bool> CheckIfUserWithEmailExists(string email)
+    {
+        return await _userManager.Users.AnyAsync(u => u.NormalizedEmail == email.Normalize());
+    }
+
     public async Task<User?> GetUserByIdAsync(string id)
     {
         var appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
@@ -82,7 +87,7 @@ public class AuthenticationService : IAuthenticationService
         {
             await _roleManager.CreateAsync(new IdentityRole(stringRole));
         }
-        
+
         var appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
 
         if (appUser == default)
@@ -90,9 +95,9 @@ public class AuthenticationService : IAuthenticationService
             return false;
         }
 
-        if (! await _userManager.IsInRoleAsync(appUser, stringRole))
+        if (!await _userManager.IsInRoleAsync(appUser, stringRole))
         {
-           await _userManager.AddToRoleAsync(appUser, stringRole);
+            await _userManager.AddToRoleAsync(appUser, stringRole);
         }
 
         return true;

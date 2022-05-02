@@ -1,6 +1,5 @@
-using System.Reflection;
 using System.Text;
-using API.Services;
+using API.Services.UserService;
 using Application;
 using Application.Common.Interfaces;
 using Infrastructure;
@@ -8,7 +7,6 @@ using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,7 +40,7 @@ builder.Services.AddAuthentication(options =>
     {
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(applicationSettings.AccessTokenSettings.Key)),
         ValidateIssuerSigningKey = true,
-        ValidateIssuer = false,
+        ValidateIssuer = true,
         ValidateAudience = false,
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero
@@ -55,15 +53,16 @@ builder.Services.AddGrpc();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-app.MapGrpcService<GreeterService>();
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGet("/",
-    () =>
-        "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+// Configure the HTTP request pipeline.
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGrpcService<UserService>();
+});
 
 if (infrastructureSettings.SeedWithCustomData)
 {

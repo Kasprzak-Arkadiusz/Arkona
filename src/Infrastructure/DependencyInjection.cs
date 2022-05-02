@@ -28,7 +28,7 @@ public static class DependencyInjection
             options.SignIn.RequireConfirmedPhoneNumber = false;
             options.SignIn.RequireConfirmedAccount = true;
             
-            options.User.RequireUniqueEmail = false;
+            options.User.RequireUniqueEmail = true;
             options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@/";
             

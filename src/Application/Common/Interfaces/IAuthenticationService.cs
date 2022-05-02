@@ -6,6 +6,7 @@ namespace Application.Common.Interfaces;
 
 public interface IAuthenticationService
 {
+    Task<bool> CheckIfUserWithEmailExists(string email);
     Task<User?> GetUserByIdAsync(string id);
     Task<User?> GetUserByEmailAsync(string email);
     Task<string> GenerateEmailConfirmationTokenAsync(string id);

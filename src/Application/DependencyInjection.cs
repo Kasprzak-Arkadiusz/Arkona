@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Reflection;
+using Application.Common.Interfaces;
+using Application.Utils;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
 
@@ -8,5 +12,10 @@ public static class DependencyInjection
     {
         services.AddSingleton(settings);
         services.AddSingleton(settings.AccessTokenSettings);
+
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddMediatR(Assembly.GetExecutingAssembly());
+
+        services.AddScoped<ISecurityTokenService, SecurityTokenService>();
     }
 }
