@@ -1,5 +1,6 @@
 using System.Text;
 using API.Extensions;
+using API.Interceptors;
 using API.Services;
 using Application;
 using Application.Common.Interfaces;
@@ -51,7 +52,11 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddGrpc(options => options.EnableMessageValidation());
+builder.Services.AddGrpc(options =>
+{
+    options.EnableMessageValidation();
+    options.Interceptors.Add<ErrorHandlingInterceptor>();
+});
 builder.Services.AddGrpcFluentValidation();
 
 var app = builder.Build();
