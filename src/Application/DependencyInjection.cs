@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Application.Common.Interfaces;
 using Application.Utils;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,5 +18,7 @@ public static class DependencyInjection
         services.AddMediatR(Assembly.GetExecutingAssembly());
 
         services.AddScoped<ISecurityTokenService, SecurityTokenService>();
+        
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

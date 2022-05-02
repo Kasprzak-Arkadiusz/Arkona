@@ -2,7 +2,7 @@
 using Grpc.Core;
 using MediatR;
 
-namespace API.Services.UserService;
+namespace API.Services;
 
 public class UserService : User.UserBase
 {

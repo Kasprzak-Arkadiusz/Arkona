@@ -1,7 +1,9 @@
 using System.Text;
-using API.Services.UserService;
+using API.Extensions;
+using API.Services;
 using Application;
 using Application.Common.Interfaces;
+using Calzolari.Grpc.AspNetCore.Validation;
 using Infrastructure;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
@@ -49,7 +51,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddGrpc();
+builder.Services.AddGrpc(options => options.EnableMessageValidation());
+builder.Services.AddGrpcFluentValidation();
 
 var app = builder.Build();
 
