@@ -276,3 +276,4 @@ src/client/.prettierignore
 
 # Appsettings
 src/API/appsettings.Development.json
+src/API/appsettings.json

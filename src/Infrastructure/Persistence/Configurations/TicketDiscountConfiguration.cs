@@ -9,7 +9,7 @@ public class TicketDiscountConfiguration : IEntityTypeConfiguration<TicketDiscou
     public void Configure(EntityTypeBuilder<TicketDiscount> builder)
     {
         builder.Property(td => td.Id)
-            .ValueGeneratedOnAdd();
+            .ValueGeneratedNever();
         builder.Property(td => td.Name)
             .HasMaxLength(50)
             .IsRequired();

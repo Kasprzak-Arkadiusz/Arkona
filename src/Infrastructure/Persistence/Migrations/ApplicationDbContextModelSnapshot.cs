@@ -75,10 +75,7 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.CinemaHall", b =>
                 {
                     b.Property<byte>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<byte>("Id"), 1L, 1);
 
                     b.Property<byte>("HallNumber")
                         .HasColumnType("tinyint");
@@ -429,10 +426,7 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.TicketDiscount", b =>
                 {
                     b.Property<byte>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<byte>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .IsRequired()

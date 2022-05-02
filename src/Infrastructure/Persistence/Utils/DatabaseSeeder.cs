@@ -65,16 +65,16 @@ public static class DatabaseSeeder
     {
         var discounts = new List<TicketDiscount>
         {
-            TicketDiscount.Create("Zniżka studencka",
+            TicketDiscount.Create(1, "Zniżka studencka",
                 "Zniżka przysługuje studentom majacym mniej niż 26 lat i posiadającym ważną legitymację studencką.",
                 (decimal)0.75),
-            TicketDiscount.Create("Zniżka ulgowa",
+            TicketDiscount.Create(2, "Zniżka ulgowa",
                 "Zniżka przysługuje dzieciom poniżej 18 roku życia.",
                 (decimal)0.5),
-            TicketDiscount.Create("Zniżka kombatancka",
+            TicketDiscount.Create(3, "Zniżka kombatancka",
                 "Zniżka przysługuje aktywnym żołnierzom lub żołnierzom w stanie spoczynku.",
                 (decimal)0.4),
-            TicketDiscount.Create("Zniżka dla seniorów",
+            TicketDiscount.Create(4, "Zniżka dla seniorów",
                 "Zniżka przysługuje osobom z ukończonymi 65 latami.",
                 (decimal)0.8)
         };
