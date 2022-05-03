@@ -25,13 +25,12 @@ public class RegisterUserCommand : IRequest
 public class RegisterUseCommandHandler : IRequestHandler<RegisterUserCommand, Unit>
 {
     private readonly IAuthenticationService _authenticationService;
-    private readonly ISecurityTokenService _securityTokenService;
+    private readonly IEmailService _emailService;
 
-    public RegisterUseCommandHandler(IAuthenticationService authenticationService,
-        ISecurityTokenService securityTokenService)
+    public RegisterUseCommandHandler(IAuthenticationService authenticationService, IEmailService emailService)
     {
         _authenticationService = authenticationService;
-        _securityTokenService = securityTokenService;
+        _emailService = emailService;
     }
 
     public async Task<Unit> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
@@ -46,8 +45,12 @@ public class RegisterUseCommandHandler : IRequestHandler<RegisterUserCommand, Un
         var userId = await _authenticationService.RegisterUserAsync(
             new RegisterParams(command.FirstName, command.LastName, command.Email, command.Password, Role.Client));
 
-        // TODO Send account confirmation email
-        
+        var user = await _authenticationService.GetUserByIdAsync(userId);
+
+        // TODO After integration with FrontEnd change callback url
+        await _emailService.SendConfirmationEmailAsync(new EmailAddress("Akasprzak016@gmail.com", user.GetFullName()),
+            "test");
+
         return Unit.Value;
     }
 }

@@ -48,5 +48,6 @@ public static class DependencyInjection
         );
 
         services.AddTransient<IAuthenticationService, AuthenticationService>();
+        services.AddTransient<IEmailService, EmailService.EmailService>();
     }
 }

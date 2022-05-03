@@ -1,4 +1,5 @@
 ﻿#pragma warning disable CS8603
+using Infrastructure.EmailService;
 using Microsoft.Data.SqlClient;
 
 namespace Infrastructure;
@@ -7,6 +8,7 @@ public class InfrastructureSettings
 {
     private string _dbConnectionString;
     public bool SeedWithCustomData { get; set; }
+    public EmailConfiguration EmailConfiguration { get; set; }
 
     public string DbConnectionString
     {

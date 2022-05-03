@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using System.Security.Claims;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
 using AutoMapper;
@@ -90,7 +91,18 @@ public class AuthenticationService : IAuthenticationService
         appUser.SecurityStamp = Guid.NewGuid().ToString();
 
         await _userManager.CreateAsync(appUser, parameters.Password);
+        await AddToRoleAsync(appUser.Id, parameters.Role);
 
+        await _userManager.AddClaimsAsync(appUser, new []
+        {
+            new Claim(ClaimTypes.NameIdentifier, appUser.Id),
+            new Claim(ClaimTypes.Email, appUser.Email),
+            new Claim(ClaimTypes.Name, appUser.Email),
+            new Claim("FirstName", appUser.FirstName),
+            new Claim("LastName", appUser.LastName),
+            new Claim(ClaimTypes.Role, parameters.Role.ToString())
+        });
+        
         return appUser.Id;
     }
 

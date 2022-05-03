@@ -18,4 +18,9 @@ public class User
     {
         return new User(firstName, lastName, email);
     }
+
+    public string GetFullName()
+    {
+        return $"{FirstName} {LastName}";
+    }
 }
