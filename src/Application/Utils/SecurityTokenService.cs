@@ -31,11 +31,10 @@ public class SecurityTokenService : ISecurityTokenService
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_applicationSettings.AccessTokenSettings.Key));
         var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var expiresAt = DateTime.Now.AddMinutes(_applicationSettings.AccessTokenSettings.ExpiryTimeInMinutes);
-        const string issuer = "https://Arkona.com";
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Issuer = issuer,
+            Issuer = _applicationSettings.AccessTokenSettings.JwtIssuer,
             Subject = claims,
             Expires = expiresAt, 
             SigningCredentials = signingCredentials

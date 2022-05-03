@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public abstract class User
+public class User
 {
     public string Id { get; private set; }
     public string FirstName { get; private set; }
@@ -12,5 +12,10 @@ public abstract class User
         FirstName = firstName;
         LastName = lastName;
         Email = email;
+    }
+
+    public static User Create(string firstName, string lastName, string email)
+    {
+        return new User(firstName, lastName, email);
     }
 }

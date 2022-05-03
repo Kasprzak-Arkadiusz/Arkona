@@ -2,9 +2,9 @@
 using Calzolari.Grpc.AspNetCore.Validation;
 using FluentValidation.Results;
 
-namespace API.Validators.User;
+namespace API.Validators;
 
-public class RegisterRequestMessageHandler : IValidatorErrorMessageHandler 
+public class CustomErrorMessageHandler : IValidatorErrorMessageHandler 
 {
     public Task<string> HandleAsync(IList<ValidationFailure> failures)
     {

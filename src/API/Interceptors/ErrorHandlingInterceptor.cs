@@ -1,6 +1,7 @@
 ﻿using Application.Common.Exceptions;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
+using Serilog;
 
 namespace API.Interceptors;
 
@@ -27,6 +28,11 @@ public class ErrorHandlingInterceptor : Interceptor
             AlreadyExistsException => StatusCode.AlreadyExists,
             NotFoundException => StatusCode.NotFound,
             InvalidArgumentException => StatusCode.InvalidArgument,
-            _ => StatusCode.Unknown
+            UnauthorizedException => StatusCode.InvalidArgument,
+            _ => ((Func<StatusCode>)(() =>
+            {
+                Log.Warning(exception, "Unexpected exception occured");
+                return StatusCode.Unknown;
+            }))()
         };
 }

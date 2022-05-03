@@ -4,9 +4,9 @@ using Application.Common.Models;
 using Domain.Enums;
 using MediatR;
 
-namespace Application.Users.Commands.RegisterUser;
+namespace Application.Users.Commands;
 
-public class RegisterUserCommand : IRequest<string>
+public class RegisterUserCommand : IRequest
 {
     public string FirstName { get; }
     public string LastName { get; }
@@ -22,7 +22,7 @@ public class RegisterUserCommand : IRequest<string>
     }
 }
 
-public class RegisterUseCommandHandler : IRequestHandler<RegisterUserCommand, string>
+public class RegisterUseCommandHandler : IRequestHandler<RegisterUserCommand, Unit>
 {
     private readonly IAuthenticationService _authenticationService;
     private readonly ISecurityTokenService _securityTokenService;
@@ -34,7 +34,7 @@ public class RegisterUseCommandHandler : IRequestHandler<RegisterUserCommand, st
         _securityTokenService = securityTokenService;
     }
 
-    public async Task<string> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
     {
         var userExists = await _authenticationService.CheckIfUserWithEmailExists(command.Email);
 
@@ -46,9 +46,8 @@ public class RegisterUseCommandHandler : IRequestHandler<RegisterUserCommand, st
         var userId = await _authenticationService.RegisterUserAsync(
             new RegisterParams(command.FirstName, command.LastName, command.Email, command.Password, Role.Client));
 
-        var accessToken = _securityTokenService.GenerateAccessTokenForUser(userId, command.Email, command.FirstName,
-            command.LastName, Role.Client);
-
-        return accessToken;
+        // TODO Send account confirmation email
+        
+        return Unit.Value;
     }
 }
