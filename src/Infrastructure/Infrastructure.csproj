@@ -30,7 +30,6 @@
 
     <ItemGroup>
       <Folder Include="EmailService\EmailTemplates" />
-      <Folder Include="Identity\Utils" />
     </ItemGroup>
 
 </Project>

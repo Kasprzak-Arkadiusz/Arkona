@@ -32,6 +32,25 @@ var applicationSettings = new ApplicationSettings();
 configuration.Bind(nameof(ApplicationSettings), applicationSettings);
 builder.Services.AddApplication(applicationSettings);
 
+builder.Services.AddGrpc(options =>
+{
+    options.EnableMessageValidation();
+    options.Interceptors.Add<ErrorHandlingInterceptor>();
+});
+builder.Services.AddGrpcFluentValidation();
+
+const string policyName = "MyPolicy";
+builder.Services.AddCors(o =>
+{
+    o.AddPolicy(policyName, config =>
+    {
+        config.AllowAnyOrigin();
+        config.AllowAnyMethod();
+        config.AllowAnyHeader();
+        config.WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
+    });
+});
+
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddAuthentication(options =>
@@ -53,27 +72,23 @@ builder.Services.AddAuthentication(options =>
         ClockSkew = TimeSpan.Zero
     };
 });
-
 builder.Services.AddAuthorization();
-
-builder.Services.AddGrpc(options =>
-{
-    options.EnableMessageValidation();
-    options.Interceptors.Add<ErrorHandlingInterceptor>();
-});
-builder.Services.AddGrpcFluentValidation();
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
+app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseCors(policyName);
+app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Configure the HTTP request pipeline.
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapGrpcService<UserService>();
+    endpoints.MapGrpcService<UserService>().RequireCors(policyName);
 });
 
 if (infrastructureSettings.SeedWithCustomData)
