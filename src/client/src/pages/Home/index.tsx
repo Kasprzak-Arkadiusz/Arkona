@@ -30,10 +30,6 @@ function Home() {
             </section>
             <section className="offers-container">
                 <Title Component={OfferIcon} title={"Oferty specjalne"}/>
-                {/*<div className="offers-header-container">*/}
-                {/*    <span className="offers-header-container__text">Oferty specjalne</span>*/}
-                {/*    <OfferIcon className="offers-header-container__icon" height="20" />*/}
-                {/*</div>*/}
                 <div className="offer-list-container">
                     <OfferHolder image="" title="Rodzinny tydzień - Dorośli płacą tyle co dzieci" />
                     <OfferHolder image="" title="Weekend z filmami SF" />

@@ -1,23 +1,30 @@
 ﻿import * as React from 'react';
-import { FC } from 'react';
+import {FC} from 'react';
+import styled from "styled-components";
 
 export interface SvgIconProperties {
     width?: string;
     height?: string;
-    className?: string;
 }
 
-export interface SvgIcon extends FC<SvgIconProperties> {}
+export interface SvgIcon extends FC<SvgIconProperties> {
+}
 
-export const PasswordShownIcon: SvgIcon = ({ width = '24', height = '24', className = '' }): JSX.Element => {
+const Container = styled.svg`
+    display: inline-block;
+    position: relative;
+    width: ${props => props.width};
+    height: ${props => props.height};
+`
+
+export const PasswordShownIcon: SvgIcon = ({width = '24px', height = '24px'}): JSX.Element => {
     return (
-        <svg
-            width="24"
-            height="24"
+        <Container
+            width={width}
+            height={height}
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className={className}
         >
             <g clipPath="url(#clip0_100_51)">
                 <g filter="url(#filter0_i_100_51)">
@@ -31,9 +38,9 @@ export const PasswordShownIcon: SvgIcon = ({ width = '24', height = '24', classN
                     stroke="black"
                     strokeOpacity="0.1"
                 />
-                <circle cx="12" cy="12" r="5" fill="#EAE9E9" />
+                <circle cx="12" cy="12" r="5" fill="#EAE9E9"/>
                 <g filter="url(#filter1_i_100_51)">
-                    <circle cx="12" cy="12" r="3" fill="#C4C4C4" />
+                    <circle cx="12" cy="12" r="3" fill="#C4C4C4"/>
                 </g>
             </g>
             <defs>
@@ -46,19 +53,19 @@ export const PasswordShownIcon: SvgIcon = ({ width = '24', height = '24', classN
                     filterUnits="userSpaceOnUse"
                     colorInterpolationFilters="sRGB"
                 >
-                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+                    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
                     <feColorMatrix
                         in="SourceAlpha"
                         type="matrix"
                         values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
                         result="hardAlpha"
                     />
-                    <feOffset dx="4" dy="4" />
-                    <feGaussianBlur stdDeviation="2" />
-                    <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
-                    <feBlend mode="normal" in2="shape" result="effect1_innerShadow_100_51" />
+                    <feOffset dx="4" dy="4"/>
+                    <feGaussianBlur stdDeviation="2"/>
+                    <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
+                    <feBlend mode="normal" in2="shape" result="effect1_innerShadow_100_51"/>
                 </filter>
                 <filter
                     id="filter1_i_100_51"
@@ -69,24 +76,24 @@ export const PasswordShownIcon: SvgIcon = ({ width = '24', height = '24', classN
                     filterUnits="userSpaceOnUse"
                     colorInterpolationFilters="sRGB"
                 >
-                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+                    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
                     <feColorMatrix
                         in="SourceAlpha"
                         type="matrix"
                         values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
                         result="hardAlpha"
                     />
-                    <feOffset dx="2" dy="1" />
-                    <feGaussianBlur stdDeviation="0.5" />
-                    <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
-                    <feBlend mode="normal" in2="shape" result="effect1_innerShadow_100_51" />
+                    <feOffset dx="2" dy="1"/>
+                    <feGaussianBlur stdDeviation="0.5"/>
+                    <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+                    <feBlend mode="normal" in2="shape" result="effect1_innerShadow_100_51"/>
                 </filter>
                 <clipPath id="clip0_100_51">
-                    <rect width="24" height="24" fill="white" />
+                    <rect width="24" height="24" fill="white"/>
                 </clipPath>
             </defs>
-        </svg>
+        </Container>
     );
 };

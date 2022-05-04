@@ -20,9 +20,9 @@ const PasswordInput = (props: { inputId: string; title: string }) => {
             />
             <div className="register-form-icon-container" onClick={togglePassword}>
                 {passwordShown ? (
-                    <PasswordShownIcon height="24" width="24" className="register-form-container__icon" />
+                    <PasswordShownIcon height="24px" width="24px"/>
                 ) : (
-                    <PasswordHiddenIcon height="24" width="24" className="register-form-container__icon" />
+                    <PasswordHiddenIcon height="24px" width="24px" />
                 )}
             </div>
         </div>

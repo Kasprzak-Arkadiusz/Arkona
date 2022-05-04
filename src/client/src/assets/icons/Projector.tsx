@@ -10,21 +10,16 @@ export interface SvgIconProperties {
 export interface SvgIcon extends FC<SvgIconProperties> {
 }
 
+const IconContainer = styled.div.attrs((props: {height: string, width: string}) => props)`
+    width: ${props => props.width};
+    height: ${props => props.height};
+    display: inline-block;
+    margin: auto 0 auto 0;
+`
+
 export const ProjectorIcon: SvgIcon = ({width = '24px', height = '24px'}): JSX.Element => {
-    const IconContainer = styled.div`
-        width: ${width};
-        height: ${height};
-        display: inline-block;
-        margin: auto 0 auto 0;
-    
-        font-family: ${props => props.theme.Fonts.smart};
-        font-style: normal;
-        font-weight: 400;
-        font-size: 18px;
-    `
-    
     return (
-        <IconContainer>
+        <IconContainer width={width} height={height}>
             <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 24 24">
                 <g clipPath="url(#clip0_18_95)">
                     <g filter="url(#filter0_i_18_95)">

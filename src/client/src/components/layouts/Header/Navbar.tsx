@@ -95,9 +95,9 @@ const NavLinks = styled.ul<IProps>`
     
         ${({open}) =>
         open && css`
-            left: 0px;
-            margin-top: 10px;
-            margin-bottom: 10px;
+                left: 0px;
+                margin-top: 10px;
+                margin-bottom: 10px;
             `
         }
     }
@@ -116,7 +116,6 @@ const NavIcon = styled.div`
         color: #fafafa;
     }
 `
-
 
 function Navbar() {
     const [open, setOpen] = useState(false);

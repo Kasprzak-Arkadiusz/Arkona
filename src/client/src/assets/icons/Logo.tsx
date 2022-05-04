@@ -1,5 +1,5 @@
 ﻿import * as React from 'react';
-import { FC } from 'react';
+import {FC} from 'react';
 import styled from "styled-components";
 
 export interface SvgIconProperties {
@@ -7,23 +7,24 @@ export interface SvgIconProperties {
     height?: string;
 }
 
-export interface SvgIcon extends FC<SvgIconProperties> {}
+const LogoContainer = styled.div`
+    margin-left: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+`
 
-export const Logo: SvgIcon = ({ width = '48px', height = '48px'}): JSX.Element => {
-    const LogoContainer = styled.div`
-        margin-left: 10px;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-    `
-    
+export interface SvgIcon extends FC<SvgIconProperties> {
+}
+
+export const Logo: SvgIcon = ({width = '48px', height = '48px'}): JSX.Element => {
     return (
         <LogoContainer>
             <svg width={width} height={height} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g filter="url(#filter0_i_17_8)">
-                    <circle cx="24" cy="24" r="24" fill="#1E1E25" />
+                    <circle cx="24" cy="24" r="24" fill="#1E1E25"/>
                 </g>
-                <circle cx="24" cy="24" r="23" stroke="#3A6DF1" strokeWidth="2" />
+                <circle cx="24" cy="24" r="23" stroke="#3A6DF1" strokeWidth="2"/>
                 <g filter="url(#filter1_dd_17_8)">
                     <path
                         d="M24.0091 9.16L15.2491 36.04V36C15.0891 36.4 14.8624 36.7333 14.5691 37C14.3024 37.24 13.9691 37.36 13.5691 37.36C13.3557 37.36 13.1424 37.3333 12.9291 37.28C12.7424 37.2533 12.5424 37.2133 12.3291 37.16H12.3691C10.8491 36.68 10.2891 35.8267 10.6891 34.6L19.8091 6.88C19.9424 6.45333 20.1691 6.09333 20.4891 5.8C20.8357 5.50667 21.2357 5.33333 21.6891 5.28C22.1424 5.2 22.5824 5.14666 23.0091 5.12C23.4357 5.06667 23.7691 5.04 24.0091 5.04C24.2491 5.04 24.5824 5.06667 25.0091 5.12C25.4357 5.14666 25.8757 5.18666 26.3291 5.24C26.7024 5.29333 27.0624 5.49333 27.4091 5.84C27.7824 6.18667 28.0624 6.53333 28.2491 6.88C29.7424 11.4667 31.2491 16.0933 32.7691 20.76C34.3157 25.4 35.8357 30.0133 37.3291 34.6C37.7024 35.8267 37.1424 36.68 35.6491 37.16C35.4357 37.2133 35.2357 37.2533 35.0491 37.28C34.8891 37.3333 34.7024 37.36 34.4891 37.36C34.1157 37.36 33.7691 37.24 33.4491 37C33.1557 36.7333 32.9424 36.4 32.8091 36V36.04L24.0091 9.16ZM27.0091 27.4C27.0091 28.2533 26.7024 28.9867 26.0891 29.6C25.5024 30.1867 24.7824 30.48 23.9291 30.48C23.0757 30.48 22.3557 30.1867 21.7691 29.6C21.1824 28.9867 20.8891 28.2533 20.8891 27.4C20.8891 26.5467 21.1824 25.8267 21.7691 25.24C22.3557 24.6267 23.0757 24.32 23.9291 24.32C24.7824 24.32 25.5024 24.6267 26.0891 25.24C26.7024 25.8267 27.0091 26.5467 27.0091 27.4Z"
@@ -45,33 +46,33 @@ export const Logo: SvgIcon = ({ width = '48px', height = '48px'}): JSX.Element =
                         filterUnits="userSpaceOnUse"
                         colorInterpolationFilters="sRGB"
                     >
-                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                        <feFlood floodOpacity="0" result="BackgroundImageFix"/>
                         <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"
                             values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
                             result="hardAlpha"
                         />
-                        <feOffset dx="3" dy="2" />
-                        <feGaussianBlur stdDeviation="2" />
-                        <feComposite in2="hardAlpha" operator="out" />
+                        <feOffset dx="3" dy="2"/>
+                        <feGaussianBlur stdDeviation="2"/>
+                        <feComposite in2="hardAlpha" operator="out"/>
                         <feColorMatrix
                             type="matrix"
                             values="0 0 0 0 0.980392 0 0 0 0 0.980392 0 0 0 0 0.980392 0 0 0 0.25 0"
                         />
-                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_17_8" />
+                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_17_8"/>
                         <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"
                             values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
                             result="hardAlpha"
                         />
-                        <feOffset dy="4" />
-                        <feGaussianBlur stdDeviation="2" />
-                        <feComposite in2="hardAlpha" operator="out" />
-                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
-                        <feBlend mode="normal" in2="effect1_dropShadow_17_8" result="effect2_dropShadow_17_8" />
-                        <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_17_8" result="shape" />
+                        <feOffset dy="4"/>
+                        <feGaussianBlur stdDeviation="2"/>
+                        <feComposite in2="hardAlpha" operator="out"/>
+                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+                        <feBlend mode="normal" in2="effect1_dropShadow_17_8" result="effect2_dropShadow_17_8"/>
+                        <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_17_8" result="shape"/>
                     </filter>
                     <linearGradient
                         id="paint0_linear_17_8"
@@ -81,8 +82,8 @@ export const Logo: SvgIcon = ({ width = '48px', height = '48px'}): JSX.Element =
                         y2="-21.9282"
                         gradientUnits="userSpaceOnUse"
                     >
-                        <stop stopColor="#FAFAFA" stopOpacity="0.24" />
-                        <stop offset="0.774098" stopColor="#FAFAFA" />
+                        <stop stopColor="#FAFAFA" stopOpacity="0.24"/>
+                        <stop offset="0.774098" stopColor="#FAFAFA"/>
                     </linearGradient>
                 </defs>
             </svg>
