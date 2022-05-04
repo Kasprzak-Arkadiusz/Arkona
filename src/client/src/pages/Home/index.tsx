@@ -4,16 +4,14 @@ import { ProjectorIcon } from 'assets/icons/Projector';
 import { OfferIcon } from 'assets/icons/Offer';
 import FilmHolder from './components/FilmHolder';
 import OfferHolder from './components/OfferHolder';
+import Title from 'components/layouts/Header/Title'
 import 'assets/Home.css';
 
 function Home() {
     return (
         <main className="display-container">
             <section className="films-container">
-                <div className="on-screen-container">
-                    <span className="on-screen-container__text">Na ekranie</span>
-                    <ProjectorIcon className="on-screen-container__icon" />
-                </div>
+                <Title Component={ProjectorIcon} title={"Na ekranie"}/>
                 <div className="film-list-container">
                     <FilmHolder image="" title="Lorem ipsum dolor sit amet, consectetur cras amet." />
                     <FilmHolder image="" title="Vivamus nec eleifend ligula, vitae consectetur." />
@@ -31,10 +29,11 @@ function Home() {
                 </div>
             </section>
             <section className="offers-container">
-                <div className="offers-header-container">
-                    <span className="offers-header-container__text">Oferty specjalne</span>
-                    <OfferIcon className="offers-header-container__icon" height="20" />
-                </div>
+                <Title Component={OfferIcon} title={"Oferty specjalne"}/>
+                {/*<div className="offers-header-container">*/}
+                {/*    <span className="offers-header-container__text">Oferty specjalne</span>*/}
+                {/*    <OfferIcon className="offers-header-container__icon" height="20" />*/}
+                {/*</div>*/}
                 <div className="offer-list-container">
                     <OfferHolder image="" title="Rodzinny tydzień - Dorośli płacą tyle co dzieci" />
                     <OfferHolder image="" title="Weekend z filmami SF" />

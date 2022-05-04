@@ -689,6 +689,7 @@
         "strip-indent": "^3.0.0",
         "strip-json-comments": "^3.1.1",
         "style-loader": "^3.3.1",
+        "styled-components": "^5.3.5",
         "stylehacks": "^5.1.0",
         "supports-color": "^5.5.0",
         "supports-hyperlinks": "^2.2.0",
@@ -816,6 +817,7 @@
         ]
     },
     "devDependencies": {
-        "@types/google-protobuf": "^3.15.6"
+        "@types/google-protobuf": "^3.15.6",
+        "@types/styled-components": "^5.1.25"
     }
 }

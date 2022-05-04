@@ -1,6 +1,4 @@
 ﻿.films-container {
-    width: auto;
-    height: auto;
     min-height: 70px;
     margin: 40px 12px 0 12px;
 
@@ -8,46 +6,7 @@
     border-radius: 50px;
 }
 
-.on-screen-container {
-    height: 5%;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-
-    border-bottom-style: solid;
-    border-bottom-color: #121212;
-    border-bottom-width: 5px;
-}
-
-.on-screen-container__text {
-    width: 100px;
-    display: inline-block;
-    margin: auto 5px auto 0;
-    padding-top: 4px;
-
-    font-family: 'Gugi', serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-
-    color: #fafafa;
-}
-
-.on-screen-container__icon {
-    width: 25px;
-    display: inline-block;
-    margin: auto 0 auto 0;
-    padding-top: 4px;
-
-    font-family: 'Gugi', serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-}
-
 .film-list-container {
-    width: auto;
-    height: auto;
     display: flex;
     flex-wrap: wrap;
 }
@@ -112,8 +71,6 @@
 }
 
 .offers-container {
-    width: auto;
-    height: auto;
     min-height: 70px;
     margin: 40px 12px 0 12px;
 
@@ -163,8 +120,6 @@
 }
 
 .offer-list-container {
-    width: auto;
-    height: auto;
     display: flex;
     flex-wrap: wrap;
 }

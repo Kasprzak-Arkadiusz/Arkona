@@ -1,5 +1,4 @@
 ﻿.register-container {
-    height: auto;
     margin: 40px 12px auto 12px;
     text-align: center;
 
@@ -9,7 +8,6 @@
 
 .register-form-container {
     width: 340px;
-    height: auto;
     margin: 10px auto auto auto;
 
     font-family: 'Domine', serif;
@@ -18,7 +16,6 @@
 }
 
 .validation-text {
-    height: auto;
     display: block;
     margin: auto;
     padding: 5px 10px 5px 10px;
@@ -188,22 +185,14 @@
 }
 .have-an-account-container {
     width: 340px;
-    height: auto;
     margin: 10px auto 0 auto;
     display: block;
     padding: 0 0 10px 0;
 }
 
 .have-an-account-container__span {
-    font-size: 14px;
     line-height: 14px;
     margin: 0 5px 0 auto;
-
-    font-family: 'Domine', serif;
-    font-style: normal;
-    font-weight: 400;
-
-    color: #fafafa;
 }
 
 .have-an-account-container__action {

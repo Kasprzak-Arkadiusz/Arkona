@@ -38,8 +38,10 @@ code {
 }
 
 .container-header__text {
-    width: auto;
+    width: 100px;
+    display: inline-block;
     margin: auto 5px auto 0;
+    padding-top: 4px;
 
     font-family: 'Gugi', serif;
     font-style: normal;
