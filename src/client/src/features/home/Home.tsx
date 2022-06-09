@@ -4,8 +4,8 @@ import { ProjectorIcon } from 'assets/icons/Projector';
 import { OfferIcon } from 'assets/icons/Offer';
 import FilmHolder from './components/FilmHolder';
 import OfferHolder from './components/OfferHolder';
-import Title from 'components/layouts/Header/Title'
-import 'assets/Home.css';
+import Title from 'components/Navbar/Title'
+import './home.css';
 
 function Home() {
     return (

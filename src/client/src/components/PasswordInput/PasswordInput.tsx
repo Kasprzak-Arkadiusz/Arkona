@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import { useState } from 'react';
-import { PasswordHiddenIcon } from '../assets/icons/PasswordHiddenIcon';
-import { PasswordShownIcon } from '../assets/icons/PasswordShownIcon';
+import { PasswordHiddenIcon } from './PasswordHiddenIcon';
+import { PasswordShownIcon } from './PasswordShownIcon';
 
 const PasswordInput = (props: { inputId: string; title: string }) => {
     const [passwordShown, setPasswordShown] = useState(false);

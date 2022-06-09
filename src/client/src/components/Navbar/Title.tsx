@@ -1,6 +1,6 @@
 ﻿import styled from "styled-components";
 import React, {FC} from 'react';
-import {SvgIconProperties} from "../../../assets/icons/Logo";
+import {SvgIconProperties} from "assets/icons/Logo";
 
 interface Props {
     Component: FC<SvgIconProperties>;

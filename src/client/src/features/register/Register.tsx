@@ -1,11 +1,11 @@
 ﻿import React from 'react';
-import 'assets/Register.css';
+import './register.css';
 import { Link } from 'react-router-dom';
-import facebook from '../../assets/images/facebook-logo.png';
-import google from '../../assets/images/google-logo.png';
-import microsoft from '../../assets/images/microsoft-logo.png';
+import facebook from 'assets/images/facebook-logo.png';
+import google from 'assets/images/google-logo.png';
+import microsoft from 'assets/images/microsoft-logo.png';
 
-import PasswordInput from 'components/PasswordInput';
+import PasswordInput from 'components/PasswordInput/PasswordInput';
 import ExternalLogin from './components/ExternalLogin'
 
 function Register() {
@@ -16,12 +16,12 @@ function Register() {
                     <span className="container-header__text">Rejestracja</span>
                 </section>
                 <form className="register-form-container">
-                    <span className="validation-text">Adres e-mail jest wymagany</span>
+                    <span className="validation-text">Adres e-mail jest wymagany!</span>
                     <label className="register-form-container__label">Adres e-mail:</label>
                     <input type="text" className="register-form-container_input" />
 
                     <span className="validation-text">
-                        Hasło musi mieć minimum 8 znaków, w tym 1 znak specjalny oraz 1 liczbę
+                        Hasło musi mieć minimum 8 znaków, w tym 1 znak specjalny oraz 1 liczbę!
                     </span>
                     <PasswordInput inputId="password-input" title="Hasło:" />
 

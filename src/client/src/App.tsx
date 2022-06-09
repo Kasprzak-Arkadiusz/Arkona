@@ -1,12 +1,12 @@
 import React from 'react';
-import Navbar from 'components/layouts/Header/Navbar';
+import Navbar from 'components/Navbar/Navbar';
 import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
-import Home from 'pages/Home/index';
-import Repertoire from 'pages/Repertoire/index';
-import Offers from 'pages/Offers/index';
-import Tickets from 'pages/Tickets/index';
-import Login from 'pages/Login/index';
-import Register from 'pages/Register/index';
+import Home from 'features/home/Home';
+import Repertoire from 'features/repertoire/Repertoire';
+import Offers from 'features/offers/Offers';
+import Tickets from 'features/tickets/Tickets';
+import Login from 'features/login/Login';
+import Register from 'features/register/Register';
 
 import 'assets/index.css';
 import GlobalStyle from 'assets/theme/GlobalStyles.js'

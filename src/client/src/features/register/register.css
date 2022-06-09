@@ -105,6 +105,7 @@
     top: -32px;
     position: relative;
     transform: translateX(140px);
+    cursor: pointer;
 }
 
 .external-provider-container {

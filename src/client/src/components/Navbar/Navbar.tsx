@@ -2,7 +2,7 @@
 import {Link} from 'react-router-dom';
 import {FiMenu, FiX} from 'react-icons/fi';
 import {Logo} from 'assets/icons/Logo';
-import 'assets/Navbar.css';
+import './navbar.css';
 import styled, {css} from "styled-components";
 
 const Header = styled.header`

@@ -1,4 +1,12 @@
-﻿@media only screen and (max-width: 840px) {
+﻿#login-link {
+    margin-left: auto;
+}
+
+#register-link{
+    margin-right: 10px;
+}
+
+@media only screen and (max-width: 840px) {
     #first-link {
         border-top-left-radius: 25px;
         border-top-right-radius: 25px;
