@@ -1,17 +1,17 @@
 ﻿import React from 'react';
 import { Link } from 'react-router-dom';
-import { ProjectorIcon } from 'assets/icons/Projector';
-import { OfferIcon } from 'assets/icons/Offer';
+import { ProjectorIcon } from 'assets/icons/Projector/Projector';
+import { OfferIcon } from 'assets/icons/Offer/Offer';
 import FilmHolder from './components/FilmHolder';
 import OfferHolder from './components/OfferHolder';
-import Title from 'components/Navbar/Title'
+import SectionTitle from 'components/SectionTitle/SectionTitle'
 import './home.css';
 
 function Home() {
     return (
         <main className="display-container">
             <section className="films-container">
-                <Title Component={ProjectorIcon} title={"Na ekranie"}/>
+                <SectionTitle Component={ProjectorIcon} title={"Na ekranie"}/>
                 <div className="film-list-container">
                     <FilmHolder image="" title="Lorem ipsum dolor sit amet, consectetur cras amet." />
                     <FilmHolder image="" title="Vivamus nec eleifend ligula, vitae consectetur." />
@@ -29,7 +29,7 @@ function Home() {
                 </div>
             </section>
             <section className="offers-container">
-                <Title Component={OfferIcon} title={"Oferty specjalne"}/>
+                <SectionTitle Component={OfferIcon} title={"Oferty specjalne"}/>
                 <div className="offer-list-container">
                     <OfferHolder image="" title="Rodzinny tydzień - Dorośli płacą tyle co dzieci" />
                     <OfferHolder image="" title="Weekend z filmami SF" />

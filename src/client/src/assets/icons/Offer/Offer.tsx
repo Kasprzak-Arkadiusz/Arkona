@@ -1,27 +1,10 @@
 ﻿import * as React from 'react';
-import {FC} from 'react';
-import styled from "styled-components";
+import SvgIcon from "../Interfaces";
+import IconContainer from "../IconContainer"
 
-export interface SvgIconProperties {
-    width?: string;
-    height?: string;
-    color?: string;
-}
-
-export interface SvgIcon extends FC<SvgIconProperties> {
-}
-
-const Container = styled.div.attrs((props: {height: string, width: string}) => props)`
-    height: ${props => props.height};
-    width: ${props => props.width};
-    display: inline-block;
-    margin-top: auto;
-    margin-bottom: auto;
-`
-
-export const OfferIcon: SvgIcon = ({width = '40px', height = '20px', color = '#FAFAFA'}): JSX.Element => {
+export const OfferIcon: SvgIcon = ({width = '40px', height = '20px'}): JSX.Element => {
     return (
-        <Container height={height} width={width} >
+        <IconContainer height={height} width={width} >
             <svg
                 width={width}
                 height={height}
@@ -38,7 +21,7 @@ export const OfferIcon: SvgIcon = ({width = '40px', height = '20px', color = '#F
                             fillRule="evenodd"
                             clipRule="evenodd"
                             d="M0 0H40L33.6001 6.48852e-06C33.6001 3.53653 36.3435 6.39995 40 6.4V20L40 13.6C36.4634 13.6 33.6 16.3435 33.6 20L40 20H6.38813C6.19017 16.65 3.51757 14 0 14V2.47955e-05L6.48852e-06 6.40002C3.53656 6.40002 6.4 3.65653 6.4 2.47955e-05H0V0Z"
-                            fill={color}
+                            fill="#FAFAFA"
                         />
                     </g>
                 </g>
@@ -72,7 +55,6 @@ export const OfferIcon: SvgIcon = ({width = '40px', height = '20px', color = '#F
                     </clipPath>
                 </defs>
             </svg>
-        </Container>
+        </IconContainer>
     )
-        ;
 };

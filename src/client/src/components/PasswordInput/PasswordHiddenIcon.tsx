@@ -1,25 +1,10 @@
 ﻿import * as React from 'react';
-import {FC} from 'react';
-import styled from "styled-components";
-
-export interface SvgIconProperties {
-    width?: string;
-    height?: string;
-}
-
-export interface SvgIcon extends FC<SvgIconProperties> {
-}
-
-const Container = styled.svg`
-    display: inline-block;
-    position: relative;
-    width: ${props => props.width};
-    height: ${props => props.height};
-`
+import SvgIcon from "assets/icons/Interfaces";
+import IconContainer from "assets/icons/IconContainer"
 
 export const PasswordHiddenIcon: SvgIcon = ({width = '24px', height = '24px'}): JSX.Element => {
     return (
-        <Container
+        <IconContainer
             width={width}
             height={height}
             viewBox="0 0 24 24"
@@ -128,6 +113,6 @@ export const PasswordHiddenIcon: SvgIcon = ({width = '24px', height = '24px'}): 
                     <rect width="24" height="24" fill="white"/>
                 </clipPath>
             </defs>
-        </Container>
+        </IconContainer>
     );
 };

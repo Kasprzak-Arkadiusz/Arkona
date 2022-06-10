@@ -1,21 +1,6 @@
 ﻿import * as React from 'react';
-import {FC} from 'react';
-import styled from "styled-components";
-
-export interface SvgIconProperties {
-    width?: string;
-    height?: string;
-}
-
-const LogoContainer = styled.div`
-    margin-left: 10px;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-`
-
-export interface SvgIcon extends FC<SvgIconProperties> {
-}
+import LogoContainer from './styled'
+import SvgIcon from "../Interfaces";
 
 export const Logo: SvgIcon = ({width = '48px', height = '48px'}): JSX.Element => {
     return (

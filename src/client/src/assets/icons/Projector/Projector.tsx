@@ -1,21 +1,6 @@
-﻿import styled from "styled-components";
-import * as React from 'react';
-import {FC} from 'react';
-
-export interface SvgIconProperties {
-    width?: string;
-    height?: string;
-}
-
-export interface SvgIcon extends FC<SvgIconProperties> {
-}
-
-const IconContainer = styled.div.attrs((props: {height: string, width: string}) => props)`
-    width: ${props => props.width};
-    height: ${props => props.height};
-    display: inline-block;
-    margin: auto 0 auto 0;
-`
+﻿import * as React from 'react';
+import SvgIcon from "../Interfaces";
+import IconContainer from "../IconContainer"
 
 export const ProjectorIcon: SvgIcon = ({width = '24px', height = '24px'}): JSX.Element => {
     return (
