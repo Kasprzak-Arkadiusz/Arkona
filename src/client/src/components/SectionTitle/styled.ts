@@ -1,17 +1,17 @@
 ﻿import styled from "styled-components";
 
-export const TitleContainer = styled.div`
+export const Container = styled.section`
     display: flex;
     justify-content: center;
     padding: 10px 0 10px 0;
-
+    
     border-bottom-style: solid;
     border-bottom-color: ${props => props.theme.Palette.rootBackground};
     border-bottom-width: 5px;
 `
 
-export const TitleSpan = styled.div`
-    width: auto;
+export const Title = styled.span`
+    width: 100px;
     display: inline-block;
     margin: auto 5px auto 0;
     padding-top: 4px;

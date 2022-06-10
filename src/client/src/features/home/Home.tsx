@@ -1,18 +1,17 @@
 ﻿import React from 'react';
-import { Link } from 'react-router-dom';
 import { ProjectorIcon } from 'assets/icons/Projector/Projector';
 import { OfferIcon } from 'assets/icons/Offer/Offer';
-import FilmHolder from './components/FilmHolder';
-import OfferHolder from './components/OfferHolder';
-import SectionTitle from 'components/SectionTitle/SectionTitle'
-import './home.css';
+import FilmHolder from './FilmHolder/FilmHolder';
+import OfferHolder from './OfferHolder/OfferHolder';
+import IconTitle from 'components/IconTitle/IconTitle'
+import * as home from './styled'
 
 function Home() {
     return (
         <main className="display-container">
-            <section className="films-container">
-                <SectionTitle Component={ProjectorIcon} title={"Na ekranie"}/>
-                <div className="film-list-container">
+            <home.filmsContainer>
+                <IconTitle Component={ProjectorIcon} title="Na ekranie"/>
+                <home.filmListContainer>
                     <FilmHolder image="" title="Lorem ipsum dolor sit amet, consectetur cras amet." />
                     <FilmHolder image="" title="Vivamus nec eleifend ligula, vitae consectetur." />
                     <FilmHolder image="" title="Maecenas porta tortor diam, quis blandit nulla." />
@@ -21,26 +20,26 @@ function Home() {
                     <FilmHolder image="" title="Pellentesque sed egestas eu." />
                     <FilmHolder image="" title="Fusce suscipit laoreet neque." />
                     <FilmHolder image="" title="Suspendisse pretium lacus sed eleifend." />
-                </div>
-                <div className="see-more-container">
-                    <Link to="/repertoire" className="see-more-container__action">
+                </home.filmListContainer>
+                <home.seeMoreContainer>
+                    <home.seeMoreLink to="/repertoire">
                         Zobacz więcej
-                    </Link>
-                </div>
-            </section>
-            <section className="offers-container">
-                <SectionTitle Component={OfferIcon} title={"Oferty specjalne"}/>
-                <div className="offer-list-container">
+                    </home.seeMoreLink>
+                </home.seeMoreContainer>
+            </home.filmsContainer>
+            <home.offersContainer>
+                <IconTitle Component={OfferIcon} title={"Oferty specjalne"}/>
+                <home.offerListContainer>
                     <OfferHolder image="" title="Rodzinny tydzień - Dorośli płacą tyle co dzieci" />
                     <OfferHolder image="" title="Weekend z filmami SF" />
                     <OfferHolder image="" title="4 bilety w cenie 3" />
-                </div>
-                <div className="see-more-container">
-                    <Link to="/offers" className="see-more-container__action">
+                </home.offerListContainer>
+                <home.seeMoreContainer>
+                    <home.seeMoreLink to="/offers">
                         Zobacz więcej
-                    </Link>
-                </div>
-            </section>
+                    </home.seeMoreLink>
+                </home.seeMoreContainer>
+            </home.offersContainer>
         </main>
     );
 }

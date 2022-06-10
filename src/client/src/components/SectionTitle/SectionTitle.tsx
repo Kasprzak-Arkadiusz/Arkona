@@ -1,18 +1,16 @@
-﻿import SvgIcon from "assets/icons/Interfaces";
-import {TitleContainer, TitleSpan} from "./styled"
+﻿import React from "react";
+import * as style from './styled'
 
 interface Props {
-    Component: SvgIcon;
     title: string;
 }
 
-function SectionTitle({Component, title}: Props) {
+function SectionTitle({title} : Props) {
     return (
-        <TitleContainer>
-            <TitleSpan>{title}</TitleSpan>
-            {<Component/>}
-        </TitleContainer>
-    );
+        <style.Container>
+            <style.Title>{title}</style.Title>
+        </style.Container>
+    )
 }
 
-export default SectionTitle;
+export default SectionTitle

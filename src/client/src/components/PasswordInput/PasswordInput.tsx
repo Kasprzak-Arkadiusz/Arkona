@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { PasswordHiddenIcon } from './PasswordHiddenIcon';
 import { PasswordShownIcon } from './PasswordShownIcon';
+import * as style from  './styled'
 
 const PasswordInput = (props: { inputId: string; title: string }) => {
     const [passwordShown, setPasswordShown] = useState(false);
@@ -11,21 +12,20 @@ const PasswordInput = (props: { inputId: string; title: string }) => {
     };
 
     return (
-        <div className="register-form-input-container">
-            <label className="register-form-container__label">{props.title}</label>
-            <input
+        <style.container>
+            <style.label>{props.title}</style.label>
+            <style.input
                 type={passwordShown ? 'text' : 'password'}
                 id={props.inputId}
-                className="register-form-container_input"
             />
-            <div className="register-form-icon-container" onClick={togglePassword}>
+            <style.iconContainer onClick={togglePassword}>
                 {passwordShown ? (
                     <PasswordShownIcon height="24px" width="24px"/>
                 ) : (
                     <PasswordHiddenIcon height="24px" width="24px" />
                 )}
-            </div>
-        </div>
+            </style.iconContainer>
+        </style.container>
     );
 };
 

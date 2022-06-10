@@ -30,35 +30,3 @@ code {
     height: 100%;
     margin: auto;
 }
-
-.container-header {
-    display: flex;
-    justify-content: center;
-    padding: 10px 0 10px 0;
-
-    border-bottom-style: solid;
-    border-bottom-color: #121212;
-    border-bottom-width: 5px;
-}
-
-.container-header__text {
-    width: 100px;
-    display: inline-block;
-    margin: auto 5px auto 0;
-    padding-top: 4px;
-
-    font-family: 'Gugi', serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-
-    color: #fafafa;
-}
-
-.see-more-container {
-    height: 50px;
-
-    border-top-style: solid;
-    border-top-color: #121212;
-    border-top-width: 5px;
-}
