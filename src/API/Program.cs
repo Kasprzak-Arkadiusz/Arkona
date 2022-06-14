@@ -32,6 +32,8 @@ var applicationSettings = new ApplicationSettings();
 configuration.Bind(nameof(ApplicationSettings), applicationSettings);
 builder.Services.AddApplication(applicationSettings);
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddGrpc(options =>
 {
     options.EnableMessageValidation();
@@ -77,7 +79,6 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseCors(policyName);

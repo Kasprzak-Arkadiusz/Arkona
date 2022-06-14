@@ -5,7 +5,7 @@ using Application.Common.Interfaces;
 using Domain.Enums;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Application.Utils;
+namespace Application.Services;
 
 public class SecurityTokenService : ISecurityTokenService
 {
@@ -22,7 +22,6 @@ public class SecurityTokenService : ISecurityTokenService
         { 
             new Claim(ClaimTypes.NameIdentifier, userId),
             new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.Name, email),
             new Claim("FirstName", firstName),
             new Claim("LastName", lastName),
             new Claim(ClaimTypes.Role, role.ToString())

@@ -1,4 +1,5 @@
 ﻿using Application.Users.Commands;
+using AutoMapper;
 using Grpc.Core;
 using MediatR;
 
@@ -7,18 +8,20 @@ namespace API.Services;
 public class UserService : User.UserBase
 {
     private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
 
-    public UserService(IMediator mediator)
+    public UserService(IMediator mediator, IMapper mapper)
     {
         _mediator = mediator;
+        _mapper = mapper;
     }
 
     public override async Task<RegisterResponse> Register(RegisterRequest request, ServerCallContext context)
     {
-        await _mediator.Send(new RegisterUserCommand(request.FirstName, request.LastName, request.Email,
+        var viewModel = await _mediator.Send(new RegisterUserCommand(request.FirstName, request.LastName, request.Email,
             request.Password));
 
-        return new RegisterResponse();
+        return _mapper.Map<RegisterResponse>(viewModel);
     }
 
     public override async Task<LoginResponse> Login(LoginRequest request, ServerCallContext context)

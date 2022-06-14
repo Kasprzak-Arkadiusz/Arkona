@@ -17,6 +17,12 @@ message RegisterRequest {
 }
 
 message RegisterResponse {
+   string accessToken = 1;
+   string id = 2;
+   string email = 3; 
+   string role = 4;
+   string firstName = 5; 
+   string lastName = 6;
 }
 
 message LoginRequest {

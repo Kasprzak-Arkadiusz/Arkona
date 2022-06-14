@@ -1,12 +1,13 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
+using Application.ViewModels;
 using Domain.Enums;
 using MediatR;
 
 namespace Application.Users.Commands;
 
-public class RegisterUserCommand : IRequest
+public class RegisterUserCommand : IRequest<AuthViewModel>
 {
     public string FirstName { get; }
     public string LastName { get; }
@@ -22,18 +23,21 @@ public class RegisterUserCommand : IRequest
     }
 }
 
-public class RegisterUseCommandHandler : IRequestHandler<RegisterUserCommand, Unit>
+public class RegisterUseCommandHandler : IRequestHandler<RegisterUserCommand, AuthViewModel>
 {
     private readonly IAuthenticationService _authenticationService;
+    private readonly ISecurityTokenService _securityTokenService;
     private readonly IEmailService _emailService;
 
-    public RegisterUseCommandHandler(IAuthenticationService authenticationService, IEmailService emailService)
+    public RegisterUseCommandHandler(IAuthenticationService authenticationService,
+        ISecurityTokenService securityTokenService, IEmailService emailService)
     {
         _authenticationService = authenticationService;
+        _securityTokenService = securityTokenService;
         _emailService = emailService;
     }
 
-    public async Task<Unit> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
+    public async Task<AuthViewModel> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
     {
         var userExists = await _authenticationService.CheckIfUserWithEmailExists(command.Email);
 
@@ -51,6 +55,17 @@ public class RegisterUseCommandHandler : IRequestHandler<RegisterUserCommand, Un
         await _emailService.SendConfirmationEmailAsync(new EmailAddress("Akasprzak016@gmail.com", user.GetFullName()),
             "test");
 
-        return Unit.Value;
+        var accessToken = _securityTokenService
+            .GenerateAccessTokenForUser(user.Id, user.Email, user.FirstName, user.LastName, Role.Client);
+
+        return new AuthViewModel
+        {
+            AccessToken = accessToken,
+            Email = user.Email,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Id = userId,
+            Role = Role.Client.ToString()
+        };
     }
 }
