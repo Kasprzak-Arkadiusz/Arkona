@@ -40,7 +40,8 @@ export const input = styled.input`
     margin: 0 auto 5px auto;
     border: 0;
     border-radius: 15px;
-    padding: 0 25px 0 15px;
+    padding: 0 25px 0 25px;
+    text-align: center;
 
     font-family: ${props => props.theme.Fonts.casual};
     font-style: normal;

@@ -33,13 +33,14 @@ export const label = styled.label`
 `
 
 export const input = styled.input`
-    width: 260px;
+    width: 240px;
     height: 30px;
     display: inherit;
     margin: 0 auto 5px 20px;
     border: 0;
     border-radius: 15px;
-    padding: 0 35px 0 15px;
+    padding: 0 35px 0 35px;
+    text-align: center;
 
     font-family: ${props => props.theme.Fonts.casual};
     font-style: normal;
