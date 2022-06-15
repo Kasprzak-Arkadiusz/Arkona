@@ -4,7 +4,12 @@ import { PasswordHiddenIcon } from './PasswordHiddenIcon';
 import { PasswordShownIcon } from './PasswordShownIcon';
 import * as style from  './styled'
 
-const PasswordInput = (props: { inputId: string; title: string }) => {
+interface IProps {
+    validationText?: string,
+    label: string
+}
+
+const PasswordInput = ({validationText,  label} : IProps) => {
     const [passwordShown, setPasswordShown] = useState(false);
 
     const togglePassword = () => {
@@ -13,10 +18,10 @@ const PasswordInput = (props: { inputId: string; title: string }) => {
 
     return (
         <style.container>
-            <style.label>{props.title}</style.label>
+            <style.validationText>{validationText}</style.validationText>
+            <style.label>{label}</style.label>
             <style.input
                 type={passwordShown ? 'text' : 'password'}
-                id={props.inputId}
             />
             <style.iconContainer onClick={togglePassword}>
                 {passwordShown ? (

@@ -8,6 +8,14 @@ import ExternalLogin from './ExternalLogin/ExternalLogin'
 import RegisterForm from './RegisterForm/RegisterForm'
 import * as register from './styled'
 
+const initialState = {
+    firstName: "",
+    lastName: "",
+    emailAddress: "",
+    password: "",
+    repeatPassword: "",
+};
+
 function Register() {
     return (
         <main className="display-container">

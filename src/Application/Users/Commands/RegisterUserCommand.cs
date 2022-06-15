@@ -50,10 +50,8 @@ public class RegisterUseCommandHandler : IRequestHandler<RegisterUserCommand, Au
             new RegisterParams(command.FirstName, command.LastName, command.Email, command.Password, Role.Client));
 
         var user = await _authenticationService.GetUserByIdAsync(userId);
-
-        // TODO After integration with FrontEnd change callback url
-        await _emailService.SendConfirmationEmailAsync(new EmailAddress("Akasprzak016@gmail.com", user.GetFullName()),
-            "test");
+        var token = await _authenticationService.GenerateEmailConfirmationTokenAsync(userId);
+        await _authenticationService.ConfirmUserEmail(userId, token);
 
         var accessToken = _securityTokenService
             .GenerateAccessTokenForUser(user.Id, user.Email, user.FirstName, user.LastName, Role.Client);

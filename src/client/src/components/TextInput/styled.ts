@@ -1,15 +1,14 @@
 ﻿import styled from "styled-components";
 
-export const Container = styled.form`
-    width: 360px;
-    margin: 10px auto auto auto;
-
-    font-family: ${props => props.theme.Fonts.casual};
-    font-style: normal;
-    font-weight: 400;
+export const container = styled.div`
+    height: auto;
+    width:320px;
+    margin:auto;
+    text-align:center;
+    display:inline-block;
 `
 
-export const ValidationText = styled.span`
+export const validationText = styled.span`
     display: block;
     margin: auto;
     padding: 5px 10px 5px 10px;
@@ -21,7 +20,7 @@ export const ValidationText = styled.span`
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 `
 
-export const Label = styled.label`
+export const label = styled.label`
     height: 20px;
     display: block;
     margin-top: 5px;
@@ -33,7 +32,8 @@ export const Label = styled.label`
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 `
 
-export const Input = styled.input`
+
+export const input = styled.input`
     width: calc(100% - 60px);
     height: 30px;
     display: inherit;
@@ -51,27 +51,6 @@ export const Input = styled.input`
 
     color: ${props => props.theme.Palette.textMain};
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.75);
-    background: ${props => props.theme.Palette.gray};
+    background: #c4c4c4;
     box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.5);
-`
-
-export const Button = styled.button`
-    width: calc(100% / 3);
-    height: 30px;
-    border-radius: 15px;
-    border: 0;
-    margin: 20px auto 10px auto;
-
-    font-family: ${props => props.theme.Fonts.casual};
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    text-decoration: none;
-    display: inline-block;
-
-    color: ${props => props.theme.Palette.textMain};
-    background-color: ${props => props.theme.Palette.gray};
-    mix-blend-mode: normal;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.85);
 `

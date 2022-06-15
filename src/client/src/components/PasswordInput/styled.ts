@@ -1,7 +1,23 @@
 ﻿import styled from "styled-components";
 
 export const container = styled.div`
-    height: 50px;
+    height: auto;
+    width: 320px;
+    margin:auto;
+    text-align:center;
+    display:inline;
+`
+
+export const validationText = styled.span`
+    display: block;
+    margin: auto;
+    padding: 5px 10px 5px 10px;
+
+    font-size: 13px;
+    line-height: 14px;
+
+    color: ${props => props.theme.Palette.warning};
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 `
 
 export const label = styled.label`
@@ -17,13 +33,13 @@ export const label = styled.label`
 `
 
 export const input = styled.input`
-    width: calc(100% - 60px);
+    width: 260px;
     height: 30px;
     display: inherit;
-    margin: 0 auto 5px auto;
+    margin: 0 auto 5px 20px;
     border: 0;
     border-radius: 15px;
-    padding: 0 25px 0 15px;
+    padding: 0 35px 0 15px;
 
     font-family: ${props => props.theme.Fonts.casual};
     font-style: normal;
@@ -40,8 +56,8 @@ export const input = styled.input`
 
 export const iconContainer = styled.div`
     display: inline-block;
-    top: -32px;
     position: relative;
-    transform: translateX(140px);
     cursor: pointer;
+    top: 7px;
+    transform: translateX(-30px)
 `
