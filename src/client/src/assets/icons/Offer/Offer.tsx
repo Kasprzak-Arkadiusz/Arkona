@@ -8,7 +8,7 @@ export const OfferIcon: SvgIcon = ({width = '40px', height = '20px'}): JSX.Eleme
             <svg
                 width={width}
                 height={height}
-                viewBox={`0 0 ${width} ${height}`}
+                viewBox="0 0 40 20"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <g clipPath="url(#clip0_20_60)">

@@ -29,9 +29,9 @@ const PasswordInput = ({validationText,  label, name, handleChange} : IProps) =>
             />
             <style.iconContainer onClick={togglePassword}>
                 {passwordShown ? (
-                    <PasswordShownIcon height="24px" width="24px"/>
+                    <PasswordShownIcon/>
                 ) : (
-                    <PasswordHiddenIcon height="24px" width="24px" />
+                    <PasswordHiddenIcon/>
                 )}
             </style.iconContainer>
         </style.container>

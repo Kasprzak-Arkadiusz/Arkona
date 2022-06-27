@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Additional configuration is required to successfully run gRPC on macOS.
 // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
-
+//
 builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
     loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
 
@@ -39,6 +39,7 @@ builder.Services.AddGrpc(options =>
     options.EnableMessageValidation();
     options.Interceptors.Add<ErrorHandlingInterceptor>();
 });
+builder.Services.AddGrpcReflection();
 builder.Services.AddGrpcFluentValidation();
 
 const string policyName = "MyPolicy";
@@ -46,7 +47,7 @@ builder.Services.AddCors(o =>
 {
     o.AddPolicy(policyName, config =>
     {
-        config.AllowAnyOrigin();
+        config.WithOrigins("https://localhost:7146", "http://localhost:5146", "http://localhost:7147");
         config.AllowAnyMethod();
         config.AllowAnyHeader();
         config.WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
@@ -91,6 +92,11 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapGrpcService<UserService>().RequireCors(policyName);
 });
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapGrpcReflectionService();
+}
 
 if (infrastructureSettings.SeedWithCustomData)
 {

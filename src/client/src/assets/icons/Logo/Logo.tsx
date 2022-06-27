@@ -5,7 +5,12 @@ import SvgIcon from "../Interfaces";
 export const Logo: SvgIcon = ({width = '48px', height = '48px'}): JSX.Element => {
     return (
         <LogoContainer>
-            <svg width={width} height={height} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg 
+                width={width}
+                 height={height} 
+                 viewBox="0 0 48 48"
+                 fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
                 <g filter="url(#filter0_i_17_8)">
                     <circle cx="24" cy="24" r="24" fill="#1E1E25"/>
                 </g>
