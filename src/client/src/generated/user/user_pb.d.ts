@@ -36,6 +36,24 @@ export namespace RegisterRequest {
 }
 
 export class RegisterResponse extends jspb.Message {
+  getAccesstoken(): string;
+  setAccesstoken(value: string): void;
+
+  getId(): string;
+  setId(value: string): void;
+
+  getEmail(): string;
+  setEmail(value: string): void;
+
+  getRole(): string;
+  setRole(value: string): void;
+
+  getFirstname(): string;
+  setFirstname(value: string): void;
+
+  getLastname(): string;
+  setLastname(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): RegisterResponse.AsObject;
   static toObject(includeInstance: boolean, msg: RegisterResponse): RegisterResponse.AsObject;
@@ -48,6 +66,12 @@ export class RegisterResponse extends jspb.Message {
 
 export namespace RegisterResponse {
   export type AsObject = {
+    accesstoken: string,
+    id: string,
+    email: string,
+    role: string,
+    firstname: string,
+    lastname: string,
   }
 }
 

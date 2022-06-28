@@ -1,26 +1,36 @@
-﻿import React from 'react';
-import { useState } from 'react';
-import { PasswordHiddenIcon } from './PasswordHiddenIcon';
-import { PasswordShownIcon } from './PasswordShownIcon';
-import * as style from  './styled'
+﻿import React, {ReactElement} from 'react';
+import {useState} from 'react';
+import {PasswordHiddenIcon} from './PasswordHiddenIcon';
+import {PasswordShownIcon} from './PasswordShownIcon';
+import * as style from './styled'
 
 interface IProps {
-    validationText?: string,
+    validationText: string[],
     label: string
     name: string,
     handleChange: (ev: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const PasswordInput = ({validationText,  label, name, handleChange} : IProps) => {
+const PasswordInput = ({validationText, label, name, handleChange}: IProps) => {
     const [passwordShown, setPasswordShown] = useState(false);
 
     const togglePassword = () => {
         setPasswordShown(!passwordShown);
     };
 
+    const renderValidationText = () => {
+        if (validationText.length) {
+            return <style.validationText>
+                {validationText.map((item: string, index: number): ReactElement => {
+                    return <li key={`${item}-${index}`}>{item}</li>
+                })}
+            </style.validationText>;
+        }
+    }
+    
     return (
         <style.container>
-            <style.validationText>{validationText}</style.validationText>
+            {renderValidationText()}
             <style.label>{label}</style.label>
             <style.input
                 name={name}

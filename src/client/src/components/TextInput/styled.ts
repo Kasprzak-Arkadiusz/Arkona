@@ -8,7 +8,7 @@ export const container = styled.div`
     display:inline-block;
 `
 
-export const validationText = styled.span`
+export const validationText = styled.ul`
     display: block;
     margin: auto;
     padding: 5px 10px 5px 10px;
@@ -18,6 +18,8 @@ export const validationText = styled.span`
 
     color: ${props => props.theme.Palette.warning};
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    
+    list-style: none;
 `
 
 export const label = styled.label`

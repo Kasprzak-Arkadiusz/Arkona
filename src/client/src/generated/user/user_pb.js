@@ -355,7 +355,12 @@ proto.user.RegisterResponse.prototype.toObject = function(opt_includeInstance) {
  */
 proto.user.RegisterResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-
+    accesstoken: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    id: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    email: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    role: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    firstname: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    lastname: jspb.Message.getFieldWithDefault(msg, 6, "")
   };
 
   if (includeInstance) {
@@ -392,6 +397,30 @@ proto.user.RegisterResponse.deserializeBinaryFromReader = function(msg, reader) 
     }
     var field = reader.getFieldNumber();
     switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAccesstoken(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setId(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setEmail(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRole(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setFirstname(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setLastname(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -421,6 +450,156 @@ proto.user.RegisterResponse.prototype.serializeBinary = function() {
  */
 proto.user.RegisterResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
+  f = message.getAccesstoken();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getId();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getEmail();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getRole();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getFirstname();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getLastname();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string accessToken = 1;
+ * @return {string}
+ */
+proto.user.RegisterResponse.prototype.getAccesstoken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.user.RegisterResponse} returns this
+ */
+proto.user.RegisterResponse.prototype.setAccesstoken = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string id = 2;
+ * @return {string}
+ */
+proto.user.RegisterResponse.prototype.getId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.user.RegisterResponse} returns this
+ */
+proto.user.RegisterResponse.prototype.setId = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string email = 3;
+ * @return {string}
+ */
+proto.user.RegisterResponse.prototype.getEmail = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.user.RegisterResponse} returns this
+ */
+proto.user.RegisterResponse.prototype.setEmail = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string role = 4;
+ * @return {string}
+ */
+proto.user.RegisterResponse.prototype.getRole = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.user.RegisterResponse} returns this
+ */
+proto.user.RegisterResponse.prototype.setRole = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string firstName = 5;
+ * @return {string}
+ */
+proto.user.RegisterResponse.prototype.getFirstname = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.user.RegisterResponse} returns this
+ */
+proto.user.RegisterResponse.prototype.setFirstname = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional string lastName = 6;
+ * @return {string}
+ */
+proto.user.RegisterResponse.prototype.getLastname = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.user.RegisterResponse} returns this
+ */
+proto.user.RegisterResponse.prototype.setLastname = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
 };
 
 

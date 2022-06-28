@@ -2,13 +2,12 @@
 import * as form from "./styled";
 import PasswordInput from "components/PasswordInput/PasswordInput";
 import TextInput from 'components/TextInput/TextInput'
-import {UserClient} from "generated/user/user_pb_service";
-import {RegisterRequest} from "generated/user/user_pb"
 import _ from "lodash";
-import {capitalize} from "utils/stringUtils"
+import {capitalize, Dictionary, toDictionary} from "utils/stringUtils"
 import {usePrevious} from "hooks/usePrevious"
+import useAuth from "hooks/useAuth/useAuth";
 
-interface IForm {
+export interface IForm {
     firstname: string,
     lastname: string,
     email: string,
@@ -32,20 +31,9 @@ const inputLabels: { [key: string]: string } = {
     repeatPassword: "potwierdź hasło"
 }
 
-function MapToRegisterRequest(formData: IForm): RegisterRequest {
-    const request = new RegisterRequest();
-
-    request.setFirstname(formData.firstname);
-    request.setLastname(formData.lastname);
-    request.setEmail(formData.email);
-    request.setPassword(formData.password);
-
-    return request;
-}
-
-function GetChangedProperty(current: IForm, previous: IForm): string {
+function GetChangedProperty(current: IForm, previous: IForm): string | null {
     if (previous === undefined) {
-        return "";
+        return null;
     }
 
     for (let key in current) {
@@ -54,13 +42,23 @@ function GetChangedProperty(current: IForm, previous: IForm): string {
         }
     }
 
-    return "";
+    return null;
 }
 
 function RegisterForm() {
     const [formData, setFormData] = useState(initialFormState);
-    const [error, setError] = useState(initialFormState);
+    const [clientErrors, setClientError] = useState(initialFormState);
+    const [errors, setError] = useState(() => {
+        let dictionary = new Dictionary<string[]>();
+        dictionary.values["firstname"] = [];
+        dictionary.values["lastname"] = [];
+        dictionary.values["email"] = [];
+        dictionary.values["password"] = [];
+
+        return dictionary;
+    });
     let prevFormData = usePrevious(formData);
+    const auth = useAuth();
 
     const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
         setFormData({...formData, [e.currentTarget.name]: e.currentTarget.value});
@@ -75,42 +73,68 @@ function RegisterForm() {
 
         if (changedProperty !== "password" && changedProperty !== "repeatPassword") {
             if (formData[changedProperty as keyof IForm] === "") {
-                setError({...error, [changedProperty]: `Pole ${inputLabels[changedProperty]} jest wymagane`})
+                setClientError({
+                    ...clientErrors,
+                    [changedProperty]: `Pole ${inputLabels[changedProperty]} jest wymagane`
+                })
             } else {
-                setError({...error, [changedProperty]: ""})
+                setClientError({...clientErrors, [changedProperty]: ""})
             }
             return;
         }
 
         if (formData.password === formData.repeatPassword) {
             if (formData.password === "") {
-                setError({
-                    ...error,
+                setClientError({
+                    ...clientErrors,
                     password: `Pole ${inputLabels["password"]} jest wymagane`,
                     repeatPassword: `Pole ${inputLabels["repeatPassword"]} jest wymagane`
                 });
             } else {
-                setError({...error, password: "", repeatPassword: ""});
+                setClientError({...clientErrors, password: "", repeatPassword: ""});
             }
         } else {
             let passwordErrorMessage = "Hasła są różne";
-            setError({...error, password: passwordErrorMessage, repeatPassword: passwordErrorMessage});
+            setClientError({...clientErrors, password: passwordErrorMessage, repeatPassword: passwordErrorMessage});
         }
 
     }, [formData]);
 
+    const cleanLabels = () => {
+        for (let key in errors.values) {
+            if (errors.values[key].length !== 0) {
+                errors.values[key] = [];
+            }
+        }
+    };
+
     const handleSubmitButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        if (!_.isEqual(error, initialFormState)) {
+        if (!_.isEqual(clientErrors, initialFormState)) {
             return;
         }
 
-        const userClient = new UserClient(process.env.REACT_APP_SERVER_URL!);
-        const request = MapToRegisterRequest(formData);
-
-        userClient.register(request, (error, responseMessage) => {
+        // Clean validation labels
+        cleanLabels();
+        console.log(errors);
+        
+        auth.signUp(formData, (error, responseMessage) => {
+            if (error !== null) {
+                const errorDictionary = toDictionary(error.message)
+                for (let key in errorDictionary.values) {
+                    errorDictionary.values[key].forEach((item) => {
+                        setError(() => {
+                            errors.values[key].push(item);
+                            return errors;
+                        });
+                    });
+                }
+            }
         });
+        
+        console.log(clientErrors);
+        console.log(errors);
     }
 
     return (
@@ -118,23 +142,31 @@ function RegisterForm() {
             <TextInput label={`${capitalize(inputLabels["firstname"])}:`}
                        name={"firstname"}
                        handleChange={handleChange}
-                       validationText={error.firstname}/>
+                       validationText={clientErrors.firstname.length !== 0 
+                           ? [clientErrors.firstname] 
+                           : errors.values["firstname"]}/>
             <TextInput label={`${capitalize(inputLabels["lastname"])}:`}
                        name={"lastname"}
                        handleChange={handleChange}
-                       validationText={error.lastname}/>
+                       validationText={clientErrors.lastname.length !== 0
+                           ? [clientErrors.lastname]
+                           : errors.values["lastname"]}/>
             <TextInput label={`${capitalize(inputLabels["email"])}:`}
                        name={"email"}
                        handleChange={handleChange}
-                       validationText={error.email}/>
+                       validationText={clientErrors.email.length !== 0
+                           ? [clientErrors.email]
+                           : errors.values["email"]}/>
             <PasswordInput label={`${capitalize(inputLabels["password"])}:`}
                            name={"password"}
                            handleChange={handleChange}
-                           validationText={error.password}/>
+                           validationText={clientErrors.password.length !== 0
+                               ? [clientErrors.password]
+                               : errors.values["password"]}/>
             <PasswordInput label={`${capitalize(inputLabels["repeatPassword"])}:`}
                            name={"repeatPassword"}
                            handleChange={handleChange}
-                           validationText={error.repeatPassword}/>
+                           validationText={[clientErrors.repeatPassword]}/>
             <form.Button type="submit" onClick={handleSubmitButtonClick}>
                 Utwórz konto
             </form.Button>

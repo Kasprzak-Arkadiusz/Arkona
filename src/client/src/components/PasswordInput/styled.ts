@@ -8,13 +8,15 @@ export const container = styled.div`
     display:inline;
 `
 
-export const validationText = styled.span`
+export const validationText = styled.ul`
     display: block;
     margin: auto;
     padding: 5px 10px 5px 10px;
 
     font-size: 13px;
     line-height: 14px;
+    
+    list-style-type: none;
 
     color: ${props => props.theme.Palette.warning};
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);

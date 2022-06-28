@@ -1,0 +1,77 @@
+﻿import React, {useState} from "react";
+import AuthContext from "./AuthContext";
+import {ServiceError, UserClient} from "generated/user/user_pb_service";
+import {LoginRequest, LoginResponse, RegisterRequest, RegisterResponse} from "generated/user/user_pb";
+import {getStorageItem, setStorageItem} from "utils/storage";
+import {IForm} from "features/register/RegisterForm/RegisterForm"
+import * as user_pb from "generated/user/user_pb";
+
+const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
+    const [authData, setAuthData] = useState(getStorageItem("authData"));
+    const userClient = new UserClient(process.env.REACT_APP_SERVER_URL!);
+
+    function MapToRegisterRequest(formData: IForm): RegisterRequest {
+        const request = new RegisterRequest();
+
+        request.setFirstname(formData.firstname);
+        request.setLastname(formData.lastname);
+        request.setEmail(formData.email);
+        request.setPassword(formData.password);
+
+        return request;
+    }
+
+    const handleSignUpResponse = (response: RegisterResponse) => {
+        response.setRole(response.getRole().toLowerCase());
+        setStorageItem("authData", response);
+        setAuthData(getStorageItem("authData"));
+
+        return response;
+    };
+
+    const signUp = (formData: IForm, callback: (error: ServiceError | null, responseMessage: user_pb.RegisterResponse | null) => void) => {
+        const request = MapToRegisterRequest(formData);
+        userClient.register(request, callback);
+    };
+
+    function MapToLoginRequest(formData: IForm): LoginRequest {
+        const request = new LoginRequest();
+
+        request.setEmail(formData.email);
+        request.setPassword(formData.password);
+
+        return request;
+    }
+
+    const handleSignInResponse = (response: LoginResponse) => {
+        setStorageItem("authData", response);
+        setAuthData(getStorageItem("authData"));
+
+        return response;
+    };
+
+    const signIn = (formData: IForm): string | null => {
+        const request = MapToLoginRequest(formData);
+
+        userClient.login(request, (error, responseMessage) => {
+            if (error?.message !== null) {
+                return error?.message;
+            }
+
+            if (responseMessage !== null) {
+                handleSignInResponse(responseMessage);
+            }
+        });
+
+        return null;
+    };
+
+    const signOut = () => {
+        setAuthData(null);
+        setStorageItem("authData", null);
+    };
+
+    return <AuthContext.Provider value={{authData, signUp, signIn, signOut}}>{children}</AuthContext.Provider>;
+};
+
+export default AuthProvider;
