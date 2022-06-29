@@ -1,41 +1,34 @@
-﻿import React, {ReactElement} from 'react';
+﻿import React from 'react';
 import {useState} from 'react';
 import {PasswordHiddenIcon} from './PasswordHiddenIcon';
 import {PasswordShownIcon} from './PasswordShownIcon';
 import * as style from './styled'
+import {Path, UseFormRegister, Validate} from "react-hook-form";
+import {Inputs} from "features/register/RegisterForm/RegisterForm";
 
-interface IProps {
-    validationText: string[],
-    label: string
-    name: string,
-    handleChange: (ev: React.ChangeEvent<HTMLInputElement>) => void
-}
+type InputProps = {
+    label: string,
+    customName: Path<Inputs>;
+    onChange: (e: React.FormEvent<HTMLInputElement>) => void;
+    register: UseFormRegister<Inputs>;
+    requiredResponse: string;
+    validateFunction: Validate<string>;
+};
 
-const PasswordInput = ({validationText, label, name, handleChange}: IProps) => {
+const PasswordInput = React.forwardRef(({label, customName, onChange, register, requiredResponse, validateFunction}: InputProps, ref) => {
     const [passwordShown, setPasswordShown] = useState(false);
 
     const togglePassword = () => {
         setPasswordShown(!passwordShown);
     };
-
-    const renderValidationText = () => {
-        if (validationText.length) {
-            return <style.validationText>
-                {validationText.map((item: string, index: number): ReactElement => {
-                    return <li key={`${item}-${index}`}>{item}</li>
-                })}
-            </style.validationText>;
-        }
-    }
     
     return (
         <style.container>
-            {renderValidationText()}
             <style.label>{label}</style.label>
             <style.input
-                name={name}
+                {...register(customName, {required: requiredResponse, validate: validateFunction})}
                 type={passwordShown ? 'text' : 'password'}
-                onChange={handleChange}
+                onChange={onChange}
             />
             <style.iconContainer onClick={togglePassword}>
                 {passwordShown ? (
@@ -46,6 +39,6 @@ const PasswordInput = ({validationText, label, name, handleChange}: IProps) => {
             </style.iconContainer>
         </style.container>
     );
-};
+});
 
 export default PasswordInput;

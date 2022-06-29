@@ -1,27 +1,10 @@
-﻿import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import * as form from "./styled";
 import PasswordInput from "components/PasswordInput/PasswordInput";
 import TextInput from 'components/TextInput/TextInput'
-import _ from "lodash";
 import {capitalize, Dictionary, toDictionary} from "utils/stringUtils"
-import {usePrevious} from "hooks/usePrevious"
 import useAuth from "hooks/useAuth/useAuth";
-
-export interface IForm {
-    firstname: string,
-    lastname: string,
-    email: string,
-    password: string,
-    repeatPassword: string,
-}
-
-const initialFormState: IForm = {
-    firstname: "",
-    lastname: "",
-    email: "",
-    password: "",
-    repeatPassword: "",
-};
+import {useForm, SubmitHandler} from "react-hook-form";
 
 const inputLabels: { [key: string]: string } = {
     firstname: "imię",
@@ -31,24 +14,16 @@ const inputLabels: { [key: string]: string } = {
     repeatPassword: "potwierdź hasło"
 }
 
-function GetChangedProperty(current: IForm, previous: IForm): string | null {
-    if (previous === undefined) {
-        return null;
-    }
-
-    for (let key in current) {
-        if (current[key as keyof IForm] !== previous[key as keyof IForm]) {
-            return key;
-        }
-    }
-
-    return null;
-}
+export type Inputs = {
+    firstname: string,
+    lastname: string,
+    email: string,
+    password: string,
+    repeatPassword: string
+};
 
 function RegisterForm() {
-    const [formData, setFormData] = useState(initialFormState);
-    const [clientErrors, setClientError] = useState(initialFormState);
-    const [errors, setError] = useState(() => {
+    const [serverErrors, setServerError] = useState(() => {
         let dictionary = new Dictionary<string[]>();
         dictionary.values["firstname"] = [];
         dictionary.values["lastname"] = [];
@@ -57,119 +32,107 @@ function RegisterForm() {
 
         return dictionary;
     });
-    let prevFormData = usePrevious(formData);
+
     const auth = useAuth();
-
-    const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-        setFormData({...formData, [e.currentTarget.name]: e.currentTarget.value});
+    const {register, setError, clearErrors, getValues, handleSubmit, watch, formState: {errors}} = useForm<Inputs>({mode: 'onSubmit'});
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        console.log(data);
+        // auth.signUp(data, (error, responseMessage) => {
+        //     if (error !== null) {
+        //         const errorDictionary = toDictionary(error.message)
+        //         for (let key in errorDictionary.values) {
+        //             console.log(key);
+        //             console.log(errorDictionary);
+        //             errorDictionary.values[key].forEach((item) => {
+        //                 console.log(item);
+        //                 serverErrors.values[key].push(item);
+        //                 console.log(serverErrors);
+        //             });
+        //         }
+        //         console.log(serverErrors);
+        //     }
+        // });
     };
+    
+    const handlePasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
+        clearErrors(["password", "repeatPassword"]);
 
-    useEffect(() => {
-        const changedProperty = GetChangedProperty(formData, prevFormData as IForm);
-
-        if (changedProperty === null) {
-            return;
-        }
-
-        if (changedProperty !== "password" && changedProperty !== "repeatPassword") {
-            if (formData[changedProperty as keyof IForm] === "") {
-                setClientError({
-                    ...clientErrors,
-                    [changedProperty]: `Pole ${inputLabels[changedProperty]} jest wymagane`
-                })
-            } else {
-                setClientError({...clientErrors, [changedProperty]: ""})
-            }
-            return;
-        }
-
-        if (formData.password === formData.repeatPassword) {
-            if (formData.password === "") {
-                setClientError({
-                    ...clientErrors,
-                    password: `Pole ${inputLabels["password"]} jest wymagane`,
-                    repeatPassword: `Pole ${inputLabels["repeatPassword"]} jest wymagane`
-                });
-            } else {
-                setClientError({...clientErrors, password: "", repeatPassword: ""});
-            }
+        const passwordFieldValue = e.currentTarget.value;
+        const repeatPasswordFieldValue = watch("repeatPassword");
+        
+        if (passwordFieldValue !== repeatPasswordFieldValue) {
+            setError("password", {type: "validate", message: "Hasła są różne"});
+            setError("repeatPassword", {type: "validate", message: "Hasła są różne"});
         } else {
-            let passwordErrorMessage = "Hasła są różne";
-            setClientError({...clientErrors, password: passwordErrorMessage, repeatPassword: passwordErrorMessage});
+            clearErrors(["password", "repeatPassword"]);
         }
-
-    }, [formData]);
-
-    const cleanLabels = () => {
-        for (let key in errors.values) {
-            if (errors.values[key].length !== 0) {
-                errors.values[key] = [];
-            }
-        }
-    };
-
-    const handleSubmitButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-
-        if (!_.isEqual(clientErrors, initialFormState)) {
-            return;
-        }
-
-        // Clean validation labels
-        cleanLabels();
-        console.log(errors);
-        
-        auth.signUp(formData, (error, responseMessage) => {
-            if (error !== null) {
-                const errorDictionary = toDictionary(error.message)
-                for (let key in errorDictionary.values) {
-                    errorDictionary.values[key].forEach((item) => {
-                        setError(() => {
-                            errors.values[key].push(item);
-                            return errors;
-                        });
-                    });
-                }
-            }
-        });
-        
-        console.log(clientErrors);
-        console.log(errors);
     }
 
+    const validatePassword = (password: string): string => {
+        if (password == watch("repeatPassword")) {
+            return "Hasła są różne";
+        }
+
+        return "";
+    }
+
+    const validateRepeatPassword = (repeatPassword: string): string => {
+        if (repeatPassword !== watch("password")) {
+            return "Hasła są różne";
+        }
+
+        return "";
+    }
+    
+    const handleRepeatPasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
+        clearErrors(["password", "repeatPassword"]);
+
+        const repeatPasswordFieldValue = e.currentTarget.value;
+        const passwordFieldValue = watch("password");
+
+        if (passwordFieldValue !== repeatPasswordFieldValue) {
+            setError("password", {type: "validate", message: "Hasła są różne"});
+            setError("repeatPassword", {type: "validate", message: "Hasła są różne"});
+        } else {
+            clearErrors(["password", "repeatPassword"]);
+        }
+    };
+    
     return (
-        <form.Container>
+        <form.Container onSubmit={handleSubmit(onSubmit)}>
+            {errors.firstname &&
+                <form.validationText>{`Pole ${inputLabels["firstname"]} jest wymagane`}</form.validationText>}
             <TextInput label={`${capitalize(inputLabels["firstname"])}:`}
-                       name={"firstname"}
-                       handleChange={handleChange}
-                       validationText={clientErrors.firstname.length !== 0 
-                           ? [clientErrors.firstname] 
-                           : errors.values["firstname"]}/>
+                       customName="firstname"
+                       register={register} required={true}/>
+            {errors.lastname &&
+                <form.validationText>{`Pole ${inputLabels["lastname"]} jest wymagane`}</form.validationText>}
             <TextInput label={`${capitalize(inputLabels["lastname"])}:`}
-                       name={"lastname"}
-                       handleChange={handleChange}
-                       validationText={clientErrors.lastname.length !== 0
-                           ? [clientErrors.lastname]
-                           : errors.values["lastname"]}/>
+                       customName="lastname"
+                       register={register} required/>
+            {errors.email &&
+                <form.validationText>{`Pole ${inputLabels["email"]} jest wymagane`}</form.validationText>}
             <TextInput label={`${capitalize(inputLabels["email"])}:`}
-                       name={"email"}
-                       handleChange={handleChange}
-                       validationText={clientErrors.email.length !== 0
-                           ? [clientErrors.email]
-                           : errors.values["email"]}/>
+                       customName="email"
+                       register={register} required/>
+            {errors.password && errors.password.type !== "custom" &&
+                <form.validationText>{errors.password.message}</form.validationText>}
             <PasswordInput label={`${capitalize(inputLabels["password"])}:`}
-                           name={"password"}
-                           handleChange={handleChange}
-                           validationText={clientErrors.password.length !== 0
-                               ? [clientErrors.password]
-                               : errors.values["password"]}/>
+                           customName="password"
+                           onChange={handlePasswordChange}
+                           register={register}
+                           requiredResponse={`Pole ${inputLabels["password"]} jest wymagane`}
+                           validateFunction={value => value === getValues("repeatPassword") || 'Hasła są różne' }/>
+            {errors.repeatPassword && errors.repeatPassword.type !== "custom" &&
+                <form.validationText>{errors.repeatPassword.message}</form.validationText>}
             <PasswordInput label={`${capitalize(inputLabels["repeatPassword"])}:`}
-                           name={"repeatPassword"}
-                           handleChange={handleChange}
-                           validationText={[clientErrors.repeatPassword]}/>
-            <form.Button type="submit" onClick={handleSubmitButtonClick}>
-                Utwórz konto
-            </form.Button>
+                           customName="repeatPassword"
+                           onChange={handleRepeatPasswordChange}
+                           register={register}
+                           requiredResponse={`Pole ${inputLabels["repeatPassword"]} jest wymagane`}
+                           validateFunction={value => value === getValues("password") || 'Hasła są różne' }/>
+            <form.SubmitButton type="submit" value={"Utwórz konto"}>
+            </form.SubmitButton>
         </form.Container>
     )
 }

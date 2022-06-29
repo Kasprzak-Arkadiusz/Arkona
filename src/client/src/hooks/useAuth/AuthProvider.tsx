@@ -3,14 +3,14 @@ import AuthContext from "./AuthContext";
 import {ServiceError, UserClient} from "generated/user/user_pb_service";
 import {LoginRequest, LoginResponse, RegisterRequest, RegisterResponse} from "generated/user/user_pb";
 import {getStorageItem, setStorageItem} from "utils/storage";
-import {IForm} from "features/register/RegisterForm/RegisterForm"
+import {Inputs} from "features/register/RegisterForm/RegisterForm"
 import * as user_pb from "generated/user/user_pb";
 
 const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
     const [authData, setAuthData] = useState(getStorageItem("authData"));
     const userClient = new UserClient(process.env.REACT_APP_SERVER_URL!);
 
-    function MapToRegisterRequest(formData: IForm): RegisterRequest {
+    function MapToRegisterRequest(formData: Inputs): RegisterRequest {
         const request = new RegisterRequest();
 
         request.setFirstname(formData.firstname);
@@ -29,12 +29,12 @@ const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
         return response;
     };
 
-    const signUp = (formData: IForm, callback: (error: ServiceError | null, responseMessage: user_pb.RegisterResponse | null) => void) => {
+    const signUp = (formData: Inputs, callback: (error: ServiceError | null, responseMessage: user_pb.RegisterResponse | null) => void) => {
         const request = MapToRegisterRequest(formData);
         userClient.register(request, callback);
     };
 
-    function MapToLoginRequest(formData: IForm): LoginRequest {
+    function MapToLoginRequest(formData: Inputs): LoginRequest {
         const request = new LoginRequest();
 
         request.setEmail(formData.email);
@@ -50,7 +50,7 @@ const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
         return response;
     };
 
-    const signIn = (formData: IForm): string | null => {
+    const signIn = (formData: Inputs): string | null => {
         const request = MapToLoginRequest(formData);
 
         userClient.login(request, (error, responseMessage) => {

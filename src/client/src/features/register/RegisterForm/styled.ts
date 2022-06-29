@@ -55,7 +55,7 @@ export const Input = styled.input`
     box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.5);
 `
 
-export const Button = styled.button`
+export const SubmitButton = styled.input`
     width: calc(100% / 3);
     height: 30px;
     border-radius: 15px;
@@ -74,4 +74,20 @@ export const Button = styled.button`
     background-color: ${props => props.theme.Palette.gray};
     mix-blend-mode: normal;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.85);
+    
+    cursor: pointer;
+`
+
+export const validationText = styled.ul`
+    display: block;
+    margin: auto;
+    padding: 5px 10px 5px 10px;
+
+    font-size: 13px;
+    line-height: 14px;
+
+    color: ${props => props.theme.Palette.warning};
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    
+    list-style: none;
 `
