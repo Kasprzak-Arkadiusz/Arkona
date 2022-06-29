@@ -1,20 +1,20 @@
 ﻿import React from 'react';
 import * as style from "./styled"
-import { Path, UseFormRegister} from "react-hook-form";
+import {Path, UseFormRegister, Validate} from "react-hook-form";
 import {Inputs} from "features/register/RegisterForm/RegisterForm"
 
 type InputProps = {
     label: string,
     customName: Path<Inputs>;
     register: UseFormRegister<Inputs>;
-    required: boolean;
+    requiredResponse: string;
 };
 
-const TextInput = React.forwardRef(({label, customName, register, required}: InputProps, ref) => {
+const TextInput = React.forwardRef(({label, customName, register, requiredResponse}: InputProps, ref) => {
     return (
         <style.container>
             <style.label>{label}</style.label>
-            <style.input {...register(customName, {required})} type="text"></style.input>
+            <style.input {...register(customName, {required: requiredResponse})} type="text"></style.input>
         </style.container>
     )
 });
