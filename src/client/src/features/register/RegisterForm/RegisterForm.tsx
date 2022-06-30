@@ -30,30 +30,32 @@ function RegisterForm() {
         clearErrors,
         getValues,
         handleSubmit,
-        watch,
         formState: {errors}
-    } = useForm<Inputs>({mode: 'onSubmit', criteriaMode: "all"});
-
+    } = useForm<Inputs>({mode: "all", criteriaMode: "all"});
+    const differentPasswordsErrorMessage = "Hasła są różne";
+    
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         auth.signUp(data, (error, responseMessage) => {
-            if (error !== null) {
+            if (error !== null && error.code === 3) {
+                console.log(error);
                 const errorDictionary = toDictionary(error.message)
                 for (let key in errorDictionary.values) {
                     let errorArray: string[] = [];
                     errorDictionary.values[key].forEach((item) => {
                         errorArray.push(item);
                     });
-                    setErrorByString(key, errorArray);
+                    setValidationError(key, errorArray);
                 }
             }
+            console.log(responseMessage);
         });
     };
 
-    const setErrorByString = (text: string, errorMessage: string[]) => {
+    const setValidationError = (text: string, errorMessage: string[]) => {
         let errors: MultipleFieldErrors | undefined = {
             validate: errorMessage
         }
-        
+
         switch (text) {
             case "firstname":
                 setError("firstname", {types: errors});
@@ -73,61 +75,54 @@ function RegisterForm() {
         }
     }
 
-    const handlePasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
-        clearErrors(["password", "repeatPassword"]);
-
-        const passwordFieldValue = e.currentTarget.value;
-        const repeatPasswordFieldValue = watch("repeatPassword");
-
+    const setPasswordsError = (passwordFieldValue: string, repeatPasswordFieldValue:string) => {
         if (passwordFieldValue !== repeatPasswordFieldValue) {
-            setError("password", {type: "validate", message: "Hasła są różne"});
-            setError("repeatPassword", {type: "validate", message: "Hasła są różne"});
+            setError("password", {type: "validate", message: differentPasswordsErrorMessage});
+            setError("repeatPassword", {type: "validate", message: differentPasswordsErrorMessage});
         } else {
             clearErrors(["password", "repeatPassword"]);
         }
+    }
+
+    const handlePasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
+        const passwordFieldValue = e.currentTarget.value;
+        const repeatPasswordFieldValue = getValues("repeatPassword");
+
+        setPasswordsError(passwordFieldValue, repeatPasswordFieldValue);
     }
 
     const handleRepeatPasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
-        clearErrors(["password", "repeatPassword"]);
-
         const repeatPasswordFieldValue = e.currentTarget.value;
-        const passwordFieldValue = watch("password");
+        const passwordFieldValue = getValues("password");
 
-        if (passwordFieldValue !== repeatPasswordFieldValue) {
-            setError("password", {type: "validate", message: "Hasła są różne"});
-            setError("repeatPassword", {type: "validate", message: "Hasła są różne"});
-        } else {
-            clearErrors(["password", "repeatPassword"]);
-        }
+        setPasswordsError(passwordFieldValue, repeatPasswordFieldValue);
     };
-    
+
     const toMultipleValidationTexts = (errors: FieldError | undefined): JSX.Element[] | undefined => {
-        if (errors === undefined || errors.types === undefined){
+        if (errors === undefined || errors.types === undefined) {
             return undefined;
         }
-
-        let errorArray: JSX.Element[] = [];
         
-        if (errors.types.required){
+        let errorArray: JSX.Element[] = [];
+
+        if (errors.types.required) {
             errorArray.push(<form.ValidationText key={"requiredField"}>{errors.types.required}</form.ValidationText>)
             return errorArray;
         }
-        
-        if (typeof(errors.types?.validate) === "string")
-        {
+
+        if (typeof (errors.types?.validate) === "string") {
             errorArray.push(<form.ValidationText key={"singleValidate"}>{errors.types.validate}</form.ValidationText>)
             return errorArray;
         }
-        
+
         let messageArray = errors.types?.validate as Message[];
-        
         errorArray = messageArray.map((item, index) => {
             return <form.ValidationText key={index}>{item}</form.ValidationText>
         })
-        
+
         return errorArray;
     }
-    
+
     return (
         <form.Container onSubmit={handleSubmit(onSubmit)}>
             {toMultipleValidationTexts(errors.firstname)}
@@ -151,14 +146,14 @@ function RegisterForm() {
                            onChange={handlePasswordChange}
                            register={register}
                            requiredResponse={`Pole ${inputLabels["password"]} jest wymagane`}
-                           validateFunction={value => value === getValues("repeatPassword") || 'Hasła są różne'}/>
+                           validateFunction={value => value === getValues("repeatPassword") || differentPasswordsErrorMessage}/>
             {toMultipleValidationTexts(errors.repeatPassword)}
             <PasswordInput label={`${capitalize(inputLabels["repeatPassword"])}:`}
                            customName="repeatPassword"
                            onChange={handleRepeatPasswordChange}
                            register={register}
                            requiredResponse={`Pole ${inputLabels["repeatPassword"]} jest wymagane`}
-                           validateFunction={value => value === getValues("password") || 'Hasła są różne'}/>
+                           validateFunction={value => value === getValues("password") || differentPasswordsErrorMessage}/>
             <form.SubmitButton type="submit" value={"Utwórz konto"}>
             </form.SubmitButton>
         </form.Container>
