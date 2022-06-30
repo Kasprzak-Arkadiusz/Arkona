@@ -23,13 +23,13 @@ public class RegisterUserCommand : IRequest<AuthViewModel>
     }
 }
 
-public class RegisterUseCommandHandler : IRequestHandler<RegisterUserCommand, AuthViewModel>
+public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthViewModel>
 {
     private readonly IAuthenticationService _authenticationService;
     private readonly ISecurityTokenService _securityTokenService;
     private readonly IEmailService _emailService;
 
-    public RegisterUseCommandHandler(IAuthenticationService authenticationService,
+    public RegisterUserCommandHandler(IAuthenticationService authenticationService,
         ISecurityTokenService securityTokenService, IEmailService emailService)
     {
         _authenticationService = authenticationService;

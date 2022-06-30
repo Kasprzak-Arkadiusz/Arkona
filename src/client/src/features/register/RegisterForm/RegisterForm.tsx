@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import * as form from "./styled";
 import PasswordInput from "components/PasswordInput/PasswordInput";
 import TextInput from 'components/TextInput/TextInput'
@@ -32,12 +32,14 @@ function RegisterForm() {
         handleSubmit,
         formState: {errors}
     } = useForm<Inputs>({mode: "all", criteriaMode: "all"});
+    const [generalError, setGeneralError] = useState("");
     const differentPasswordsErrorMessage = "Hasła są różne";
     
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         auth.signUp(data, (error, responseMessage) => {
+            setGeneralError("");
+            console.log(error?.message);
             if (error !== null && error.code === 3) {
-                console.log(error);
                 const errorDictionary = toDictionary(error.message)
                 for (let key in errorDictionary.values) {
                     let errorArray: string[] = [];
@@ -46,8 +48,11 @@ function RegisterForm() {
                     });
                     setValidationError(key, errorArray);
                 }
+            } else if (error !== null) {
+                setGeneralError(error.message);
+            } else{
+                console.log(responseMessage);
             }
-            console.log(responseMessage);
         });
     };
 
@@ -125,6 +130,7 @@ function RegisterForm() {
 
     return (
         <form.Container onSubmit={handleSubmit(onSubmit)}>
+            <form.ValidationText key={"generalError"}>{generalError}</form.ValidationText>
             {toMultipleValidationTexts(errors.firstname)}
             <TextInput label={`${capitalize(inputLabels["firstname"])}:`}
                        customName="firstname"

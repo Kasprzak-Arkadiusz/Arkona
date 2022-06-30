@@ -16,14 +16,16 @@ public class ErrorHandlingInterceptor : Interceptor
         }
         catch (Exception e)
         {
-            var statusCode = GetStatusCode(e);
-            var status = new Status(statusCode, e.Message);
+            var (statusCode, message) = GetStatus(e);
+            var status = new Status(statusCode, message);
             throw new RpcException(status);
         }
     }
 
-    private static StatusCode GetStatusCode(Exception exception) =>
-        exception switch
+    private static (StatusCode, string) GetStatus(Exception exception)
+    {
+        var message = exception.Message;
+        var statusCode = exception switch
         {
             AlreadyExistsException => StatusCode.AlreadyExists,
             NotFoundException => StatusCode.NotFound,
@@ -32,7 +34,12 @@ public class ErrorHandlingInterceptor : Interceptor
             _ => ((Func<StatusCode>)(() =>
             {
                 Log.Warning(exception, "Unexpected exception occured");
+                message = "Something went wrong. Please try again";
                 return StatusCode.Unknown;
             }))()
         };
+
+        return (statusCode, message);
+    }
+       
 }
