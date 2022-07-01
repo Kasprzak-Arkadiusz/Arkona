@@ -1,10 +1,12 @@
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
 import * as form from "./styled";
 import PasswordInput from "components/PasswordInput/PasswordInput";
 import TextInput from 'components/TextInput/TextInput'
 import {capitalize, toDictionary} from "utils/stringUtils"
 import useAuth from "hooks/useAuth/useAuth";
 import {useForm, SubmitHandler, MultipleFieldErrors, Message, FieldError} from "react-hook-form";
+import {ServiceError} from "generated/user/user_pb_service";
 
 const inputLabels: { [key: string]: string } = {
     firstname: "imię",
@@ -23,6 +25,7 @@ export type Inputs = {
 };
 
 function RegisterForm() {
+    const navigate = useNavigate();
     const auth = useAuth();
     const {
         register,
@@ -37,24 +40,34 @@ function RegisterForm() {
     
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         auth.signUp(data, (error, responseMessage) => {
-            setGeneralError("");
-            console.log(error?.message);
-            if (error !== null && error.code === 3) {
-                const errorDictionary = toDictionary(error.message)
-                for (let key in errorDictionary.values) {
-                    let errorArray: string[] = [];
-                    errorDictionary.values[key].forEach((item) => {
-                        errorArray.push(item);
-                    });
-                    setValidationError(key, errorArray);
-                }
-            } else if (error !== null) {
-                setGeneralError(error.message);
+            if (error !== null) {
+               onError(error);
             } else{
-                console.log(responseMessage);
+                onSuccess();
             }
         });
     };
+
+    const onError = (error: ServiceError) => {
+        setGeneralError("");
+        console.log(error?.message);
+        if (error.code === 3) {
+            const errorDictionary = toDictionary(error.message)
+            for (let key in errorDictionary.values) {
+                let errorArray: string[] = [];
+                errorDictionary.values[key].forEach((item) => {
+                    errorArray.push(item);
+                });
+                setValidationError(key, errorArray);
+            }
+        } else {
+            setGeneralError(error.message);
+        }
+    }
+    
+    const onSuccess = () => {
+        navigate("/");
+    }
 
     const setValidationError = (text: string, errorMessage: string[]) => {
         let errors: MultipleFieldErrors | undefined = {
@@ -79,7 +92,7 @@ function RegisterForm() {
                 break;
         }
     }
-
+    
     const setPasswordsError = (passwordFieldValue: string, repeatPasswordFieldValue:string) => {
         if (passwordFieldValue !== repeatPasswordFieldValue) {
             setError("password", {type: "validate", message: differentPasswordsErrorMessage});

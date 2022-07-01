@@ -1,14 +1,16 @@
-﻿const storage = localStorage;
+﻿import { RegisterResponse } from "generated/user/user_pb";
 
-export function getStorageItem (key: string): string | null {
+const storage = localStorage;
+
+export function getStorageItem (key: string): RegisterResponse.AsObject | null {
     try {
         const serializedItem = storage.getItem(key);
 
         if (serializedItem === null) {
             return null;
         }
-
-        return JSON.parse(serializedItem);
+        const parsed = JSON.parse(serializedItem);
+        return Object.assign(new RegisterResponse(), parsed)
     } catch (error) {
         return null;
     }

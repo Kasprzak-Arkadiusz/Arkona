@@ -70,32 +70,15 @@ export const Li = styled.li`
     }
 `
 
-interface IProps {
-    open: boolean
-}
-
-
-export const NavLinks = styled.ul<IProps>`
+export const NavLinks = styled.ul`
     width: 100%;
     display: flex;
     padding-left: 0;
     list-style-type: none;
     
     @media only screen and (max-width: 840px) { 
-        position: absolute;
-        top: 80px;
-        left: -200%;
         flex-direction: column;
-        text-align: center;
-        transition: 1s all;   
-    
-        ${({open}) =>
-    open && css`
-                left: 0px;
-                margin-top: 10px;
-                margin-bottom: 10px;
-            `
-}
+        margin: 0px;
     }
 `
 
@@ -106,9 +89,32 @@ export const NavIcon = styled.div`
     @media only screen and (max-width: 840px) {
         display: flex;
         margin: 14px 20px 14px auto;
-
+        
         font-size: 32px;
 
         color: ${props => props.theme.Palette.textMain};
+    }
+`
+
+interface IProps {
+    isOpened: boolean
+}
+
+export const NavLinksContainer = styled.div<IProps>`
+    display: flex;
+    width: 100%;
+    left: 0px;
+    
+     @media only screen and (max-width: 840px) { 
+        position: absolute;
+        display:block;
+        top: -100%;
+        margin-top: 10px;
+        transition: 1s all;   
+         ${({isOpened}) =>
+        isOpened && css`
+                top: 80px;
+                `
+        }
     }
 `
