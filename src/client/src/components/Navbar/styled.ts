@@ -58,6 +58,24 @@ export const NavLink = styled(Link)`
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 `
 
+export const SignOut = styled.button`
+    margin: 0 10px 0 10px;
+    white-space: nowrap;
+
+    font-family: ${props => props.theme.Fonts.smart};
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    
+    background: none;
+    border: none;
+
+    -webkit-text-fill-color: ${props => props.theme.Palette.textMain};
+    -webkit-text-stroke-color: ${props => props.theme.Palette.blueBorder};
+    -webkit-text-stroke-width: 1px;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+`
+
 export const Li = styled.li`
     @media only screen and (max-width: 840px) {
         height: 50px;

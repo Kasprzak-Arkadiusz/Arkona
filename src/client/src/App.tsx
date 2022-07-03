@@ -1,25 +1,48 @@
 import React from 'react';
 import Navbar from 'components/Navbar/Navbar';
-import {BrowserRouter as Router} from 'react-router-dom';
+import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
 import AuthProvider from "hooks/useAuth/AuthProvider";
 
 import 'assets/index.css';
 import GlobalStyle from 'assets/theme/GlobalStyles.js'
 import {ThemeProvider} from "styled-components";
 import Theme from 'assets/theme/ThemeProvider'
-import useAuth from "./hooks/useAuth/useAuth";
-import {RouteComponent} from "./components/RouteComponents/RouteComponent";
+import Home from "./features/home/Home";
+import Login from "./features/login/Login";
+import Register from "./features/register/Register";
+import {Role} from "./utils/CustomTypes/Role";
+import RequireAuth from "./hooks/useAuth/RequireAuth";
+import Repertoire from "./features/repertoire/Repertoire";
+import Offers from "./features/offers/Offers";
+import Tickets from "./features/tickets/Tickets";
 
-function App() {
-    const auth = useAuth();
-    
+function App() {    
     return (
         <Router>
             <AuthProvider>
                 <ThemeProvider theme={Theme}>
                     <GlobalStyle/>
                     <Navbar/>
-                    <RouteComponent/>
+                    <Routes>
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/login" element={<Login/>}/>
+                        <Route path="/register" element={<Register/>}/>
+                        <Route path="/*" element={<Navigate to="/"/>}/>
+
+                        <Route path={`/${Role.client}/`}
+                               element={<RequireAuth role={Role.client}/>}>
+                            <Route path="repertoire" element={<Repertoire/>}/>
+                            <Route path="offers" element={<Offers/>}/>
+                            <Route path="tickets" element={<Tickets/>}/>
+                        </Route>)
+                        
+                        <Route path={`/${Role.worker}/`}
+                               element={<RequireAuth role={Role.worker}/>}>
+                            <Route path="repertoire" element={<Repertoire/>}/>
+                            <Route path="offers" element={<Offers/>}/>
+                            <Route path="tickets" element={<Tickets/>}/>
+                        </Route>
+                    </Routes>
                 </ThemeProvider>
             </AuthProvider>
         </Router>

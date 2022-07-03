@@ -1,4 +1,4 @@
-﻿import React, {useEffect, useState} from "react";
+﻿import React, {useState} from "react";
 import AuthContext from "./AuthContext";
 import {ServiceError, UserClient} from "generated/user/user_pb_service";
 import {LoginRequest, LoginResponse, RegisterRequest, RegisterResponse} from "generated/user/user_pb";
@@ -9,10 +9,6 @@ import * as user_pb from "generated/user/user_pb";
 const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
     const [authData, setAuthData] = useState(getStorageItem("authData"));
     const userClient = new UserClient(process.env.REACT_APP_SERVER_URL!);
-
-    useEffect(()=> {
-        setAuthData(null);
-    }, [setStorageItem])
     
     function MapToRegisterRequest(formData: Inputs): RegisterRequest {
         const request = new RegisterRequest();
@@ -77,6 +73,7 @@ const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
     };
 
     const signOut = () => {
+        setAuthData(null);
         setStorageItem("authData", null);
     };
 

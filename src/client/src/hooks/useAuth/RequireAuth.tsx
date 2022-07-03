@@ -1,13 +1,16 @@
 ﻿import React from "react";
 import useAuth from "hooks/useAuth/useAuth";
-import {Navigate, useLocation, useNavigate} from "react-router-dom";
+import {Navigate, useLocation} from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import {CustomJwtPayload} from "utils/CustomTypes/CustomJwtPayload";
 
-export const ValidateToken = (role: string) => {
+interface IProps {
+    role:string
+}
+
+const RequireAuth = ({role} : IProps) => {
     const auth = useAuth();
     const location = useLocation();
-    let validToken = true;
 
     const isTokenExpired = () => {
         if (auth.authData === null) {
@@ -20,26 +23,28 @@ export const ValidateToken = (role: string) => {
         if (decodedToken.exp === undefined) {
             return true;
         }
-        
+
         return decodedToken.exp * 1000 < new Date().getTime();
     };
 
-    const isWrongRole = (role: string) => {
+    const isWrongRole = () => {
         return auth.authData?.role.toLowerCase() !== role;
     };
 
     if (!auth.authData) {
-        validToken = false;
-    }
-    
-    if (isTokenExpired() || isWrongRole(role)) {
-        validToken = false;
-        auth.signOut();
-    }
-
-    if (!validToken) {
         return <Navigate to="/signIn" state={{from: location}} replace/>;
     }
 
-    return <></>
-}
+    if (isTokenExpired()) {
+        auth.signOut();
+        return <Navigate to="/signIn" state={{from: location}} replace/>;
+    }
+
+    if (isWrongRole()) {
+        return <Navigate to="/" state={{from: location}} replace/>;
+    }
+
+    return <></>;
+};
+
+export default RequireAuth;

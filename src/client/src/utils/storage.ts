@@ -19,6 +19,7 @@ export function getStorageItem (key: string): RegisterResponse.AsObject | null {
 export const setStorageItem = (key: string, value: object | null) => {
     try {
         if (value === null) {
+            storage.removeItem(key);
             return;
         }
 
