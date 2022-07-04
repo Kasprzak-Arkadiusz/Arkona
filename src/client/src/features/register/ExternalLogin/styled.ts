@@ -40,7 +40,7 @@ export const image = styled.img`
     border-radius: 4px;
 `
 
-export const baseText = styled.span<Props>`
+export const baseText = styled.a<Props>`
     font-size: 12px;
     line-height: 14px;
 `

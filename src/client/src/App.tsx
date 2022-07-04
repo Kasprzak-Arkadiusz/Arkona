@@ -15,6 +15,7 @@ import RequireAuth from "./hooks/useAuth/RequireAuth";
 import Repertoire from "./features/repertoire/Repertoire";
 import Offers from "./features/offers/Offers";
 import Tickets from "./features/tickets/Tickets";
+import Privacy from "./features/privacy/Privacy";
 
 function App() {    
     return (
@@ -27,6 +28,7 @@ function App() {
                         <Route path="/" element={<Home/>}/>
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/register" element={<Register/>}/>
+                        <Route path="/privacy" element={<Privacy/>}/>
                         <Route path="/*" element={<Navigate to="/"/>}/>
 
                         <Route path={`/${Role.client}/`}

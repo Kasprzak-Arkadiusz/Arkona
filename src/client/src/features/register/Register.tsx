@@ -7,17 +7,18 @@ import SectionTitle from 'components/SectionTitle/SectionTitle'
 import ExternalLogin from './ExternalLogin/ExternalLogin'
 import RegisterForm from './RegisterForm/RegisterForm'
 import * as register from './styled'
+import FacebookExternalLogin from "./ExternalLogin/FacebookExternalLogin";
 
 function Register() {
     return (
         <main className="display-container">
             <register.registerContainer>
                 <SectionTitle title="Rejestracja"/>
-                <RegisterForm></RegisterForm>
+                <RegisterForm/>
                 <register.externalProviderContainer>
                     <register.text>lub</register.text>
                     <register.text>zarejestruj się za pomocą:</register.text>
-                    <ExternalLogin imgSource={facebook} providerName="Facebook" buttonText="Facebooka"/>
+                    <FacebookExternalLogin imgSource={facebook} providerName="Facebook" buttonText="Facebooka"/>
                     <ExternalLogin imgSource={google} providerName="Google" buttonText="Google"/>
                     <ExternalLogin imgSource={microsoft} providerName="Microsoft" buttonText="Microsoftu"/>
                 </register.externalProviderContainer>
