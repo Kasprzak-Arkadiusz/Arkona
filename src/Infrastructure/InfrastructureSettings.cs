@@ -1,5 +1,6 @@
 ﻿#pragma warning disable CS8603
-using Infrastructure.EmailService;
+using Infrastructure.Services.EmailService;
+using Infrastructure.Services.FacebookAuthService;
 using Microsoft.Data.SqlClient;
 
 namespace Infrastructure;
@@ -9,6 +10,7 @@ public class InfrastructureSettings
     private string _dbConnectionString;
     public bool SeedWithCustomData { get; set; }
     public EmailConfiguration EmailConfiguration { get; set; }
+    public FacebookAuthSettings FacebookAuthSettings { get; set; }
 
     public string DbConnectionString
     {

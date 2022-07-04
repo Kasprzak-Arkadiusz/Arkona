@@ -13,6 +13,15 @@ type UserRegister = {
   readonly responseType: typeof user_pb.RegisterResponse;
 };
 
+type UserExternalRegister = {
+  readonly methodName: string;
+  readonly service: typeof User;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof user_pb.ExternalRegisterRequest;
+  readonly responseType: typeof user_pb.RegisterResponse;
+};
+
 type UserLogin = {
   readonly methodName: string;
   readonly service: typeof User;
@@ -25,6 +34,7 @@ type UserLogin = {
 export class User {
   static readonly serviceName: string;
   static readonly Register: UserRegister;
+  static readonly ExternalRegister: UserExternalRegister;
   static readonly Login: UserLogin;
 }
 
@@ -67,6 +77,15 @@ export class UserClient {
   ): UnaryResponse;
   register(
     requestMessage: user_pb.RegisterRequest,
+    callback: (error: ServiceError|null, responseMessage: user_pb.RegisterResponse|null) => void
+  ): UnaryResponse;
+  externalRegister(
+    requestMessage: user_pb.ExternalRegisterRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: user_pb.RegisterResponse|null) => void
+  ): UnaryResponse;
+  externalRegister(
+    requestMessage: user_pb.ExternalRegisterRequest,
     callback: (error: ServiceError|null, responseMessage: user_pb.RegisterResponse|null) => void
   ): UnaryResponse;
   login(

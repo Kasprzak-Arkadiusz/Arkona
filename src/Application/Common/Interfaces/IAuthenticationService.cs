@@ -16,4 +16,5 @@ public interface IAuthenticationService
     Task<bool> IsEmailConfirmedAsync(string id);
     Task SignInUserAsync(string id, string password);
     Task<bool> IsUserLockoutAsync(string id);
+    Task<User> LoginWithFacebookAsync(string token);
 }

@@ -20,8 +20,8 @@ function FacebookExternalLogin({providerName, buttonText, imgSource}: Props) {
             <FacebookLogin
                 appId="543349817485403"
                 autoLoad={true}
-                onProfileSuccess={res => responseFacebook(res)}
-                fields="name,email"
+                onSuccess={res => responseFacebook(res)}
+                fields="first_name,last_name,email"
                 scope="public_profile"
                 render={({onClick}) => <style.text name={providerName} onClick={onClick}>{buttonText}</style.text>}
             />

@@ -19,6 +19,15 @@ User.Register = {
   responseType: user_pb.RegisterResponse
 };
 
+User.ExternalRegister = {
+  methodName: "ExternalRegister",
+  service: User,
+  requestStream: false,
+  responseStream: false,
+  requestType: user_pb.ExternalRegisterRequest,
+  responseType: user_pb.RegisterResponse
+};
+
 User.Login = {
   methodName: "Login",
   service: User,
@@ -40,6 +49,37 @@ UserClient.prototype.register = function register(requestMessage, metadata, call
     callback = arguments[1];
   }
   var client = grpc.unary(User.Register, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+UserClient.prototype.externalRegister = function externalRegister(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(User.ExternalRegister, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

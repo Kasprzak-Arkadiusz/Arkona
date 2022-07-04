@@ -35,6 +35,38 @@ export namespace RegisterRequest {
   }
 }
 
+export class ExternalRegisterRequest extends jspb.Message {
+  getAccesstoken(): string;
+  setAccesstoken(value: string): void;
+
+  getProvider(): ExternalRegisterRequest.ProviderMap[keyof ExternalRegisterRequest.ProviderMap];
+  setProvider(value: ExternalRegisterRequest.ProviderMap[keyof ExternalRegisterRequest.ProviderMap]): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ExternalRegisterRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ExternalRegisterRequest): ExternalRegisterRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ExternalRegisterRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ExternalRegisterRequest;
+  static deserializeBinaryFromReader(message: ExternalRegisterRequest, reader: jspb.BinaryReader): ExternalRegisterRequest;
+}
+
+export namespace ExternalRegisterRequest {
+  export type AsObject = {
+    accesstoken: string,
+    provider: ExternalRegisterRequest.ProviderMap[keyof ExternalRegisterRequest.ProviderMap],
+  }
+
+  export interface ProviderMap {
+    FACEBOOK: 0;
+    GOOGLE: 1;
+    MICROSOFT: 2;
+  }
+
+  export const Provider: ProviderMap;
+}
+
 export class RegisterResponse extends jspb.Message {
   getAccesstoken(): string;
   setAccesstoken(value: string): void;

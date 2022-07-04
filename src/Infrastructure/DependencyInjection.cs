@@ -3,6 +3,9 @@ using Application.Common.Interfaces;
 using Application.Common.Interfaces.IApplicationDBContext;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
+using Infrastructure.Services.AuthenticationService;
+using Infrastructure.Services.EmailService;
+using Infrastructure.Services.FacebookAuthService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,6 +51,9 @@ public static class DependencyInjection
         );
 
         services.AddTransient<IAuthenticationService, AuthenticationService>();
-        services.AddTransient<IEmailService, EmailService.EmailService>();
+        services.AddTransient<IEmailService, EmailService>();
+        
+        services.AddHttpClient();
+        services.AddSingleton<IFacebookAuthService, FacebookAuthService>();
     }
 }

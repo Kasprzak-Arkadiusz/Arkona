@@ -17,13 +17,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Additional configuration is required to successfully run gRPC on macOS.
 // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
-//
 builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
     loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
 
 var configuration = builder.Configuration;
 
-// Add services to the container.
 var infrastructureSettings = new InfrastructureSettings();
 configuration.Bind(nameof(InfrastructureSettings), infrastructureSettings);
 builder.Services.AddInfrastructure(infrastructureSettings);
@@ -67,7 +65,8 @@ builder.Services.AddAuthentication(options =>
     options.RequireHttpsMetadata = false;
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(applicationSettings.AccessTokenSettings.Key)),
+        IssuerSigningKey =
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(applicationSettings.AccessTokenSettings.Key)),
         ValidateIssuerSigningKey = true,
         ValidateIssuer = true,
         ValidateAudience = false,
@@ -75,6 +74,7 @@ builder.Services.AddAuthentication(options =>
         ClockSkew = TimeSpan.Zero
     };
 });
+
 builder.Services.AddAuthorization();
 
 var app = builder.Build();

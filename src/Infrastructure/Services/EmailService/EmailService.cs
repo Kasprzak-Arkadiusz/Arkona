@@ -5,7 +5,7 @@ using MimeKit;
 using MimeKit.Text;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
-namespace Infrastructure.EmailService;
+namespace Infrastructure.Services.EmailService;
 
 public class EmailService : IEmailService
 {

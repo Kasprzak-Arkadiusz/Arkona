@@ -24,6 +24,15 @@ public class UserService : User.UserBase
         return _mapper.Map<RegisterResponse>(viewModel);
     }
 
+    public override async Task<RegisterResponse> ExternalRegister(ExternalRegisterRequest request,
+        ServerCallContext context)
+    {
+        var viewModel =
+            await _mediator.Send(new ExternalLoginUserCommand(request.AccessToken, request.Provider.ToString()));
+        
+        return _mapper.Map<RegisterResponse>(viewModel);
+    }
+
     public override async Task<LoginResponse> Login(LoginRequest request, ServerCallContext context)
     {
         var response = await _mediator.Send(new LoginUserCommand(request.Email, request.Password));
