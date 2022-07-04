@@ -1,5 +1,4 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.ViewModels;
 using Domain.Enums;
@@ -27,31 +26,18 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
 {
     private readonly IAuthenticationService _authenticationService;
     private readonly ISecurityTokenService _securityTokenService;
-    private readonly IEmailService _emailService;
 
     public RegisterUserCommandHandler(IAuthenticationService authenticationService,
-        ISecurityTokenService securityTokenService, IEmailService emailService)
+        ISecurityTokenService securityTokenService)
     {
         _authenticationService = authenticationService;
         _securityTokenService = securityTokenService;
-        _emailService = emailService;
     }
 
     public async Task<AuthViewModel> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
     {
-        var userExists = await _authenticationService.CheckIfUserWithEmailExists(command.Email);
-
-        if (userExists)
-        {
-            throw new AlreadyExistsException("Użytkownik z podanym e-mailem już istnieje.");
-        }
-
-        var userId = await _authenticationService.RegisterUserAsync(
-            new RegisterParams(command.FirstName, command.LastName, command.Email, command.Password, Role.Client));
-
-        var user = await _authenticationService.GetUserByIdAsync(userId);
-        var token = await _authenticationService.GenerateEmailConfirmationTokenAsync(userId);
-        await _authenticationService.ConfirmUserEmail(userId, token);
+        var user = await _authenticationService.RegisterUserAsync(
+            new RegisterParams(command.FirstName, command.LastName, command.Email, Role.Client, command.Password));
 
         var accessToken = _securityTokenService
             .GenerateAccessTokenForUser(user.Id, user.Email, user.FirstName, user.LastName, Role.Client);
@@ -62,7 +48,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
             Email = user.Email,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            Id = userId,
+            Id = user.Id,
             Role = Role.Client.ToString()
         };
     }

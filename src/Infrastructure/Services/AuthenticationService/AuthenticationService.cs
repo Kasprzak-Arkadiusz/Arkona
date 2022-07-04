@@ -28,6 +28,79 @@ public class AuthenticationService : IAuthenticationService
         _mapper = mapper;
         _facebookAuthService = facebookAuthService;
     }
+    
+    private async Task<bool> CheckIfUserWithEmailExists(string email)
+    {
+        return await _userManager.Users.AnyAsync(u => u.NormalizedEmail == email.Normalize());
+    }
+
+    public async Task<User> RegisterUserAsync(RegisterParams registerParams)
+    {
+        var userExists = await CheckIfUserWithEmailExists(registerParams.Email);
+
+        if (userExists)
+        {
+            throw new AlreadyExistsException("Użytkownik z podanym e-mailem już istnieje.");
+        }
+
+        var appUser = _mapper.Map<AppUser>(registerParams);
+        appUser.UserName = registerParams.Email;
+        appUser.SecurityStamp = Guid.NewGuid().ToString();
+
+        if (registerParams.Password is null)
+        {
+            await _userManager.CreateAsync(appUser);
+        }
+        else
+        {
+            await _userManager.CreateAsync(appUser, registerParams.Password);
+        }
+
+        await AddToRoleAsync(appUser.Id, registerParams.Role);
+
+        await _userManager.AddClaimsAsync(appUser, new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, appUser.Id),
+            new Claim(ClaimTypes.Email, appUser.Email),
+            new Claim(ClaimTypes.Name, appUser.Email),
+            new Claim("FirstName", appUser.FirstName),
+            new Claim("LastName", appUser.LastName),
+            new Claim(ClaimTypes.Role, registerParams.Role.ToString())
+        });
+
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+        await _userManager.ConfirmEmailAsync(appUser, token);
+        
+        return _mapper.Map<User>(appUser);
+    }
+
+    public async Task<User> LoginUserAsync(string email, string password)
+    {
+        var appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == email.Normalize());
+        if (appUser == default)
+        {
+            throw new NotFoundException("Nie istnieje użytkownik z podanym e-mailem");
+        }
+        
+        if (!await _userManager.IsEmailConfirmedAsync(appUser))
+        {
+            throw new UnauthorizedException("Nie potwierdzono e-maila");
+        }
+
+        if (await _userManager.IsLockedOutAsync(appUser))
+        {
+            throw new UnauthorizedException("Zbyt dużo niepoprawnych prób logowania. Konto jest zablokowane");
+        }
+
+        var result = await _signInManager.PasswordSignInAsync(appUser, password, false, true);
+
+        if (!result.Succeeded || result.IsLockedOut)
+        {
+            throw new UnauthorizedException("Niepoprawne dane logowania");
+        }
+        
+        return _mapper.Map<User>(appUser);
+    }
 
     private async Task<AppUser> GetUserWithIdAsync(string id)
     {
@@ -40,76 +113,7 @@ public class AuthenticationService : IAuthenticationService
         return appUser;
     }
 
-    private async Task<AppUser> GetUserWithEmailAsync(string email)
-    {
-        var appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == email.Normalize());
-        if (appUser == default)
-        {
-            throw new NotFoundException("Nie istnieje użytkownik z podanym e-mailem");
-        }
-
-        return appUser;
-    }
-
-    public async Task<bool> CheckIfUserWithEmailExists(string email)
-    {
-        return await _userManager.Users.AnyAsync(u => u.NormalizedEmail == email.Normalize());
-    }
-
-    public async Task<User> GetUserByIdAsync(string id)
-    {
-        var appUser = await GetUserWithIdAsync(id);
-        var user = _mapper.Map<User>(appUser);
-
-        return user;
-    }
-
-    public async Task<User> GetUserByEmailAsync(string email)
-    {
-        var appUser = await GetUserWithEmailAsync(email);
-        var user = _mapper.Map<User>(appUser);
-
-        return user;
-    }
-
-    public async Task<string> GenerateEmailConfirmationTokenAsync(string id)
-    {
-        var appUser = await GetUserWithIdAsync(id);
-
-        return await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
-    }
-
-    public async Task<bool> ConfirmUserEmail(string id, string token)
-    {
-        var appUser = await GetUserWithIdAsync(id);
-        var result = await _userManager.ConfirmEmailAsync(appUser, token);
-
-        return result.Succeeded;
-    }
-
-    public async Task<string> RegisterUserAsync(RegisterParams parameters)
-    {
-        var appUser = _mapper.Map<AppUser>(parameters);
-        appUser.UserName = parameters.Email;
-        appUser.SecurityStamp = Guid.NewGuid().ToString();
-
-        await _userManager.CreateAsync(appUser, parameters.Password);
-        await AddToRoleAsync(appUser.Id, parameters.Role);
-
-        await _userManager.AddClaimsAsync(appUser, new[]
-        {
-            new Claim(ClaimTypes.NameIdentifier, appUser.Id),
-            new Claim(ClaimTypes.Email, appUser.Email),
-            new Claim(ClaimTypes.Name, appUser.Email),
-            new Claim("FirstName", appUser.FirstName),
-            new Claim("LastName", appUser.LastName),
-            new Claim(ClaimTypes.Role, parameters.Role.ToString())
-        });
-
-        return appUser.Id;
-    }
-
-    public async Task<bool> AddToRoleAsync(string id, Role role)
+    private async Task AddToRoleAsync(string id, Role role)
     {
         var stringRole = role.ToString();
         if (!await _roleManager.RoleExistsAsync(stringRole))
@@ -123,29 +127,6 @@ public class AuthenticationService : IAuthenticationService
         {
             await _userManager.AddToRoleAsync(appUser, stringRole);
         }
-
-        return true;
-    }
-
-    public async Task<bool> IsEmailConfirmedAsync(string id)
-    {
-        var appUser = await GetUserWithIdAsync(id);
-
-        return await _userManager.IsEmailConfirmedAsync(appUser);
-    }
-
-    public async Task SignInUserAsync(string id, string password)
-    {
-        var appUser = await GetUserWithIdAsync(id);
-
-        await _signInManager.PasswordSignInAsync(appUser, password, false, true);
-    }
-
-    public async Task<bool> IsUserLockoutAsync(string id)
-    {
-        var appUser = await GetUserWithIdAsync(id);
-
-        return await _userManager.IsLockedOutAsync(appUser);
     }
 
     public async Task<User> LoginWithFacebookAsync(string token)
@@ -170,7 +151,9 @@ public class AuthenticationService : IAuthenticationService
         {
             Id = Guid.NewGuid().ToString(),
             Email = userInfo.Email,
-            UserName = userInfo.Email
+            UserName = userInfo.Email,
+            EmailConfirmed = true,
+            LockoutEnabled = false
         };
         user.SetName(userInfo.FirstName, userInfo.LastName);
             
@@ -181,6 +164,5 @@ public class AuthenticationService : IAuthenticationService
         }
 
         return _mapper.Map<User>(user);
-
     }
 }

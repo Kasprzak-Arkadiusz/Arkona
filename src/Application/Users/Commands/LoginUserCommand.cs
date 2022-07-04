@@ -34,18 +34,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, string>
     {
         try
         {
-            var user = await _authenticationService.GetUserByEmailAsync(command.Email);
-            if (!await _authenticationService.IsEmailConfirmedAsync(user.Id))
-            {
-                throw new UnauthorizedException("Nie potwierdzono e-maila");
-            }
-
-            if (await _authenticationService.IsUserLockoutAsync(user.Id))
-            {
-                throw new UnauthorizedException("Zbyt dużo niepoprawnych prób logowania. Konto jest zablokowane");
-            }
-
-            await _authenticationService.SignInUserAsync(user.Id, command.Password);
+            var user = await _authenticationService.LoginUserAsync(command.Email, command.Password);
 
             var accessToken = _securityTokenService.GenerateAccessTokenForUser(user.Id, user.Email, user.FirstName,
                 user.LastName, Role.Client);
@@ -57,7 +46,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, string>
             Log.Information(
                 "Invalid login attempt. Provided: e-mail: {Email}, password: {Password}. Exception message: {Message}",
                 command.Email, command.Password, e.Message);
-            throw new UnauthorizedException("Nieprawidłowe dane");
+            throw new UnauthorizedException("Nieprawidłowe dane logowania");
         }
     }
 }
