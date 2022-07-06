@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using API.Validators;
-using API.Validators.User;
 using Calzolari.Grpc.AspNetCore.Validation;
 using FluentValidation;
 

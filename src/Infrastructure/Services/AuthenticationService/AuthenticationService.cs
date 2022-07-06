@@ -18,17 +18,20 @@ public class AuthenticationService : IAuthenticationService
     private readonly SignInManager<AppUser> _signInManager;
     private readonly IMapper _mapper;
     private readonly IFacebookAuthService _facebookAuthService;
+    private readonly IGoogleAuthService _googleAuthService;
 
     public AuthenticationService(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager,
-        SignInManager<AppUser> signInManager, IMapper mapper, IFacebookAuthService facebookAuthService)
+        SignInManager<AppUser> signInManager, IMapper mapper, IFacebookAuthService facebookAuthService,
+        IGoogleAuthService googleAuthService)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _signInManager = signInManager;
         _mapper = mapper;
         _facebookAuthService = facebookAuthService;
+        _googleAuthService = googleAuthService;
     }
-    
+
     private async Task<bool> CheckIfUserWithEmailExists(string email)
     {
         return await _userManager.Users.AnyAsync(u => u.NormalizedEmail == email.Normalize());
@@ -70,7 +73,7 @@ public class AuthenticationService : IAuthenticationService
 
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
         await _userManager.ConfirmEmailAsync(appUser, token);
-        
+
         return _mapper.Map<User>(appUser);
     }
 
@@ -81,7 +84,7 @@ public class AuthenticationService : IAuthenticationService
         {
             throw new NotFoundException("Nie istnieje użytkownik z podanym e-mailem");
         }
-        
+
         if (!await _userManager.IsEmailConfirmedAsync(appUser))
         {
             throw new UnauthorizedException("Nie potwierdzono e-maila");
@@ -98,7 +101,7 @@ public class AuthenticationService : IAuthenticationService
         {
             throw new UnauthorizedException("Niepoprawne dane logowania");
         }
-        
+
         return _mapper.Map<User>(appUser);
     }
 
@@ -156,7 +159,38 @@ public class AuthenticationService : IAuthenticationService
             LockoutEnabled = false
         };
         user.SetName(userInfo.FirstName, userInfo.LastName);
-            
+
+        var createdResult = await _userManager.CreateAsync(user);
+        if (!createdResult.Succeeded)
+        {
+            throw new InternalServerException();
+        }
+
+        return _mapper.Map<User>(user);
+    }
+
+    public async Task<User> LoginWithGoogleAsync(string code)
+    {
+        var exchangeResult = await _googleAuthService.ExchangeCodeAsync(code);
+        var userInfo = await _googleAuthService.GetUserInfoAsync(exchangeResult.AccessToken);
+
+        var appUser = await _userManager.FindByEmailAsync(userInfo.Email);
+
+        if (appUser != null)
+        {
+            return _mapper.Map<User>(appUser);
+        }
+
+        var user = new AppUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = userInfo.Email,
+            UserName = userInfo.Email,
+            EmailConfirmed = true,
+            LockoutEnabled = false
+        };
+        user.SetName(userInfo.GivenName, userInfo.FamilyName);
+
         var createdResult = await _userManager.CreateAsync(user);
         if (!createdResult.Succeeded)
         {

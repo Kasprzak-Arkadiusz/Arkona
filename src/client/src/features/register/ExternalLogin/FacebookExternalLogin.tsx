@@ -18,8 +18,7 @@ function FacebookExternalLogin({providerName, buttonText, imgSource}: Props) {
         <style.button name={providerName}>
             <style.image src={imgSource} alt=""/>
             <FacebookLogin
-                appId="543349817485403"
-                autoLoad={true}
+                appId={process.env.REACT_APP_FACEBOOK_APP_ID!}
                 onSuccess={res => responseFacebook(res)}
                 fields="first_name,last_name,email"
                 scope="public_profile"

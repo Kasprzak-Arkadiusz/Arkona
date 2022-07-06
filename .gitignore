@@ -280,3 +280,6 @@ src/API/appsettings.json
 
 # Kreya files
 PI/*
+
+# .env files
+src/client/.env

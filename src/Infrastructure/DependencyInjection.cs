@@ -6,6 +6,7 @@ using Infrastructure.Persistence;
 using Infrastructure.Services.AuthenticationService;
 using Infrastructure.Services.EmailService;
 using Infrastructure.Services.FacebookAuthService;
+using Infrastructure.Services.GoogleAuthService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,23 +19,23 @@ public static class DependencyInjection
         InfrastructureSettings settings)
     {
         services.AddSingleton(settings);
-        
+
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
         services.AddIdentity<AppUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-        
+
         services.Configure<IdentityOptions>(options =>
         {
             options.SignIn.RequireConfirmedEmail = true;
             options.SignIn.RequireConfirmedPhoneNumber = false;
             options.SignIn.RequireConfirmedAccount = true;
-            
+
             options.User.RequireUniqueEmail = true;
             options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@/";
-            
+
             options.Password.RequiredLength = 8;
             options.Password.RequireDigit = true;
             options.Password.RequireNonAlphanumeric = true;
@@ -52,8 +53,9 @@ public static class DependencyInjection
 
         services.AddTransient<IAuthenticationService, AuthenticationService>();
         services.AddTransient<IEmailService, EmailService>();
-        
+
         services.AddHttpClient();
         services.AddSingleton<IFacebookAuthService, FacebookAuthService>();
+        services.AddSingleton<IGoogleAuthService, GoogleAuthService>();
     }
 }

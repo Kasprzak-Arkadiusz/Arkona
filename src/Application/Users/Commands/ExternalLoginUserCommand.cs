@@ -8,8 +8,8 @@ namespace Application.Users.Commands;
 
 public class ExternalLoginUserCommand : IRequest<AuthViewModel>
 {
-    public string Token { get; set; }
-    public string Provider { get; set; }
+    public string Token { get; }
+    public string Provider { get; }
 
     public ExternalLoginUserCommand(string token, string provider)
     {
@@ -34,7 +34,7 @@ public class ExternalLoginUserCommandHandler : IRequestHandler<ExternalLoginUser
     {
         var user = command.Provider.ToLower() switch
         {
-            "google" => throw new NotImplementedException(),
+            "google" => await _authenticationService.LoginWithGoogleAsync(command.Token),
             "facebook" => await _authenticationService.LoginWithFacebookAsync(command.Token),
             "microsoft" => throw new NotImplementedException(),
             _ => throw new InternalServerException($"Unrecognized external login provider {command.Provider}")

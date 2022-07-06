@@ -8,6 +8,7 @@ import ExternalLogin from './ExternalLogin/ExternalLogin'
 import RegisterForm from './RegisterForm/RegisterForm'
 import * as register from './styled'
 import FacebookExternalLogin from "./ExternalLogin/FacebookExternalLogin";
+import GoogleExternalLogin from "./ExternalLogin/GoogleExternalLogin";
 
 function Register() {
     return (
@@ -19,7 +20,7 @@ function Register() {
                     <register.text>lub</register.text>
                     <register.text>zarejestruj się za pomocą:</register.text>
                     <FacebookExternalLogin imgSource={facebook} providerName="Facebook" buttonText="Facebooka"/>
-                    <ExternalLogin imgSource={google} providerName="Google" buttonText="Google"/>
+                    <GoogleExternalLogin imgSource={google} providerName="Google" buttonText="Google"/>
                     <ExternalLogin imgSource={microsoft} providerName="Microsoft" buttonText="Microsoftu"/>
                 </register.externalProviderContainer>
                 <register.haveAnAccountContainer>
