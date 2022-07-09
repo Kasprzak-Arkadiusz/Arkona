@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from 'components/Navbar/Navbar';
 import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
-import AuthProvider from "hooks/useAuth/AuthProvider";
+import {AuthProvider} from "hooks/useAuth/AuthProvider";
 
 import 'assets/index.css';
 import GlobalStyle from 'assets/theme/GlobalStyles.js'

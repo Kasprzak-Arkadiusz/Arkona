@@ -475,8 +475,7 @@ proto.user.ExternalRegisterRequest.serializeBinaryToWriter = function(message, w
  */
 proto.user.ExternalRegisterRequest.Provider = {
   FACEBOOK: 0,
-  GOOGLE: 1,
-  MICROSOFT: 2
+  GOOGLE: 1
 };
 
 /**

@@ -4,6 +4,10 @@ interface Props {
     name: string;
 }
 
+export const container = styled.div`
+    
+`
+
 const baseButton = styled.button<Props>`
     width: calc(100% * 2 / 3);
     height: 30px;
@@ -65,4 +69,17 @@ export const text = styled(baseText)`
     let providerName = props.name.toLowerCase()
     return providerName in textShadows ? textShadows[providerName] : '';
 }};
+`
+
+export const validationText = styled.span`
+    display: block;
+    margin: auto;
+    padding: 5px 10px 5px 10px;
+    margin-bottom: 5px;
+
+    font-size: 13px;
+    line-height: 14px;
+
+    color: ${props => props.theme.Palette.warning};
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 `

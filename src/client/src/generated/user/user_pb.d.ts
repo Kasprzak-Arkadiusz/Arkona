@@ -61,7 +61,6 @@ export namespace ExternalRegisterRequest {
   export interface ProviderMap {
     FACEBOOK: 0;
     GOOGLE: 1;
-    MICROSOFT: 2;
   }
 
   export const Provider: ProviderMap;

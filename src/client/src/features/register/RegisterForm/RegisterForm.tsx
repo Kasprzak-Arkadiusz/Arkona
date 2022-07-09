@@ -50,7 +50,6 @@ function RegisterForm() {
 
     const onError = (error: ServiceError) => {
         setGeneralError("");
-        console.log(error?.message);
         if (error.code === 3) {
             const errorDictionary = toDictionary(error.message)
             for (let key in errorDictionary.values) {

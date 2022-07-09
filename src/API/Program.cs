@@ -45,7 +45,7 @@ builder.Services.AddCors(o =>
 {
     o.AddPolicy(policyName, config =>
     {
-        config.WithOrigins("https://localhost:7146", "http://localhost:5146", "http://localhost:7147");
+        config.WithOrigins("https://localhost:7146", "http://localhost:5146", "https://localhost:7147", "http://localhost:7147");
         config.AllowAnyMethod();
         config.AllowAnyHeader();
         config.WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
