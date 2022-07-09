@@ -36,7 +36,6 @@ public class ExternalLoginUserCommandHandler : IRequestHandler<ExternalLoginUser
         {
             "google" => await _authenticationService.LoginWithGoogleAsync(command.Token),
             "facebook" => await _authenticationService.LoginWithFacebookAsync(command.Token),
-            "microsoft" => throw new NotImplementedException(),
             _ => throw new InternalServerException($"Unrecognized external login provider {command.Provider}")
         };
         

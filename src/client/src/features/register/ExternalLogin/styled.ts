@@ -25,7 +25,6 @@ const baseButton = styled.button<Props>`
 let colors: { [name: string]: string } = {};
 colors.facebook = '#4267b2'
 colors.google = '#bdbdbd'
-colors.microsoft = '#ffffff'
 
 export const button = styled(baseButton)`
     background-color: 
@@ -48,12 +47,10 @@ export const baseText = styled.a<Props>`
 let textColors: { [name: string]: string } = {};
 textColors.facebook = '#ffffff'
 textColors.google = '#ffffff'
-textColors.microsoft = '#000000'
 
 let textShadows: { [name: string]: string } = {};
 textShadows.facebook = '1px 1px 4px rgba(0, 0, 0, 0.75)'
 textShadows.google = '1px 1px 4px rgba(0, 0, 0, 0.75)'
-textShadows.microsoft = '2px 2px 4px rgba(0, 0, 0, 0.25)'
 
 export const text = styled(baseText)`
     margin-right:auto;

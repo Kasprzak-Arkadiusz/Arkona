@@ -4,6 +4,8 @@
     "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
     "main": ".prettierrc.js",
     "dependencies": {
+        "@azure/msal-browser": "^2.27.0",
+        "@azure/msal-react": "^1.4.3",
         "@greatsumini/react-facebook-login": "^3.2.0",
         "@improbable-eng/grpc-web": "^0.15.0",
         "@types/react": "^17.0.43",

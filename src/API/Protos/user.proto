@@ -22,7 +22,6 @@ message ExternalRegisterRequest {
   enum Provider {
     Facebook  = 0;
     Google    = 1;
-    Microsoft = 2;
   }
   Provider provider    = 2;
 }

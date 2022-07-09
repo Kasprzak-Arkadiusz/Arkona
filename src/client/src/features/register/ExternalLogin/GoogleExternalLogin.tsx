@@ -9,15 +9,7 @@ interface Props {
 }
 
 function GoogleExternalLogin({providerName, buttonText, imgSource}: Props) {
-    const [client, setClient] = useState(() => {
-        // return google.accounts.oauth2.initTokenClient({
-        //     client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID!,
-        //     scope: 'openid email profile',
-        //     callback: (response) => {
-        //         console.log(response);
-        //     },
-        // });
-
+    const [client] = useState(() => {
         return google.accounts.oauth2.initCodeClient({
             client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID!,
             scope: 'openid email profile',
