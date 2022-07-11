@@ -6,12 +6,14 @@ import google from "assets/images/google-logo.png";
 import SectionTitle from "components/SectionTitle/SectionTitle";
 import FacebookExternalLogin from "components/ExternalLogin/FacebookExternalLogin";
 import GoogleExternalLogin from "components/ExternalLogin/GoogleExternalLogin";
+import LoginForm from "./LoginForm/LoginForm";
 
 function Login() {
     return (
         <main className="display-container">
             <login.container>
                 <SectionTitle title="Logowanie"/>
+                <LoginForm/>
                 <login.externalProviderContainer>
                     <login.text>lub</login.text>
                     <login.text>zaloguj się za pomocą:</login.text>

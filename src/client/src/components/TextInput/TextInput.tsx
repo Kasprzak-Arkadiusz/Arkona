@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import * as style from "./styled"
-import {Path, UseFormRegister, Validate} from "react-hook-form";
+import {Path, UseFormRegister} from "react-hook-form";
 import {Inputs} from "features/register/RegisterForm/RegisterForm"
 
 type InputProps = {

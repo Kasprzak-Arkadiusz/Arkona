@@ -9,10 +9,10 @@ import {Inputs} from "features/register/RegisterForm/RegisterForm";
 type InputProps = {
     label: string,
     customName: Path<Inputs>;
-    onChange: (e: React.FormEvent<HTMLInputElement>) => void;
+    onChange?: (e: React.FormEvent<HTMLInputElement>) => void;
     register: UseFormRegister<Inputs>;
     requiredResponse: string;
-    validateFunction: Validate<string>;
+    validateFunction?: Validate<string>;
 };
 
 const PasswordInput = React.forwardRef(({label, customName, onChange, register, requiredResponse, validateFunction}: InputProps, ref) => {
