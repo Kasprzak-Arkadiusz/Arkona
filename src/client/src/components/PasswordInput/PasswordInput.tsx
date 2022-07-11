@@ -1,8 +1,9 @@
 ﻿import React from 'react';
+import * as style from 'assets/styles/formStyle'
+
 import {useState} from 'react';
 import {PasswordHiddenIcon} from './PasswordHiddenIcon';
 import {PasswordShownIcon} from './PasswordShownIcon';
-import * as style from './styled'
 import {Path, UseFormRegister, Validate} from "react-hook-form";
 import {Inputs} from "features/register/RegisterForm/RegisterForm";
 
@@ -23,21 +24,21 @@ const PasswordInput = React.forwardRef(({label, customName, onChange, register, 
     };
     
     return (
-        <style.container>
-            <style.label>{label}</style.label>
-            <style.input
+        <style.InputContainer>
+            <style.Label>{label}</style.Label>
+            <style.PasswordInput
                 {...register(customName, {required: requiredResponse, validate: validateFunction})}
                 type={passwordShown ? 'text' : 'password'}
                 onChange={onChange}
             />
-            <style.iconContainer onClick={togglePassword}>
+            <style.IconContainer onClick={togglePassword}>
                 {passwordShown ? (
                     <PasswordShownIcon/>
                 ) : (
                     <PasswordHiddenIcon/>
                 )}
-            </style.iconContainer>
-        </style.container>
+            </style.IconContainer>
+        </style.InputContainer>
     );
 });
 
