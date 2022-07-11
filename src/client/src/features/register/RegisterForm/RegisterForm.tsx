@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import * as form from "./styled";
+
 import PasswordInput from "components/PasswordInput/PasswordInput";
 import TextInput from 'components/TextInput/TextInput'
 import {capitalize, toDictionary} from "utils/stringUtils"
