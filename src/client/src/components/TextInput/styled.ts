@@ -8,20 +8,6 @@ export const container = styled.div`
     display:inline-block;
 `
 
-export const validationText = styled.ul`
-    display: block;
-    margin: auto;
-    padding: 5px 10px 5px 10px;
-
-    font-size: 13px;
-    line-height: 14px;
-
-    color: ${props => props.theme.Palette.warning};
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    
-    list-style: none;
-`
-
 export const label = styled.label`
     height: 20px;
     display: block;
@@ -33,7 +19,6 @@ export const label = styled.label`
     color: ${props => props.theme.Palette.textMain};
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 `
-
 
 export const input = styled.input`
     width: calc(100% - 60px);
