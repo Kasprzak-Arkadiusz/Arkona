@@ -1,0 +1,107 @@
+﻿import React, {useState} from "react";
+import AuthContext from "./AuthContext";
+import {ServiceError, UserClient} from "generated/user/user_pb_service";
+import {
+    ExternalRegisterRequest,
+    LoginRequest,
+    LoginResponse,
+    RegisterRequest,
+    RegisterResponse
+} from "generated/user/user_pb";
+import {getStorageItem, setStorageItem} from "utils/storage";
+import {Inputs} from "features/register/RegisterForm/RegisterForm"
+import * as user_pb from "generated/user/user_pb";
+
+export enum Provider {
+    FACEBOOK = 0,
+    GOOGLE = 1
+}
+
+export const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
+    const [authData, setAuthData] = useState(getStorageItem("authData"));
+    const userClient = new UserClient(process.env.REACT_APP_SERVER_URL!);
+
+    function MapToRegisterRequest(formData: Inputs): RegisterRequest {
+        const request = new RegisterRequest();
+
+        request.setFirstname(formData.firstname);
+        request.setLastname(formData.lastname);
+        request.setEmail(formData.email);
+        request.setPassword(formData.password);
+
+        return request;
+    }
+
+    const handleSignUpResponse = (response: RegisterResponse) => {
+        response.setRole(response.getRole().toLowerCase());
+        setStorageItem("authData", response.toObject());
+        setAuthData(getStorageItem("authData"));
+    };
+
+    const signUp = (formData: Inputs, callback: (error: ServiceError | null, responseMessage: user_pb.RegisterResponse | null) => void) => {
+        const request = MapToRegisterRequest(formData);
+
+        const secondCallback = (error: ServiceError | null, responseMessage: user_pb.RegisterResponse | null) => {
+            callback(error, responseMessage);
+            if (responseMessage !== null) {
+                handleSignUpResponse(responseMessage);
+            }
+        }
+
+        userClient.register(request, secondCallback);
+    };
+
+    function MapToLoginRequest(formData: Inputs): LoginRequest {
+        const request = new LoginRequest();
+
+        request.setEmail(formData.email);
+        request.setPassword(formData.password);
+
+        return request;
+    }
+
+    const handleSignInResponse = (response: LoginResponse) => {
+        setStorageItem("authData", response);
+        setAuthData(getStorageItem("authData"));
+    };
+
+    const signIn = (formData: Inputs): string | null => {
+        const request = MapToLoginRequest(formData);
+
+        userClient.login(request, (error, responseMessage) => {
+            if (error?.message !== null) {
+                return error?.message;
+            }
+
+            if (responseMessage !== null) {
+                handleSignInResponse(responseMessage);
+            }
+        });
+
+        return null;
+    };
+
+    const externalSignUp = (accessToken: string, provider: Provider, 
+                            callback: (error: ServiceError | null, responseMessage: user_pb.RegisterResponse | null) => void) => {
+        const request = new ExternalRegisterRequest();
+        request.setAccesstoken(accessToken);
+        request.setProvider(provider);
+        
+        const secondCallback = (error: ServiceError | null, responseMessage: user_pb.RegisterResponse | null) => {
+            callback(error, responseMessage);
+            if (responseMessage !== null) {
+                handleSignUpResponse(responseMessage);
+            }
+        }
+        
+        userClient.externalRegister(request, secondCallback);        
+    }
+
+    const signOut = () => {
+        setAuthData(null);
+        setStorageItem("authData", null);
+    };
+
+    return <AuthContext.Provider
+        value={{authData, signUp, signIn, externalSignUp, signOut}}>{children}</AuthContext.Provider>;
+}

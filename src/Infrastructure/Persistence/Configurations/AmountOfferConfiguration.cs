@@ -12,9 +12,5 @@ public class AmountOfferConfiguration : IEntityTypeConfiguration<AmountOffer>
             .IsRequired();
         builder.Property(a => a.DiscountedNumberOfTickets)
             .IsRequired();
-        builder.HasMany(ao => ao.Orders)
-            .WithOne(o => o.AmountOffer)
-            .IsRequired(false)
-            .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }

@@ -8,16 +8,17 @@ public class TicketDiscount
     public decimal DiscountValue { get; private set; }
     public ICollection<Ticket> Tickets { get; private set; }
 
-    private TicketDiscount(string name, string description, decimal discountValue)
+    private TicketDiscount(byte id, string name, string description, decimal discountValue)
     {
+        Id = id;
         Name = name;
         Description = description;
         DiscountValue = discountValue;
         Tickets = new List<Ticket>();
     }
 
-    public static TicketDiscount Create(string name, string description, decimal discountValue)
+    public static TicketDiscount Create(byte id, string name, string description, decimal discountValue)
     {
-        return new TicketDiscount(name, description, discountValue);
+        return new TicketDiscount(id, name, description, discountValue);
     }
 }

@@ -9,7 +9,7 @@ public class CinemaHallConfiguration : IEntityTypeConfiguration<CinemaHall>
     public void Configure(EntityTypeBuilder<CinemaHall> builder)
     {
         builder.Property(c => c.Id)
-            .ValueGeneratedOnAdd();
+            .ValueGeneratedNever();
         builder.Property(c => c.HallNumber)
             .IsRequired();
         builder.Property(c => c.NumberOfSeats)

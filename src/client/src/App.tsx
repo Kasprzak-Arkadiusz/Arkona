@@ -1,27 +1,52 @@
 import React from 'react';
-import 'assets/index.css';
-import Navbar from 'components/layouts/Header/Navbar';
-import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
-import Home from 'pages/Home/index';
-import Repertoire from 'pages/Repertoire/index';
-import Offers from 'pages/Offers/index';
-import Tickets from 'pages/Tickets/index';
-import Login from 'pages/Login/index';
-import Register from 'pages/Register/index';
+import Navbar from 'components/Navbar/Navbar';
+import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
+import {AuthProvider} from "hooks/useAuth/AuthProvider";
 
-function App() {
+import 'assets/index.css';
+import GlobalStyle from 'assets/theme/GlobalStyles.js'
+import {ThemeProvider} from "styled-components";
+import Theme from 'assets/theme/ThemeProvider'
+import Home from "./features/home/Home";
+import Login from "./features/login/Login";
+import Register from "./features/register/Register";
+import {Role} from "./utils/CustomTypes/Role";
+import RequireAuth from "./hooks/useAuth/RequireAuth";
+import Repertoire from "./features/repertoire/Repertoire";
+import Offers from "./features/offers/Offers";
+import Tickets from "./features/tickets/Tickets";
+import Privacy from "./features/privacy/Privacy";
+
+function App() {    
     return (
         <Router>
-            <Navbar />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/repertoire" element={<Repertoire />} />
-                <Route path="/offers" element={<Offers />} />
-                <Route path="/tickets" element={<Tickets />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/*" element={<Navigate to="/" />} />
-            </Routes>
+            <AuthProvider>
+                <ThemeProvider theme={Theme}>
+                    <GlobalStyle/>
+                    <Navbar/>
+                    <Routes>
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/login" element={<Login/>}/>
+                        <Route path="/register" element={<Register/>}/>
+                        <Route path="/privacy" element={<Privacy/>}/>
+                        <Route path="/*" element={<Navigate to="/"/>}/>
+
+                        <Route path={`/${Role.client}/`}
+                               element={<RequireAuth role={Role.client}/>}>
+                            <Route path="repertoire" element={<Repertoire/>}/>
+                            <Route path="offers" element={<Offers/>}/>
+                            <Route path="tickets" element={<Tickets/>}/>
+                        </Route>)
+                        
+                        <Route path={`/${Role.worker}/`}
+                               element={<RequireAuth role={Role.worker}/>}>
+                            <Route path="repertoire" element={<Repertoire/>}/>
+                            <Route path="offers" element={<Offers/>}/>
+                            <Route path="tickets" element={<Tickets/>}/>
+                        </Route>
+                    </Routes>
+                </ThemeProvider>
+            </AuthProvider>
         </Router>
     );
 }

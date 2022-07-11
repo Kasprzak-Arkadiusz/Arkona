@@ -13,9 +13,5 @@ public class AgeOfferConfiguration : IEntityTypeConfiguration<AgeOffer>
         builder.HasOne(ao => ao.AgeRestriction)
             .WithOne(ac => ac.AgeOffer)
             .HasForeignKey<AgeOffer>(ao => ao.AgeRestrictionId);
-        builder.HasMany(ao => ao.Orders)
-            .WithOne(o => o.AgeOffer)
-            .IsRequired(false)
-            .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }

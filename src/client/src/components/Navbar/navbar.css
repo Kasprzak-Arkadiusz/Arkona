@@ -1,0 +1,23 @@
+﻿#login-link {
+    margin-left: auto;
+}
+
+#register-link{
+    margin-right: 10px;
+}
+
+@media only screen and (max-width: 840px) {
+    #first-link {
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+    }
+
+    #register-link {
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
+    
+    #login-link {
+        margin-left: 10px;
+    }
+}

@@ -9,6 +9,7 @@ public abstract class Offer
     public Period ValidPeriod { get; private set; }
     public string Description { get; private set; }
     public decimal DiscountValue { get; private set; }
+    public ICollection<Order> Orders { get; private set; }
 
     protected Offer() { }
 
@@ -19,6 +20,15 @@ public abstract class Offer
         DiscountValue = discountValue;
         ValidPeriod = validPeriod;
         ValidPeriod = validPeriod;
+        Orders = new List<Order>();
+    }
+
+    public virtual void ApplyOffer(List<Ticket> tickets)
+    {
+        foreach (var ticket in tickets.Where(ticket => !ticket.IsTicketDiscountApplied()))
+        {
+            ticket.Price.ApplyDiscount(DiscountValue);
+        }
     }
 
     protected void ExtendTheOffer(DateOnly validTo)

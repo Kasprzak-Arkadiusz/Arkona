@@ -14,6 +14,7 @@ public class CinemaHall
 
     private CinemaHall(byte hallNumber, short numberOfSeats, short numberOfSeatsInRow)
     {
+        Id = hallNumber;
         HallNumber = hallNumber;
         NumberOfSeats = numberOfSeats;
         Seats = new List<Seat>();
