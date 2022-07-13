@@ -10,7 +10,7 @@ type UserRegister = {
   readonly requestStream: false;
   readonly responseStream: false;
   readonly requestType: typeof user_pb.RegisterRequest;
-  readonly responseType: typeof user_pb.RegisterResponse;
+  readonly responseType: typeof user_pb.AuthenticationResponse;
 };
 
 type UserExternalRegister = {
@@ -19,7 +19,7 @@ type UserExternalRegister = {
   readonly requestStream: false;
   readonly responseStream: false;
   readonly requestType: typeof user_pb.ExternalRegisterRequest;
-  readonly responseType: typeof user_pb.RegisterResponse;
+  readonly responseType: typeof user_pb.AuthenticationResponse;
 };
 
 type UserLogin = {
@@ -28,7 +28,7 @@ type UserLogin = {
   readonly requestStream: false;
   readonly responseStream: false;
   readonly requestType: typeof user_pb.LoginRequest;
-  readonly responseType: typeof user_pb.LoginResponse;
+  readonly responseType: typeof user_pb.AuthenticationResponse;
 };
 
 export class User {
@@ -73,29 +73,29 @@ export class UserClient {
   register(
     requestMessage: user_pb.RegisterRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: user_pb.RegisterResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: user_pb.AuthenticationResponse|null) => void
   ): UnaryResponse;
   register(
     requestMessage: user_pb.RegisterRequest,
-    callback: (error: ServiceError|null, responseMessage: user_pb.RegisterResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: user_pb.AuthenticationResponse|null) => void
   ): UnaryResponse;
   externalRegister(
     requestMessage: user_pb.ExternalRegisterRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: user_pb.RegisterResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: user_pb.AuthenticationResponse|null) => void
   ): UnaryResponse;
   externalRegister(
     requestMessage: user_pb.ExternalRegisterRequest,
-    callback: (error: ServiceError|null, responseMessage: user_pb.RegisterResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: user_pb.AuthenticationResponse|null) => void
   ): UnaryResponse;
   login(
     requestMessage: user_pb.LoginRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: user_pb.LoginResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: user_pb.AuthenticationResponse|null) => void
   ): UnaryResponse;
   login(
     requestMessage: user_pb.LoginRequest,
-    callback: (error: ServiceError|null, responseMessage: user_pb.LoginResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: user_pb.AuthenticationResponse|null) => void
   ): UnaryResponse;
 }
 

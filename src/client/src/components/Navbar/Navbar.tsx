@@ -79,7 +79,7 @@ const Navbar = () => {
         }else {
             return (
                 <navbar.NavLinks>
-                    <navbar.Li id="login-link">
+                    <navbar.Li id="register-link">
                         <navbar.SignOut onClick={() => auth.signOut()}>
                             Wyloguj
                         </navbar.SignOut>
@@ -88,7 +88,6 @@ const Navbar = () => {
             ) 
         }
     }
-
     return (
         <navbar.Header>
             <navbar.HeaderContent>

@@ -30,7 +30,7 @@ public class ErrorHandlingInterceptor : Interceptor
             AlreadyExistsException => StatusCode.AlreadyExists,
             NotFoundException => StatusCode.NotFound,
             InvalidArgumentException => StatusCode.InvalidArgument,
-            UnauthorizedException => StatusCode.InvalidArgument,
+            UnauthorizedException => StatusCode.Unauthenticated,
             ExternalServiceException => StatusCode.Unavailable,
             InternalServerException => ((Func<StatusCode>)(() =>
             {

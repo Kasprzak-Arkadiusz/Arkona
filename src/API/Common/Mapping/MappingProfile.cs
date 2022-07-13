@@ -7,6 +7,6 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<AuthViewModel, RegisterResponse>();
+        CreateMap<AuthViewModel, AuthenticationResponse>();
     }
 }

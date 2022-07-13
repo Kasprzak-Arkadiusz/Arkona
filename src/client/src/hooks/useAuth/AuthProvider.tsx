@@ -2,15 +2,13 @@
 import AuthContext from "./AuthContext";
 import {ServiceError, UserClient} from "generated/user/user_pb_service";
 import {
+    AuthenticationResponse,
     ExternalRegisterRequest,
     LoginRequest,
-    LoginResponse,
-    RegisterRequest,
-    RegisterResponse
+    RegisterRequest
 } from "generated/user/user_pb";
 import {getStorageItem, setStorageItem} from "utils/storage";
 import {Inputs} from "features/register/RegisterForm/RegisterForm"
-import * as user_pb from "generated/user/user_pb";
 
 export enum Provider {
     FACEBOOK = 0,
@@ -32,16 +30,16 @@ export const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
         return request;
     }
 
-    const handleSignUpResponse = (response: RegisterResponse) => {
+    const handleSignUpResponse = (response: AuthenticationResponse) => {
         response.setRole(response.getRole().toLowerCase());
         setStorageItem("authData", response.toObject());
         setAuthData(getStorageItem("authData"));
     };
 
-    const signUp = (formData: Inputs, callback: (error: ServiceError | null, responseMessage: user_pb.RegisterResponse | null) => void) => {
+    const signUp = (formData: Inputs, callback: (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => void) => {
         const request = MapToRegisterRequest(formData);
 
-        const secondCallback = (error: ServiceError | null, responseMessage: user_pb.RegisterResponse | null) => {
+        const secondCallback = (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => {
             callback(error, responseMessage);
             if (responseMessage !== null) {
                 handleSignUpResponse(responseMessage);
@@ -60,41 +58,39 @@ export const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
         return request;
     }
 
-    const handleSignInResponse = (response: LoginResponse) => {
-        setStorageItem("authData", response);
+    const handleSignInResponse = (response: AuthenticationResponse) => {
+        response.setRole(response.getRole().toLowerCase());
+        setStorageItem("authData", response.toObject());
         setAuthData(getStorageItem("authData"));
     };
 
-    const signIn = (formData: Inputs): string | null => {
+    const signIn = (formData: Inputs, callback: (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => void) => {
         const request = MapToLoginRequest(formData);
 
-        userClient.login(request, (error, responseMessage) => {
-            if (error?.message !== null) {
-                return error?.message;
-            }
-
+        const secondCallback = (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => {
+            callback(error, responseMessage);
             if (responseMessage !== null) {
                 handleSignInResponse(responseMessage);
             }
-        });
+        }
 
-        return null;
+        userClient.login(request, secondCallback);
     };
 
-    const externalSignUp = (accessToken: string, provider: Provider, 
-                            callback: (error: ServiceError | null, responseMessage: user_pb.RegisterResponse | null) => void) => {
+    const externalSignUp = (accessToken: string, provider: Provider,
+                            callback: (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => void) => {
         const request = new ExternalRegisterRequest();
         request.setAccesstoken(accessToken);
         request.setProvider(provider);
-        
-        const secondCallback = (error: ServiceError | null, responseMessage: user_pb.RegisterResponse | null) => {
+
+        const secondCallback = (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => {
             callback(error, responseMessage);
             if (responseMessage !== null) {
                 handleSignUpResponse(responseMessage);
             }
         }
-        
-        userClient.externalRegister(request, secondCallback);        
+
+        userClient.externalRegister(request, secondCallback);
     }
 
     const signOut = () => {

@@ -89,10 +89,11 @@ export const Li = styled.li`
 `
 
 export const NavLinks = styled.ul`
-    width: 100%;
+    width: auto;
     display: flex;
     padding-left: 0;
     list-style-type: none;
+    margin-left: auto;
     
     @media only screen and (max-width: 840px) { 
         flex-direction: column;
