@@ -40,7 +40,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
             new RegisterParams(command.FirstName, command.LastName, command.Email, Role.Client, command.Password));
 
         var accessToken = _securityTokenService
-            .GenerateAccessTokenForUser(user.Id, user.Email, user.FirstName, user.LastName, Role.Client);
+            .GenerateAccessTokenForUser(user.Id, user.Email, user.FirstName, user.LastName, user.Role);
 
         return new AuthViewModel
         {
@@ -49,7 +49,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
             FirstName = user.FirstName,
             LastName = user.LastName,
             Id = user.Id,
-            Role = Role.Client.ToString()
+            Role = user.Role.ToString()
         };
     }
 }

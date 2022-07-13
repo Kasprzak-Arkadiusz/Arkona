@@ -38,7 +38,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthVie
             var user = await _authenticationService.LoginUserAsync(command.Email, command.Password);
 
             var accessToken = _securityTokenService.GenerateAccessTokenForUser(user.Id, user.Email, user.FirstName,
-                user.LastName, Role.Client);
+                user.LastName, user.Role);
 
             return new AuthViewModel
             {
@@ -47,7 +47,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthVie
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Id = user.Id,
-                Role = Role.Client.ToString()
+                Role = user.Role.ToString()
             };
         }
         catch (NotFoundException e)
