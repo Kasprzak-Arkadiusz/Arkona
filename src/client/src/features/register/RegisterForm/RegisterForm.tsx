@@ -1,11 +1,13 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
-import * as form from "./styled";
+import * as form from "assets/styles/formStyle";
+
+import {useForm, SubmitHandler, MultipleFieldErrors} from "react-hook-form";
 import PasswordInput from "components/PasswordInput/PasswordInput";
 import TextInput from 'components/TextInput/TextInput'
-import {capitalize, toDictionary} from "utils/stringUtils"
+import ValidationTexts from "components/ValidationTexts/ValidationTexts";
 import useAuth from "hooks/useAuth/useAuth";
-import {useForm, SubmitHandler, MultipleFieldErrors, Message, FieldError} from "react-hook-form";
+import {capitalize, toDictionary} from "utils/stringUtils"
 import {ServiceError} from "generated/user/user_pb_service";
 
 const inputLabels: { [key: string]: string } = {
@@ -115,57 +117,32 @@ function RegisterForm() {
         setPasswordsError(passwordFieldValue, repeatPasswordFieldValue);
     };
 
-    const toMultipleValidationTexts = (errors: FieldError | undefined): JSX.Element[] | undefined => {
-        if (errors === undefined || errors.types === undefined) {
-            return undefined;
-        }
-        
-        let errorArray: JSX.Element[] = [];
-
-        if (errors.types.required) {
-            errorArray.push(<form.ValidationText key={"requiredField"}>{errors.types.required}</form.ValidationText>)
-            return errorArray;
-        }
-
-        if (typeof (errors.types?.validate) === "string") {
-            errorArray.push(<form.ValidationText key={"singleValidate"}>{errors.types.validate}</form.ValidationText>)
-            return errorArray;
-        }
-
-        let messageArray = errors.types?.validate as Message[];
-        errorArray = messageArray.map((item, index) => {
-            return <form.ValidationText key={index}>{item}</form.ValidationText>
-        })
-
-        return errorArray;
-    }
-
     return (
         <form.Container onSubmit={handleSubmit(onSubmit)}>
             <form.ValidationText key={"generalError"}>{generalError}</form.ValidationText>
-            {toMultipleValidationTexts(errors.firstname)}
+            <ValidationTexts errors={errors.firstname}/>
             <TextInput label={`${capitalize(inputLabels["firstname"])}:`}
                        customName="firstname"
                        register={register}
                        requiredResponse={`Pole ${inputLabels["firstname"]} jest wymagane`}/>
-            {toMultipleValidationTexts(errors.lastname)}
+            <ValidationTexts errors={errors.lastname}/>
             <TextInput label={`${capitalize(inputLabels["lastname"])}:`}
                        customName="lastname"
                        register={register}
                        requiredResponse={`Pole ${inputLabels["lastname"]} jest wymagane`}/>
-            {toMultipleValidationTexts(errors.email)}
+            <ValidationTexts errors={errors.email}/>
             <TextInput label={`${capitalize(inputLabels["email"])}:`}
                        customName="email"
                        register={register}
                        requiredResponse={`Pole ${inputLabels["email"]} jest wymagane`}/>
-            {toMultipleValidationTexts(errors.password)}
+            <ValidationTexts errors={errors.password}/>
             <PasswordInput label={`${capitalize(inputLabels["password"])}:`}
                            customName="password"
                            onChange={handlePasswordChange}
                            register={register}
                            requiredResponse={`Pole ${inputLabels["password"]} jest wymagane`}
                            validateFunction={value => value === getValues("repeatPassword") || differentPasswordsErrorMessage}/>
-            {toMultipleValidationTexts(errors.repeatPassword)}
+            <ValidationTexts errors={errors.repeatPassword}/>
             <PasswordInput label={`${capitalize(inputLabels["repeatPassword"])}:`}
                            customName="repeatPassword"
                            onChange={handleRepeatPasswordChange}

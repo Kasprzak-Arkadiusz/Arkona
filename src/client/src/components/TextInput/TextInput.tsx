@@ -1,6 +1,6 @@
 ﻿import React from 'react';
-import * as style from "./styled"
-import {Path, UseFormRegister, Validate} from "react-hook-form";
+import * as style from "assets/styles/formStyle"
+import {Path, UseFormRegister} from "react-hook-form";
 import {Inputs} from "features/register/RegisterForm/RegisterForm"
 
 type InputProps = {
@@ -12,10 +12,10 @@ type InputProps = {
 
 const TextInput = React.forwardRef(({label, customName, register, requiredResponse}: InputProps, ref) => {
     return (
-        <style.container>
-            <style.label>{label}</style.label>
-            <style.input {...register(customName, {required: requiredResponse})} type="text"></style.input>
-        </style.container>
+        <style.InputContainer>
+            <style.Label>{label}</style.Label>
+            <style.Input {...register(customName, {required: requiredResponse})} type="text"/>
+        </style.InputContainer>
     )
 });
 

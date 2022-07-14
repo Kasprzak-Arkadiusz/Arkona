@@ -1,8 +1,8 @@
-﻿import { RegisterResponse } from "generated/user/user_pb";
+﻿import { AuthenticationResponse } from "generated/user/user_pb";
 
 const storage = localStorage;
 
-export function getStorageItem (key: string): RegisterResponse.AsObject | null {
+export function getStorageItem (key: string): AuthenticationResponse.AsObject | null {
     try {
         const serializedItem = storage.getItem(key);
 
@@ -10,7 +10,7 @@ export function getStorageItem (key: string): RegisterResponse.AsObject | null {
             return null;
         }
         const parsed = JSON.parse(serializedItem);
-        return Object.assign(new RegisterResponse(), parsed)
+        return Object.assign(new AuthenticationResponse(), parsed)
     } catch (error) {
         return null;
     }

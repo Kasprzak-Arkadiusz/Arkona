@@ -66,7 +66,7 @@ export namespace ExternalRegisterRequest {
   export const Provider: ProviderMap;
 }
 
-export class RegisterResponse extends jspb.Message {
+export class AuthenticationResponse extends jspb.Message {
   getAccesstoken(): string;
   setAccesstoken(value: string): void;
 
@@ -86,16 +86,16 @@ export class RegisterResponse extends jspb.Message {
   setLastname(value: string): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): RegisterResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: RegisterResponse): RegisterResponse.AsObject;
+  toObject(includeInstance?: boolean): AuthenticationResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: AuthenticationResponse): AuthenticationResponse.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: RegisterResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): RegisterResponse;
-  static deserializeBinaryFromReader(message: RegisterResponse, reader: jspb.BinaryReader): RegisterResponse;
+  static serializeBinaryToWriter(message: AuthenticationResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): AuthenticationResponse;
+  static deserializeBinaryFromReader(message: AuthenticationResponse, reader: jspb.BinaryReader): AuthenticationResponse;
 }
 
-export namespace RegisterResponse {
+export namespace AuthenticationResponse {
   export type AsObject = {
     accesstoken: string,
     id: string,
@@ -127,26 +127,6 @@ export namespace LoginRequest {
   export type AsObject = {
     email: string,
     password: string,
-  }
-}
-
-export class LoginResponse extends jspb.Message {
-  getAccesstoken(): string;
-  setAccesstoken(value: string): void;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): LoginResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: LoginResponse): LoginResponse.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: LoginResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): LoginResponse;
-  static deserializeBinaryFromReader(message: LoginResponse, reader: jspb.BinaryReader): LoginResponse;
-}
-
-export namespace LoginResponse {
-  export type AsObject = {
-    accesstoken: string,
   }
 }
 

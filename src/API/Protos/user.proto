@@ -5,9 +5,9 @@ option csharp_namespace = "API";
 package user;
 
 service User {
-  rpc Register(RegisterRequest) returns (RegisterResponse);
-  rpc ExternalRegister(ExternalRegisterRequest) returns (RegisterResponse);
-  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc Register(RegisterRequest) returns (AuthenticationResponse);
+  rpc ExternalRegister(ExternalRegisterRequest) returns (AuthenticationResponse);
+  rpc Login(LoginRequest) returns (AuthenticationResponse);
 }
 
 message RegisterRequest {
@@ -26,7 +26,7 @@ message ExternalRegisterRequest {
   Provider provider    = 2;
 }
 
-message RegisterResponse {
+message AuthenticationResponse {
   string accessToken = 1;
   string id          = 2;
   string email       = 3;
@@ -38,8 +38,4 @@ message RegisterResponse {
 message LoginRequest {
   string email    = 1;
   string password = 2;
-}
-
-message LoginResponse {
-  string accessToken = 1;
 }

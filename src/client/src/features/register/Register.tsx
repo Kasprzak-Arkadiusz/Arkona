@@ -1,17 +1,17 @@
 ﻿import React from 'react';
+import * as register from 'assets/styles/authenticationStyle'
 import facebook from 'assets/images/facebook-logo.png';
 import google from 'assets/images/google-logo.png';
 
 import SectionTitle from 'components/SectionTitle/SectionTitle'
 import RegisterForm from './RegisterForm/RegisterForm'
-import * as register from './styled'
-import FacebookExternalLogin from "./ExternalLogin/FacebookExternalLogin";
-import GoogleExternalLogin from "./ExternalLogin/GoogleExternalLogin";
+import FacebookExternalLogin from "components/ExternalLogin/FacebookExternalLogin";
+import GoogleExternalLogin from "components/ExternalLogin/GoogleExternalLogin";
 
 function Register() {
     return (
         <main className="display-container">
-            <register.registerContainer>
+            <register.container>
                 <SectionTitle title="Rejestracja"/>
                 <RegisterForm/>
                 <register.externalProviderContainer>
@@ -20,13 +20,13 @@ function Register() {
                     <FacebookExternalLogin imgSource={facebook} providerName="Facebook" buttonText="Facebooka"/>
                     <GoogleExternalLogin imgSource={google} providerName="Google" buttonText="Google"/>
                 </register.externalProviderContainer>
-                <register.haveAnAccountContainer>
-                    <register.haveAnAccountContainerSpan>Masz już konto?</register.haveAnAccountContainerSpan>
-                    <register.haveAnAccountContainerLink to="/login">
+                <register.redirectContainer>
+                    <register.redirectContainerSpan>Masz już konto?</register.redirectContainerSpan>
+                    <register.redirectContainerLink to="/login">
                         Zaloguj się
-                    </register.haveAnAccountContainerLink>
-                </register.haveAnAccountContainer>
-            </register.registerContainer>
+                    </register.redirectContainerLink>
+                </register.redirectContainer>
+            </register.container>
         </main>
     );
 }

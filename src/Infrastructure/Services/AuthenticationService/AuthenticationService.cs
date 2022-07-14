@@ -147,10 +147,12 @@ public class AuthenticationService : IAuthenticationService
 
         if (appUser != null)
         {
-            return _mapper.Map<User>(appUser);
+            var mappedUser = _mapper.Map<User>(appUser);
+            await AssignRoleAsync(mappedUser, appUser);
+            return mappedUser;
         }
 
-        var user = new AppUser
+        appUser = new AppUser
         {
             Id = Guid.NewGuid().ToString(),
             Email = userInfo.Email,
@@ -158,15 +160,27 @@ public class AuthenticationService : IAuthenticationService
             EmailConfirmed = true,
             LockoutEnabled = false
         };
-        user.SetName(userInfo.FirstName, userInfo.LastName);
+        appUser.SetName(userInfo.FirstName, userInfo.LastName);
 
-        var createdResult = await _userManager.CreateAsync(user);
+        var createdResult = await _userManager.CreateAsync(appUser);
         if (!createdResult.Succeeded)
         {
             throw new InternalServerException();
         }
 
-        return _mapper.Map<User>(user);
+        await _userManager.AddToRoleAsync(appUser, Role.Client.ToString());
+
+        var user = _mapper.Map<User>(appUser);
+        await AssignRoleAsync(user, appUser);
+        return user;
+    }
+
+    private async Task AssignRoleAsync(User user, AppUser appUser)
+    {
+        var userRole = (await _userManager.IsInRoleAsync(appUser, Role.Worker.ToString()))
+            ? Role.Worker
+            : Role.Client;
+        user.SetRole(userRole);
     }
 
     public async Task<User> LoginWithGoogleAsync(string code)
@@ -178,10 +192,12 @@ public class AuthenticationService : IAuthenticationService
 
         if (appUser != null)
         {
-            return _mapper.Map<User>(appUser);
+            var mappedUser = _mapper.Map<User>(appUser);
+            await AssignRoleAsync(mappedUser, appUser);
+            return mappedUser;
         }
 
-        var user = new AppUser
+        appUser = new AppUser
         {
             Id = Guid.NewGuid().ToString(),
             Email = userInfo.Email,
@@ -189,14 +205,18 @@ public class AuthenticationService : IAuthenticationService
             EmailConfirmed = true,
             LockoutEnabled = false
         };
-        user.SetName(userInfo.GivenName, userInfo.FamilyName);
+        appUser.SetName(userInfo.GivenName, userInfo.FamilyName);
 
-        var createdResult = await _userManager.CreateAsync(user);
+        var createdResult = await _userManager.CreateAsync(appUser);
         if (!createdResult.Succeeded)
         {
             throw new InternalServerException();
         }
 
-        return _mapper.Map<User>(user);
+        await _userManager.AddToRoleAsync(appUser, Role.Client.ToString());
+        
+        var user = _mapper.Map<User>(appUser);
+        await AssignRoleAsync(user, appUser);
+        return user;
     }
 }

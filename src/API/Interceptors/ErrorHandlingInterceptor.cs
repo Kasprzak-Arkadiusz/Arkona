@@ -30,17 +30,17 @@ public class ErrorHandlingInterceptor : Interceptor
             AlreadyExistsException => StatusCode.AlreadyExists,
             NotFoundException => StatusCode.NotFound,
             InvalidArgumentException => StatusCode.InvalidArgument,
-            UnauthorizedException => StatusCode.InvalidArgument,
+            UnauthorizedException => StatusCode.Unauthenticated,
             ExternalServiceException => StatusCode.Unavailable,
             InternalServerException => ((Func<StatusCode>)(() =>
             {
-                Log.Warning(exception, "Internal server exception occured");
+                Log.Error(exception, "Internal server exception occured");
                 message = "Ups, coś poszło nie tak.";
                 return StatusCode.Unknown;
             }))(),
             _ => ((Func<StatusCode>)(() =>
             {
-                Log.Warning(exception, "Unexpected exception occured");
+                Log.Error(exception, "Unexpected exception occured");
                 message = "Ups, coś poszło nie tak.";
                 return StatusCode.Unknown;
             }))()

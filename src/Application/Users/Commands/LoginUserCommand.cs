@@ -1,12 +1,13 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.ViewModels;
 using Domain.Enums;
 using MediatR;
 using Serilog;
 
 namespace Application.Users.Commands;
 
-public class LoginUserCommand : IRequest<string>
+public class LoginUserCommand : IRequest<AuthViewModel>
 {
     public string Email { get; }
     public string Password { get; }
@@ -18,7 +19,7 @@ public class LoginUserCommand : IRequest<string>
     }
 }
 
-public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, string>
+public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthViewModel>
 {
     private readonly IAuthenticationService _authenticationService;
     private readonly ISecurityTokenService _securityTokenService;
@@ -30,16 +31,24 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, string>
         _securityTokenService = securityTokenService;
     }
 
-    public async Task<string> Handle(LoginUserCommand command, CancellationToken cancellationToken)
+    public async Task<AuthViewModel> Handle(LoginUserCommand command, CancellationToken cancellationToken)
     {
         try
         {
             var user = await _authenticationService.LoginUserAsync(command.Email, command.Password);
 
             var accessToken = _securityTokenService.GenerateAccessTokenForUser(user.Id, user.Email, user.FirstName,
-                user.LastName, Role.Client);
+                user.LastName, user.Role);
 
-            return accessToken;
+            return new AuthViewModel
+            {
+                AccessToken = accessToken,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Id = user.Id,
+                Role = user.Role.ToString()
+            };
         }
         catch (NotFoundException e)
         {

@@ -1,7 +1,7 @@
 ﻿import styled from "styled-components";
 import {Link} from "react-router-dom";
 
-export const registerContainer = styled.div`
+export const container = styled.div`
     margin: 40px 12px auto 12px;
     text-align: center;
 
@@ -29,19 +29,19 @@ export const text = styled.span`
     color: ${props => props.theme.Palette.textMain};
 `
 
-export const haveAnAccountContainer = styled.section`
+export const redirectContainer = styled.section`
     width: 340px;
     margin: 10px auto 0 auto;
     display: block;
     padding: 0 0 10px 0;
 `
 
-export const haveAnAccountContainerSpan =styled.span`
+export const redirectContainerSpan =styled.span`
     line-height: 14px;
     margin: 0 5px 0 auto;
 `
 
-export const haveAnAccountContainerLink =styled(Link)`
+export const redirectContainerLink =styled(Link)`
     font-family: ${props => props.theme.Fonts.casual};
     font-style: normal;
     font-weight: 500;

@@ -11,10 +11,6 @@ interface Props {
     onClick?: () => void | undefined;
 }
 
-interface ErrorResponse {
-    error: string
-}
-
 interface SuccessResponse {
     authuser: string,
     code: string,
@@ -41,9 +37,6 @@ function GoogleExternalLogin({providerName, buttonText, imgSource}: Props) {
                             setErrorMessage(error.message);
                         }
                     });
-                }
-                const errorResponse = response as ErrorResponse;
-                if (errorResponse.error !== undefined){
                 }
             },
         });

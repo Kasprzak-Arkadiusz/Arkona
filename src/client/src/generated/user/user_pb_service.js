@@ -16,7 +16,7 @@ User.Register = {
   requestStream: false,
   responseStream: false,
   requestType: user_pb.RegisterRequest,
-  responseType: user_pb.RegisterResponse
+  responseType: user_pb.AuthenticationResponse
 };
 
 User.ExternalRegister = {
@@ -25,7 +25,7 @@ User.ExternalRegister = {
   requestStream: false,
   responseStream: false,
   requestType: user_pb.ExternalRegisterRequest,
-  responseType: user_pb.RegisterResponse
+  responseType: user_pb.AuthenticationResponse
 };
 
 User.Login = {
@@ -34,7 +34,7 @@ User.Login = {
   requestStream: false,
   responseStream: false,
   requestType: user_pb.LoginRequest,
-  responseType: user_pb.LoginResponse
+  responseType: user_pb.AuthenticationResponse
 };
 
 exports.User = User;

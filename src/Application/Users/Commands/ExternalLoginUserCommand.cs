@@ -1,7 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.ViewModels;
-using Domain.Enums;
 using MediatR;
 
 namespace Application.Users.Commands;
@@ -40,7 +39,7 @@ public class ExternalLoginUserCommandHandler : IRequestHandler<ExternalLoginUser
         };
         
         var accessToken = _securityTokenService
-            .GenerateAccessTokenForUser(user.Id, user.Email, user.FirstName, user.LastName, Role.Client);
+            .GenerateAccessTokenForUser(user.Id, user.Email, user.FirstName, user.LastName, user.Role);
 
         return new AuthViewModel
         {
@@ -49,7 +48,7 @@ public class ExternalLoginUserCommandHandler : IRequestHandler<ExternalLoginUser
             FirstName = user.FirstName,
             LastName = user.LastName,
             Id = user.Id,
-            Role = Role.Client.ToString()
+            Role = user.Role.ToString()
         };
     }
 }
