@@ -9,6 +9,7 @@ import {
 } from "generated/user/user_pb";
 import {getStorageItem, setStorageItem} from "utils/storage";
 import {Inputs} from "features/register/RegisterForm/RegisterForm"
+import {facebookLogOut} from "components/ExternalLogin/FacebookExternalLogin"
 
 export enum Provider {
     FACEBOOK = 0,
@@ -94,6 +95,7 @@ export const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
     }
 
     const signOut = () => {
+        facebookLogOut();
         setAuthData(null);
         setStorageItem("authData", null);
     };

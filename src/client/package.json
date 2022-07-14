@@ -8,6 +8,7 @@
         "@azure/msal-react": "^1.4.3",
         "@greatsumini/react-facebook-login": "^3.2.0",
         "@improbable-eng/grpc-web": "^0.15.0",
+        "@types/facebook-js-sdk": "^3.3.5",
         "@types/react": "^17.0.43",
         "@types/react-dom": "^17.0.14",
         "abab": "^2.0.5",

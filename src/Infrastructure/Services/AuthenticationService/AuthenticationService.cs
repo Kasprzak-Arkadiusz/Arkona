@@ -8,7 +8,6 @@ using Domain.Enums;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
 
 namespace Infrastructure.Services.AuthenticationService;
 
