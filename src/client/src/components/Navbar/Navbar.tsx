@@ -6,6 +6,7 @@ import * as navbar from "./styled"
 import {Role} from "utils/CustomTypes/Role";
 import useAuth from "hooks/useAuth/useAuth";
 import RequireAuth from "../../hooks/useAuth/RequireAuth";
+import {DefaultNavLinks, DefaultNavLinksContainer} from "./styled";
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
@@ -15,21 +16,11 @@ const Navbar = () => {
     const OnNavClick = () => {
         setOpen(false);
     }
-    
+
     const getClientNavLinks = (): JSX.Element => {
         return (
             <navbar.NavLinks>
                 <navbar.Li id="first-link">
-                    <navbar.NavLink to="/client/repertoire" onClick={OnNavClick}>
-                        Repertuar
-                    </navbar.NavLink>
-                </navbar.Li>
-                <navbar.Li>
-                    <navbar.NavLink to="/client/offers" onClick={OnNavClick}>
-                        Promocje
-                    </navbar.NavLink>
-                </navbar.Li>
-                <navbar.Li>
                     <navbar.NavLink to="/client/tickets" onClick={OnNavClick}>
                         Bilety
                     </navbar.NavLink>
@@ -42,16 +33,6 @@ const Navbar = () => {
         return (
             <navbar.NavLinks>
                 <navbar.Li id="first-link">
-                    <navbar.NavLink to="/worker/repertoire" onClick={OnNavClick}>
-                        Repertuar
-                    </navbar.NavLink>
-                </navbar.Li>
-                <navbar.Li>
-                    <navbar.NavLink to="/worker/offers" onClick={OnNavClick}>
-                        Promocje
-                    </navbar.NavLink>
-                </navbar.Li>
-                <navbar.Li>
                     <navbar.NavLink to="/worker/tickets" onClick={OnNavClick}>
                         Bilety
                     </navbar.NavLink>
@@ -60,10 +41,10 @@ const Navbar = () => {
         )
     }
 
-    const getDefaultNavLinks = (): JSX.Element => {
-        if (role === undefined){
+    const getAuthenticationNavLinks = (): JSX.Element => {
+        if (role === undefined) {
             return (
-                <navbar.NavLinks>
+                <navbar.DefaultNavLinks>
                     <navbar.Li id="login-link">
                         <navbar.NavLink to="/login" onClick={OnNavClick}>
                             Zaloguj
@@ -74,20 +55,38 @@ const Navbar = () => {
                             Zarejestruj
                         </navbar.NavLink>
                     </navbar.Li>
-                </navbar.NavLinks>
+                </navbar.DefaultNavLinks>
             )
-        }else {
+        } else {
             return (
-                <navbar.NavLinks>
+                <navbar.DefaultNavLinks>
                     <navbar.Li id="register-link">
                         <navbar.SignOut onClick={() => auth.signOut()}>
                             Wyloguj
                         </navbar.SignOut>
                     </navbar.Li>
-                </navbar.NavLinks>
-            ) 
+                </navbar.DefaultNavLinks>
+            )
         }
     }
+    
+    const getDefaultNavLinks = () : JSX.Element => {
+        return (
+            <navbar.DefaultNavLinks>
+                <navbar.Li id="first-link">
+                    <navbar.NavLink to="/worker/repertoire" onClick={OnNavClick}>
+                        Repertuar
+                    </navbar.NavLink>
+                </navbar.Li>
+                <navbar.Li>
+                    <navbar.NavLink to="/worker/offers" onClick={OnNavClick}>
+                        Promocje
+                    </navbar.NavLink>
+                </navbar.Li>
+            </navbar.DefaultNavLinks>
+        )
+    }
+    
     return (
         <navbar.Header>
             <navbar.HeaderContent>
@@ -96,11 +95,12 @@ const Navbar = () => {
                     <navbar.LogoTitle>Arkona</navbar.LogoTitle>
                 </navbar.HomeLink>
                 <navbar.NavLinksContainer isOpened={open}>
+                    {getDefaultNavLinks()}
                     {
                         <RequireAuth role={role ?? ""}/> && (
                             role === Role.client && getClientNavLinks() ||
                             role === Role.worker && getWorkerNavLinks())}
-                    {getDefaultNavLinks()}
+                    {getAuthenticationNavLinks()}
                 </navbar.NavLinksContainer>
                 <navbar.NavIcon onClick={() => setOpen(!open)}>
                     {open ? <FiX/> : <FiMenu/>}

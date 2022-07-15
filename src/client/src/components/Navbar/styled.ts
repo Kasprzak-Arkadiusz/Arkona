@@ -88,7 +88,7 @@ export const Li = styled.li`
     }
 `
 
-export const NavLinks = styled.ul`
+export const DefaultNavLinks = styled.ul`
     width: auto;
     display: flex;
     padding-left: 0;
@@ -99,6 +99,10 @@ export const NavLinks = styled.ul`
         flex-direction: column;
         margin: 0px;
     }
+`
+
+export const NavLinks = styled(DefaultNavLinks)`
+    margin-left: 0px;
 `
 
 export const NavIcon = styled.div`
@@ -136,4 +140,10 @@ export const NavLinksContainer = styled.div<IProps>`
                 `
         }
     }
+`
+
+export const DefaultNavLinksContainer = styled.div`
+    display: flex;
+    width: 100%;
+    left: 0px;
 `
