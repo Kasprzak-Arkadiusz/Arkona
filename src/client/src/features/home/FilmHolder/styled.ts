@@ -1,11 +1,14 @@
 ﻿import styled from "styled-components";
 
-export const Container = styled.div`
+export const Container = styled.a`
     width: 220px;
     max-width: 220px;
     height: auto;
     line-height: 20px;
     margin: 20px auto 10px;
+    text-decoration: none;
+    
+    cursor: pointer;
 `
 
 export const Image = styled.img`
@@ -13,7 +16,7 @@ export const Image = styled.img`
     height: 320px;
 `
 
-export const Title = styled.a`
+export const Title = styled.span`
     height: auto;
     max-width: inherit;
 

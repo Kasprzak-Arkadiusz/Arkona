@@ -1,4 +1,4 @@
-﻿import React, {useEffect, useState} from 'react';
+﻿import React, {useState} from 'react';
 import {FiMenu, FiX} from 'react-icons/fi';
 import {Logo} from 'assets/icons/Logo/Logo';
 import './navbar.css';
@@ -6,13 +6,12 @@ import * as navbar from "./styled"
 import {Role} from "utils/CustomTypes/Role";
 import useAuth from "hooks/useAuth/useAuth";
 import RequireAuth from "../../hooks/useAuth/RequireAuth";
-import {DefaultNavLinks, DefaultNavLinksContainer} from "./styled";
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
     const auth = useAuth();
     const role = auth.authData?.role;
-
+    
     const OnNavClick = () => {
         setOpen(false);
     }
@@ -74,12 +73,12 @@ const Navbar = () => {
         return (
             <navbar.DefaultNavLinks>
                 <navbar.Li id="first-link">
-                    <navbar.NavLink to="/worker/repertoire" onClick={OnNavClick}>
+                    <navbar.NavLink to="/repertoire" onClick={OnNavClick}>
                         Repertuar
                     </navbar.NavLink>
                 </navbar.Li>
                 <navbar.Li>
-                    <navbar.NavLink to="/worker/offers" onClick={OnNavClick}>
+                    <navbar.NavLink to="/offers" onClick={OnNavClick}>
                         Promocje
                     </navbar.NavLink>
                 </navbar.Li>

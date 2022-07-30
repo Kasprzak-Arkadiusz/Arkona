@@ -30,7 +30,7 @@ function Home() {
             <home.filmsContainer>
                 <IconTitle Component={ProjectorIcon} title="Na ekranie"/>
                 <home.filmListContainer>
-                    {movies.map((item, index) => {
+                    {movies.map((item) => {
                         return <FilmHolder image={item.getImage_asB64()}
                                            title={item.getTitle()} 
                                            id={item.getId()}
