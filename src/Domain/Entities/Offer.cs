@@ -5,6 +5,7 @@ namespace Domain.Entities;
 public abstract class Offer
 {
     public short Id { get; private set; }
+    public byte[]? Image { get; private set; }
     public string Name { get; private set; }
     public Period ValidPeriod { get; private set; }
     public string Description { get; private set; }
@@ -13,7 +14,7 @@ public abstract class Offer
 
     protected Offer() { }
 
-    protected Offer(string name, string description, decimal discountValue, Period validPeriod)
+    protected Offer(string name, string description, decimal discountValue, Period validPeriod, byte[]? image = null)
     {
         Name = name;
         Description = description;
@@ -21,6 +22,7 @@ public abstract class Offer
         ValidPeriod = validPeriod;
         ValidPeriod = validPeriod;
         Orders = new List<Order>();
+        Image = image;
     }
 
     public virtual void ApplyOffer(List<Ticket> tickets)
