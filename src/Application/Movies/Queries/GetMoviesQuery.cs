@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces.IApplicationDBContext;
 using Application.Common.Models;
 using Application.Movies.ViewModels;
+using AutoMapper;
 using MediatR;
 
 namespace Application.Movies.Queries;

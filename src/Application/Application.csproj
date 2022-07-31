@@ -23,6 +23,7 @@
 
     <ItemGroup>
       <Folder Include="Movies\Commands" />
+      <Folder Include="Offers\Commands" />
       <Folder Include="Users\Queries" />
     </ItemGroup>
 

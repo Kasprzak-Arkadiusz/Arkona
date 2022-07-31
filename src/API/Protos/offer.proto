@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "API";
+
+package offer;
+
+service Offer{
+  rpc GetLatestOffers(GetLatestOffersRequest) returns (GetLatestOffersResponse);
+}
+
+message GetLatestOffersRequest{
+  int32 count = 1;
+}
+
+message GetLatestOffersResponse{
+  repeated GeneralOfferInfo Offers = 1;
+}
+
+message GeneralOfferInfo {
+  int32  id    = 1;
+  string name = 2;
+  bytes  image = 3;
+}
