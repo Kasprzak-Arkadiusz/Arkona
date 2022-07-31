@@ -1,6 +1,6 @@
 ﻿import styled from "styled-components";
 
-export const Container = styled.div`
+export const Container = styled.a`
     width: 240px;
     height: 240px;
     margin: 20px auto 20px;
@@ -30,5 +30,5 @@ export const Text = styled.span`
     line-height: 20px;
 
     color: ${props => props.theme.Palette.textMain};
-    text-shadow: 4px 2px 4px rgba(0, 0, 0, 0.8);   
+    text-shadow: 0px 0px 4px rgba(0, 0, 0);   
 `

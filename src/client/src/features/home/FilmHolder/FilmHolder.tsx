@@ -11,7 +11,7 @@ interface IProps {
 function FilmHolder({image, title, id}: IProps) {
     return (
         <holder.Container href={`movie/${id}`}>
-            <holder.Image src={`data:image/jpeg;base64,${image}`} alt="Movie image"/>
+            <holder.Image src={`data:image/jpeg;base64,${image}`} alt={`Movie: ${title}`}/>
             <holder.TitleContainer>
                 <holder.Title>{title}</holder.Title>
             </holder.TitleContainer>

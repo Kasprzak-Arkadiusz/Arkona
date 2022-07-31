@@ -1,10 +1,6 @@
-﻿using Application.Common.Mappings;
-using AutoMapper;
-using Domain.Entities;
+﻿namespace Application.Offers.ViewModels;
 
-namespace Application.Offers.ViewModels;
-
-public class GeneralOfferInfo : IMapFrom<Offer>
+public class GeneralOfferInfo
 {
     public short Id { get; set; }
     public string Name { get; set; }
@@ -15,10 +11,5 @@ public class GeneralOfferInfo : IMapFrom<Offer>
         Id = id;
         Name = name;
         Image = image;
-    }
-
-    public void Mapping(Profile profile)
-    {
-        profile.CreateMap<Offer, GeneralOfferInfo>();
     }
 }

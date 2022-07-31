@@ -5,24 +5,36 @@ import FilmHolder from './FilmHolder/FilmHolder';
 import OfferHolder from './OfferHolder/OfferHolder';
 import IconTitle from 'components/IconTitle/IconTitle'
 import * as home from './styled'
-import {MovieClient, ServiceError} from "generated/movie/movie_pb_service";
-import {GeneralMovieInfo, GetMoviesRequest, GetMoviesResponse} from "generated/movie/movie_pb";
+import {MovieClient} from "generated/movie/movie_pb_service";
+import {GeneralMovieInfo, GetMoviesRequest} from "generated/movie/movie_pb";
+import {GeneralOfferInfo, GetLatestOffersRequest} from "generated/offer/offer_pb";
+import {OfferClient} from "generated/offer/offer_pb_service";
 
 function Home() {
     const [movies, setMovies] = useState(Array<GeneralMovieInfo>());
-    
+    const [offers, setOffers] = useState(Array<GeneralOfferInfo>());
+
     useEffect(() => {
         const movieClient = new MovieClient(process.env.REACT_APP_SERVER_URL!);
-
         const movieRequest = new GetMoviesRequest()
         movieRequest.setPagenumber(1);
         movieRequest.setPagesize(8);
 
-        movieClient.getMovies(movieRequest, (error: ServiceError | null, responseMessage: GetMoviesResponse | null) => {
-            if (responseMessage !== null){
+        movieClient.getMovies(movieRequest, (error, responseMessage) => {
+            if (responseMessage !== null) {
                 setMovies(responseMessage.getItemsList());
             }
         });
+
+        const offerClient = new OfferClient(process.env.REACT_APP_SERVER_URL!);
+        const offerRequest = new GetLatestOffersRequest();
+        offerRequest.setCount(3);
+
+        offerClient.getLatestOffers(offerRequest, (error, responseMessage) => {
+            if (responseMessage !== null) {
+                setOffers(responseMessage.getOffersList());
+            }
+        })
     }, [])
 
     return (
@@ -32,7 +44,7 @@ function Home() {
                 <home.filmListContainer>
                     {movies.map((item) => {
                         return <FilmHolder image={item.getImage_asB64()}
-                                           title={item.getTitle()} 
+                                           title={item.getTitle()}
                                            id={item.getId()}
                                            key={item.getId()}/>
                     })}
@@ -46,9 +58,12 @@ function Home() {
             <home.offersContainer>
                 <IconTitle Component={OfferIcon} title={"Oferty specjalne"}/>
                 <home.offerListContainer>
-                    <OfferHolder image="" title="Rodzinny tydzień - Dorośli płacą tyle co dzieci"/>
-                    <OfferHolder image="" title="Weekend z filmami SF"/>
-                    <OfferHolder image="" title="4 bilety w cenie 3"/>
+                    {offers.map((item) => {
+                        return <OfferHolder image={item.getImage_asB64()}
+                                           name={item.getName()}
+                                           id={item.getId()}
+                                           key={item.getId()}/>
+                    })}
                 </home.offerListContainer>
                 <home.seeMoreContainer>
                     <home.seeMoreLink to="/offers">
