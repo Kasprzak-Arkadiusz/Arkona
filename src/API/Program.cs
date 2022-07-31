@@ -91,6 +91,8 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapGrpcService<UserService>().RequireCors(policyName);
+    endpoints.MapGrpcService<MovieService>().RequireCors(policyName);
+    endpoints.MapGrpcService<OfferService>().RequireCors(policyName);
 });
 
 if (app.Environment.IsDevelopment())

@@ -1,0 +1,29 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "API";
+
+package movie;
+
+service Movie{
+  rpc GetMovies(GetMoviesRequest) returns (GetMoviesResponse);
+}
+
+message GetMoviesRequest {
+  int32 pageNumber = 1;
+  int32 pageSize   = 2;
+}
+
+message GetMoviesResponse {
+  int32                     pageNumber      = 1;
+  int32                     totalPages      = 2;
+  int32                     totalCount      = 3;
+  repeated GeneralMovieInfo Items           = 4;
+  bool                      hasPreviousPage = 5;
+  bool                      hasNextPage     = 6;
+}
+
+message GeneralMovieInfo {
+  int32  id    = 1;
+  string title = 2;
+  bytes  image = 3;
+}

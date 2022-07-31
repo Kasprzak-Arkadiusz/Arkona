@@ -10,6 +10,7 @@ export const filmsContainer = styled.section`
 `
 
 export const filmListContainer = styled.div`
+    min-height: 384px;
     display: flex;
     flex-wrap: wrap;    
 `
@@ -45,7 +46,7 @@ export const seeMoreLink = styled(Link)`
 
 export const offersContainer = styled.section`
     min-height: 70px;
-    margin: 40px 12px 0 12px;
+    margin: 40px 12px 40px 12px;
 
     background-color: ${props => props.theme.Palette.main};
     border-radius: 50px;

@@ -11,15 +11,15 @@ public class AgeOffer : Offer
     private AgeOffer() { }
     
     private AgeOffer(string name, string description, decimal discountValue, AgeRestriction ageRestriction,
-        Period validPeriod)
-        : base(name, description, discountValue, validPeriod)
+        Period validPeriod, byte[]? image = null)
+        : base(name, description, discountValue, validPeriod, image)
     {
         AgeRestriction = ageRestriction;
     }
 
     public static AgeOffer Create(string name, string description, decimal discountValue, AgeRestriction ageRestriction,
-        Period validPeriod)
+        Period validPeriod, byte[]? image = null)
     {
-        return new AgeOffer(name, description, discountValue, ageRestriction, validPeriod);
+        return new AgeOffer(name, description, discountValue, ageRestriction, validPeriod, image);
     }
 }

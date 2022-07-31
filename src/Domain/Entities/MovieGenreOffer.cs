@@ -10,15 +10,15 @@ public class MovieGenreOffer : Offer
 
     private MovieGenreOffer() { }
 
-    private MovieGenreOffer(string name, string description, decimal discountValue, Genre genre, Period validPeriod) :
-        base(name, description, discountValue, validPeriod)
+    private MovieGenreOffer(string name, string description, decimal discountValue, Genre genre, Period validPeriod,
+        byte[]? image = null) : base(name, description, discountValue, validPeriod, image)
     {
         Genre = genre;
     }
 
     public static MovieGenreOffer Create(string name, string description, decimal discountValue, Genre genre,
-        Period validPeriod)
+        Period validPeriod, byte[]? image = null)
     {
-        return new MovieGenreOffer(name, description, discountValue, genre, validPeriod);
+        return new MovieGenreOffer(name, description, discountValue, genre, validPeriod, image);
     }
 }

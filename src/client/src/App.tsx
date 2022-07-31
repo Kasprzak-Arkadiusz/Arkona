@@ -31,17 +31,16 @@ function App() {
                         <Route path="/privacy" element={<Privacy/>}/>
                         <Route path="/*" element={<Navigate to="/"/>}/>
 
+                        <Route path="repertoire" element={<Repertoire/>}/>
+                        <Route path="offers" element={<Offers/>}/>
+                        
                         <Route path={`/${Role.client}/`}
                                element={<RequireAuth role={Role.client}/>}>
-                            <Route path="repertoire" element={<Repertoire/>}/>
-                            <Route path="offers" element={<Offers/>}/>
                             <Route path="tickets" element={<Tickets/>}/>
                         </Route>)
                         
                         <Route path={`/${Role.worker}/`}
                                element={<RequireAuth role={Role.worker}/>}>
-                            <Route path="repertoire" element={<Repertoire/>}/>
-                            <Route path="offers" element={<Offers/>}/>
                             <Route path="tickets" element={<Tickets/>}/>
                         </Route>
                     </Routes>
