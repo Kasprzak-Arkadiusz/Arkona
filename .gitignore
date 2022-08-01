@@ -277,5 +277,6 @@ src/API/appsettings.json
 # Kreya files
 PI/*
 
-# .env files
-src/client/.env
+# Https cert files
+src/client/local.crt
+src/client/local.key
