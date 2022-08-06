@@ -43,7 +43,7 @@ export const Label = styled.label`
 
 export const Input = styled.input`
     width: 240px;
-    height: 30px;
+    height: 25px;
     display: inherit;
     margin: 0 auto 5px 0px;
     border: 0;

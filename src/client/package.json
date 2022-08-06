@@ -809,7 +809,7 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
-    "author": "",
+    "author":{"name": "Arkadiusz Kasprzak"}, 
     "license": "ISC",
     "browserslist": {
         "production": [
