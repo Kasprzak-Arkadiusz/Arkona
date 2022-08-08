@@ -5,16 +5,18 @@ interface IProps {
     image: string,
     title: string,
     id: number,
+    displayTitle?: boolean
 }
 
 
-function FilmHolder({image, title, id}: IProps) {
+function FilmHolder({image, title, id, displayTitle = true}: IProps) {
     return (
         <holder.Container href={`movie/${id}`}>
             <holder.Image src={`data:image/jpeg;base64,${image}`} alt={`Movie: ${title}`}/>
-            <holder.TitleContainer>
-                <holder.Title>{title}</holder.Title>
-            </holder.TitleContainer>
+            {displayTitle && (
+                <holder.TitleContainer>
+                    <holder.Title>{title}</holder.Title>
+                </holder.TitleContainer>)}
         </holder.Container>
     );
 }

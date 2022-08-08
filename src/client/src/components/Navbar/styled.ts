@@ -14,6 +14,7 @@ export const HeaderContent = styled.div`
 
     background-color: ${props => props.theme.Palette.darker};
     border-radius: 25px;
+    box-shadow: 1px 1px 24px 0px rgb(80, 80, 80);
     
     font-family: ${props => props.theme.Fonts.smart};
     font-style: normal;
@@ -45,6 +46,12 @@ export const HomeLink = styled(Link)`
 export const NavLink = styled(Link)`
     margin: 0 10px 0 10px;
     white-space: nowrap;
+    
+    &:hover {
+        -webkit-text-fill-color: ${props => props.theme.Palette.blueBorder};
+        -webkit-text-stroke-color: ${props => props.theme.Palette.blueBorder};
+        transition: 250ms; 
+    }
 
     font-family: ${props => props.theme.Fonts.smart};
     font-style: normal;

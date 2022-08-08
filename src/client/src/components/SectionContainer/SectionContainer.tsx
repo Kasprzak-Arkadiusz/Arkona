@@ -2,7 +2,7 @@
 import {Container} from './styled'
 
 interface IProps {
-    minHeight?: number
+    minHeight?: string
     margin? : string
     children?: React.ReactNode;
 }
