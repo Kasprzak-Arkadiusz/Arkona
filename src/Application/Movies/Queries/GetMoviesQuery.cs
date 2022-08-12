@@ -1,12 +1,11 @@
 ﻿using Application.Common.Interfaces.IApplicationDBContext;
 using Application.Common.Models;
 using Application.Movies.ViewModels;
-using AutoMapper;
 using MediatR;
 
 namespace Application.Movies.Queries;
 
-public class GetMoviesQuery : IRequest<PaginatedList<GeneralMovieInfo>>
+public class GetMoviesQuery : IRequest<PaginatedList<MovieInfo>>
 {
     public int PageNumber { get; }
     public int PageSize { get; }
@@ -18,7 +17,7 @@ public class GetMoviesQuery : IRequest<PaginatedList<GeneralMovieInfo>>
     }
 }
 
-public class GetMoviesQueryHandler : IRequestHandler<GetMoviesQuery, PaginatedList<GeneralMovieInfo>>
+public class GetMoviesQueryHandler : IRequestHandler<GetMoviesQuery, PaginatedList<MovieInfo>>
 {
     private readonly IApplicationDbContext _dbContext;
 
@@ -27,14 +26,23 @@ public class GetMoviesQueryHandler : IRequestHandler<GetMoviesQuery, PaginatedLi
         _dbContext = dbContext;
     }
 
-    public async Task<PaginatedList<GeneralMovieInfo>> Handle(GetMoviesQuery query, CancellationToken cancellationToken)
+    public async Task<PaginatedList<MovieInfo>> Handle(GetMoviesQuery query, CancellationToken cancellationToken)
     {
         var movies = _dbContext.Movies
             .OrderByDescending(m => m.ReleaseDate)
-            .Select(m => new GeneralMovieInfo(m.Id, m.Title, m.Image));
+            .Select(m => new MovieInfo
+            {
+                Id = m.Id,
+                Image = m.Image,
+                Title = m.Title,
+                ReleaseDate = m.ReleaseDate,
+                Duration = m.Duration,
+                Genres = m.MovieGenres.Select(mg => mg.Genre.Name).ToList(),
+                AgeRestriction = m.AgeRestriction.Name
+            });
 
         var generalMovieInfo =
-            await PaginatedList<GeneralMovieInfo>.CreateAsync(movies, query.PageNumber, query.PageSize);
+            await PaginatedList<MovieInfo>.CreateAsync(movies, query.PageNumber, query.PageSize);
         
         return generalMovieInfo;
     }
