@@ -3,12 +3,18 @@ import React from "react";
 
 interface Props {
     label?: string
+    onChangeHandler: (value: string) => void
 }
 
-function SearchField({label}: Props) {
+function SearchField({label, onChangeHandler}: Props) {
+    const onChangePrivateHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(event.target.value);
+        onChangeHandler(event.target.value);
+    };
+    
     return <style.SearchInputContainer>
         {label && <style.SearchLabel>{label}</style.SearchLabel>} 
-        <style.SearchInput></style.SearchInput>
+        <style.SearchInput onChange={onChangePrivateHandler}></style.SearchInput>
     </style.SearchInputContainer> 
 }
 

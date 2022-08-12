@@ -16,7 +16,11 @@ function CustomDatePicker({selectedDate, onChangeHandler, onClearOutput}: Props)
         <style.SearchLabel>Data:</style.SearchLabel>
         <style.DatePickerWrapper selected={selectedDate}
                                  onChange={onChangeHandler}
-                                 wrapperClassName={"custom-datepicker-input-container"}>
+                                 wrapperClassName={"custom-datepicker-input-container"}
+                                 dateFormat={"dd.MM.yyyy"}
+                                 minDate={new Date()}
+                                 closeOnScroll={true}
+                                 weekLabel={"Pon"}>
         </style.DatePickerWrapper>
         <style.ClearOutputButton onClick={(e) => {
             e.preventDefault();
