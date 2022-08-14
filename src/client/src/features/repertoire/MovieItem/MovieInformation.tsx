@@ -1,13 +1,15 @@
 ﻿import React from 'react';
 import * as style from "./styled";
+import {Timestamp} from "google-protobuf/google/protobuf/timestamp_pb";
+import {toDateString} from "../../../utils/dateUtils";
 
 interface IProps {
     children?: React.ReactNode;
     title: string,
     genre: string,
-    ageRestriction: number,
+    ageRestriction: string,
     duration: number,
-    releaseDate: string
+    releaseDate: Timestamp | undefined
 }
 
 function MovieInformation({children, title, genre, ageRestriction, duration, releaseDate} : IProps) {
@@ -28,10 +30,10 @@ function MovieInformation({children, title, genre, ageRestriction, duration, rel
                 <style.PropertyLabel id={"Duration"}>Czas trwania: </style.PropertyLabel>
                 <style.PropertyText>{duration} min</style.PropertyText>
             </style.Property>
-            <style.Property>
+            {releaseDate && <style.Property>
                 <style.PropertyLabel id={"ReleaseDate"}>Data premiery: </style.PropertyLabel>
-                <style.PropertyText>{releaseDate}</style.PropertyText>
-            </style.Property>
+                <style.PropertyText>{toDateString(releaseDate)}</style.PropertyText>
+            </style.Property>}
             {children}
         </style.InformationContainer>
     )

@@ -3,15 +3,16 @@ import SectionContainer from "components/SectionContainer/SectionContainer";
 import FilmHolder from "features/home/FilmHolder/FilmHolder";
 import MovieInformation from "./MovieInformation"
 import * as style from "./styled";
+import {Timestamp} from "google-protobuf/google/protobuf/timestamp_pb";
 
 interface IProps {
     image: string,
     title: string,
     id: number,
     genre: string,
-    ageRestriction: number,
+    ageRestriction: string,
     duration: number,
-    releaseDate: string
+    releaseDate: Timestamp | undefined
 }
 
 function MovieItem({image, title, id, genre, ageRestriction, duration, releaseDate}: IProps) {

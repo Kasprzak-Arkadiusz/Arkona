@@ -4,6 +4,15 @@
 import * as movie_pb from "./movie_pb";
 import {grpc} from "@improbable-eng/grpc-web";
 
+type MovieGetLatestMovies = {
+  readonly methodName: string;
+  readonly service: typeof Movie;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof movie_pb.GetLatestMoviesRequest;
+  readonly responseType: typeof movie_pb.GetLatestMoviesResponse;
+};
+
 type MovieGetMovies = {
   readonly methodName: string;
   readonly service: typeof Movie;
@@ -15,6 +24,7 @@ type MovieGetMovies = {
 
 export class Movie {
   static readonly serviceName: string;
+  static readonly GetLatestMovies: MovieGetLatestMovies;
   static readonly GetMovies: MovieGetMovies;
 }
 
@@ -50,6 +60,15 @@ export class MovieClient {
   readonly serviceHost: string;
 
   constructor(serviceHost: string, options?: grpc.RpcOptions);
+  getLatestMovies(
+    requestMessage: movie_pb.GetLatestMoviesRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: movie_pb.GetLatestMoviesResponse|null) => void
+  ): UnaryResponse;
+  getLatestMovies(
+    requestMessage: movie_pb.GetLatestMoviesRequest,
+    callback: (error: ServiceError|null, responseMessage: movie_pb.GetLatestMoviesResponse|null) => void
+  ): UnaryResponse;
   getMovies(
     requestMessage: movie_pb.GetMoviesRequest,
     metadata: grpc.Metadata,

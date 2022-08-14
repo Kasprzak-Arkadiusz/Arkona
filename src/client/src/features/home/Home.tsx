@@ -7,7 +7,7 @@ import IconTitle from 'components/IconTitle/IconTitle'
 import SectionContainer from 'components/SectionContainer/SectionContainer'
 import * as home from './styled'
 import {MovieClient} from "generated/movie/movie_pb_service";
-import {GeneralMovieInfo, GetMoviesRequest} from "generated/movie/movie_pb";
+import {GeneralMovieInfo, GetLatestMoviesRequest} from "generated/movie/movie_pb";
 import {GeneralOfferInfo, GetLatestOffersRequest} from "generated/offer/offer_pb";
 import {OfferClient} from "generated/offer/offer_pb_service";
 
@@ -17,12 +17,13 @@ function Home() {
 
     useEffect(() => {
         const movieClient = new MovieClient(process.env.REACT_APP_SERVER_URL!);
-        const movieRequest = new GetMoviesRequest()
-        movieRequest.setPagenumber(1);
-        movieRequest.setPagesize(8);
+        const movieRequest = new GetLatestMoviesRequest();
+        movieRequest.setCount(8);
 
-        movieClient.getMovies(movieRequest, (error, responseMessage) => {
+        movieClient.getLatestMovies(movieRequest, (error, responseMessage) => {
             if (responseMessage !== null) {
+                console.log(responseMessage)
+                console.log(responseMessage.getItemsList())
                 setMovies(responseMessage.getItemsList());
             }
         });
