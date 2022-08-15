@@ -1,4 +1,5 @@
-﻿using Application.Movies.Queries;
+﻿using Application.Common.Models;
+using Application.Movies.Queries;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -15,9 +16,9 @@ public class MovieService : Movie.MovieBase
         _mediator = mediator;
     }
 
-    public override async Task<GetMoviesResponse> GetMovies(GetMoviesRequest request, ServerCallContext context)
+    private static GetMoviesResponse ToGetMoviesResponse(
+        PaginatedList<Application.Movies.ViewModels.MovieInfo> paginatedList)
     {
-        var paginatedList = await _mediator.Send(new GetMoviesQuery(request.PageNumber, request.PageSize));
         var response = new GetMoviesResponse
         {
             PageNumber = paginatedList.PageNumber,
@@ -31,7 +32,7 @@ public class MovieService : Movie.MovieBase
             Title = i.Title,
             AgeRestriction = i.AgeRestriction,
             ReleaseDate = Timestamp.FromDateTime(
-                    (DateTime.SpecifyKind(i.ReleaseDate.ToDateTime(new TimeOnly()), DateTimeKind.Utc))),
+                (DateTime.SpecifyKind(i.ReleaseDate.ToDateTime(new TimeOnly()), DateTimeKind.Utc))),
             Duration = i.Duration
         }));
 
@@ -41,6 +42,14 @@ public class MovieService : Movie.MovieBase
                 .First(i => i.Id == movieInfo.Id).Genres
                 .Select(g => g));
         }
+
+        return response;
+    }
+
+    public override async Task<GetMoviesResponse> GetMovies(GetMoviesRequest request, ServerCallContext context)
+    {
+        var paginatedList = await _mediator.Send(new GetMoviesQuery(request.PageNumber, request.PageSize));
+        var response = ToGetMoviesResponse(paginatedList);
 
         return response;
     }
@@ -58,6 +67,16 @@ public class MovieService : Movie.MovieBase
             Image = ByteString.CopyFrom(m.Image)
         }));
 
+        return response;
+    }
+
+    public override async Task<GetMoviesResponse> GetFilteredMovies(GetFilteredMoviesRequest request,
+        ServerCallContext context)
+    {
+        var paginatedList = await _mediator.Send(new GetFilteredMoviesQuery(request.Title, request.Genre,
+            request.AgeRestriction, request.Date.ToDateTime(), request.PageNumber, request.PageSize));
+
+        var response = ToGetMoviesResponse(paginatedList);
         return response;
     }
 }

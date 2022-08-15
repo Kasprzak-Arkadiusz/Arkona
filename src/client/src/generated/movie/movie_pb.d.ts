@@ -180,3 +180,45 @@ export namespace GeneralMovieInfo {
   }
 }
 
+export class GetFilteredMoviesRequest extends jspb.Message {
+  getTitle(): string;
+  setTitle(value: string): void;
+
+  getGenre(): number;
+  setGenre(value: number): void;
+
+  getAgerestriction(): number;
+  setAgerestriction(value: number): void;
+
+  hasDate(): boolean;
+  clearDate(): void;
+  getDate(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setDate(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
+  getPagenumber(): number;
+  setPagenumber(value: number): void;
+
+  getPagesize(): number;
+  setPagesize(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetFilteredMoviesRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetFilteredMoviesRequest): GetFilteredMoviesRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetFilteredMoviesRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetFilteredMoviesRequest;
+  static deserializeBinaryFromReader(message: GetFilteredMoviesRequest, reader: jspb.BinaryReader): GetFilteredMoviesRequest;
+}
+
+export namespace GetFilteredMoviesRequest {
+  export type AsObject = {
+    title: string,
+    genre: number,
+    agerestriction: number,
+    date?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    pagenumber: number,
+    pagesize: number,
+  }
+}
+

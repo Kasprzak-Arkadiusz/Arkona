@@ -29,7 +29,6 @@ public class GetMoviesQueryHandler : IRequestHandler<GetMoviesQuery, PaginatedLi
     public async Task<PaginatedList<MovieInfo>> Handle(GetMoviesQuery query, CancellationToken cancellationToken)
     {
         var movies = _dbContext.Movies
-            .OrderByDescending(m => m.ReleaseDate)
             .Select(m => new MovieInfo
             {
                 Id = m.Id,
@@ -39,11 +38,11 @@ public class GetMoviesQueryHandler : IRequestHandler<GetMoviesQuery, PaginatedLi
                 Duration = m.Duration,
                 Genres = m.MovieGenres.Select(mg => mg.Genre.Name).ToList(),
                 AgeRestriction = m.AgeRestriction.Name
-            });
+            }).OrderByDescending(m => m.ReleaseDate);
 
-        var generalMovieInfo =
+        var movieInfo =
             await PaginatedList<MovieInfo>.CreateAsync(movies, query.PageNumber, query.PageSize);
-        
-        return generalMovieInfo;
+
+        return movieInfo;
     }
 }

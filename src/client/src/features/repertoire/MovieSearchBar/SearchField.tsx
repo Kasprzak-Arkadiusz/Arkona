@@ -8,7 +8,6 @@ interface Props {
 
 function SearchField({label, onChangeHandler}: Props) {
     const onChangePrivateHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.value);
         onChangeHandler(event.target.value);
     };
     

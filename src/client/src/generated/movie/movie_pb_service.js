@@ -28,6 +28,15 @@ Movie.GetMovies = {
   responseType: movie_pb.GetMoviesResponse
 };
 
+Movie.GetFilteredMovies = {
+  methodName: "GetFilteredMovies",
+  service: Movie,
+  requestStream: false,
+  responseStream: false,
+  requestType: movie_pb.GetFilteredMoviesRequest,
+  responseType: movie_pb.GetMoviesResponse
+};
+
 exports.Movie = Movie;
 
 function MovieClient(serviceHost, options) {
@@ -71,6 +80,37 @@ MovieClient.prototype.getMovies = function getMovies(requestMessage, metadata, c
     callback = arguments[1];
   }
   var client = grpc.unary(Movie.GetMovies, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+MovieClient.prototype.getFilteredMovies = function getFilteredMovies(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(Movie.GetFilteredMovies, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
