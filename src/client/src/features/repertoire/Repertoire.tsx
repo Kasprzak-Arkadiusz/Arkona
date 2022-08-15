@@ -6,24 +6,41 @@ import {GetMoviesRequest, MovieInfo} from "generated/movie/movie_pb";
 import {MovieClient} from "generated/movie/movie_pb_service";
 
 function Repertoire() {
+    const pageSize = 3;
     const [movies, setMovies] = useState(Array<MovieInfo>());
-    const [page, setPage] = useState<number>(1);
-    const pageSize = 5;
+    const [pageNumber, setPageNumber] = useState<number>(1);
+    const [hasNextPage, setHasNextPage] = useState<boolean>(false);
 
-    useEffect(() => {
-        const movieClient = new MovieClient(process.env.REACT_APP_SERVER_URL!);
-        const movieRequest = new GetMoviesRequest();
-        movieRequest.setPagenumber(page);
-        movieRequest.setPagesize(pageSize);
+    const [movieClient, _] = useState<MovieClient>(new MovieClient(process.env.REACT_APP_SERVER_URL!));
+    const [movieRequest, setMovieRequest] = useState<GetMoviesRequest>(() => {
+        let request = new GetMoviesRequest;
+        request.setPagesize(pageSize);
+        request.setPagenumber(pageNumber);
 
+        return request;
+    });
+
+    const handleResponse = () => {
         movieClient.getMovies(movieRequest, (error, responseMessage) => {
             if (responseMessage !== null) {
-                console.log(responseMessage)
-                console.log(responseMessage.getItemsList())
-                setMovies(responseMessage.getItemsList());
+                setMovies([...movies, ...responseMessage.getItemsList()]);
+                setHasNextPage(responseMessage.getHasnextpage());
+                setPageNumber(responseMessage.getPagenumber());
             }
-        })
+        });
+    };
+
+    useEffect(() => {
+        movieRequest.setPagenumber(pageNumber);
+        movieRequest.setPagesize(pageSize);
+        handleResponse();
     }, []);
+
+    const handleSeeMoreClick = () => {
+        movieRequest.setPagenumber(pageNumber + 1);
+        setMovieRequest(movieRequest);
+        handleResponse();
+    };
 
     return (
         <main className="display-container">
@@ -40,7 +57,7 @@ function Repertoire() {
                                       genre={item.getGenresList().join(", ")}/>
                 })}
             </div>
-            <LoadMore/>
+            {hasNextPage && <LoadMore onClickHandler={handleSeeMoreClick}/>}
         </main>
     )
 }

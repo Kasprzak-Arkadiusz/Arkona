@@ -2,10 +2,19 @@
 import SectionContainer from "components/SectionContainer/SectionContainer";
 import * as style from './styled'
 
-function LoadMore() {
+interface Props {
+    onClickHandler: () => void;
+}
+
+
+function LoadMore({onClickHandler} : Props) {
+    const onClickPrivateHandler = (event: React.MouseEvent<HTMLSpanElement>) => {
+        
+    }
+    
     return (
        <SectionContainer margin={"0px 12px 40px 12px"}>
-           <style.Text>Załaduj więcej</style.Text>
+           <style.Text onClick={onClickHandler}>Załaduj więcej</style.Text>
        </SectionContainer>
     )
 }
