@@ -222,3 +222,77 @@ export namespace GetFilteredMoviesRequest {
   }
 }
 
+export class GetMovieDetailsRequest extends jspb.Message {
+  getId(): number;
+  setId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetMovieDetailsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetMovieDetailsRequest): GetMovieDetailsRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetMovieDetailsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetMovieDetailsRequest;
+  static deserializeBinaryFromReader(message: GetMovieDetailsRequest, reader: jspb.BinaryReader): GetMovieDetailsRequest;
+}
+
+export namespace GetMovieDetailsRequest {
+  export type AsObject = {
+    id: number,
+  }
+}
+
+export class DetailedMovieInfo extends jspb.Message {
+  getId(): number;
+  setId(value: number): void;
+
+  getTitle(): string;
+  setTitle(value: string): void;
+
+  getImage(): Uint8Array | string;
+  getImage_asU8(): Uint8Array;
+  getImage_asB64(): string;
+  setImage(value: Uint8Array | string): void;
+
+  hasReleasedate(): boolean;
+  clearReleasedate(): void;
+  getReleasedate(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setReleasedate(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
+  getDuration(): number;
+  setDuration(value: number): void;
+
+  clearGenresList(): void;
+  getGenresList(): Array<string>;
+  setGenresList(value: Array<string>): void;
+  addGenres(value: string, index?: number): string;
+
+  getAgerestriction(): string;
+  setAgerestriction(value: string): void;
+
+  getDescription(): string;
+  setDescription(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DetailedMovieInfo.AsObject;
+  static toObject(includeInstance: boolean, msg: DetailedMovieInfo): DetailedMovieInfo.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: DetailedMovieInfo, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DetailedMovieInfo;
+  static deserializeBinaryFromReader(message: DetailedMovieInfo, reader: jspb.BinaryReader): DetailedMovieInfo;
+}
+
+export namespace DetailedMovieInfo {
+  export type AsObject = {
+    id: number,
+    title: string,
+    image: Uint8Array | string,
+    releasedate?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    duration: number,
+    genresList: Array<string>,
+    agerestriction: string,
+    description: string,
+  }
+}
+

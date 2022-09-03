@@ -22,8 +22,6 @@ function Home() {
 
         movieClient.getLatestMovies(movieRequest, (error, responseMessage) => {
             if (responseMessage !== null) {
-                console.log(responseMessage)
-                console.log(responseMessage.getItemsList())
                 setMovies(responseMessage.getItemsList());
             }
         });

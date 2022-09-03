@@ -1,13 +1,19 @@
 ﻿import styled from "styled-components";
 
-export const Container = styled.a`
+interface ContainerProps {
+    width: string;
+    height: string;
+}
+
+export const Container = styled.a<ContainerProps>`
     display:inline-block;
 
-    width: 220px;
-    max-width: 220px;
-    height: auto;
+    height:  ${props => props.height};
+    width: ${props => props.width};
+    max-width: ${props => props.width};
+    height: fit-content;
     line-height: 20px;
-    margin: 20px auto 10px;
+    margin: auto;
     text-decoration: none;
     
     cursor: pointer;
@@ -15,7 +21,6 @@ export const Container = styled.a`
 
 export const Image = styled.img`
     width: inherit;
-    height: 320px;
 `
 
 export const Title = styled.span`

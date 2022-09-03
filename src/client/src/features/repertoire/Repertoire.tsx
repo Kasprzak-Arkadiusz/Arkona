@@ -17,7 +17,6 @@ function Repertoire() {
     const handleGetMoviesRequest = (request: GetMoviesRequest, prevMovies: Array<MovieInfo> = movies) => {
         movieClient.getMovies(request, (error, responseMessage) => {
             if (responseMessage !== null) {
-                console.log(responseMessage.getItemsList());
                 setMovies([...prevMovies, ...responseMessage.getItemsList()]);
                 setHasNextPage(responseMessage.getHasnextpage());
                 setPageNumber(responseMessage.getPagenumber());
@@ -28,7 +27,6 @@ function Repertoire() {
     const handleGetFilteredMoviesRequest = (request: GetFilteredMoviesRequest) => {
         movieClient.getFilteredMovies(request, (error, responseMessage) => {
             if (responseMessage !== null) {
-                console.log(responseMessage.getItemsList());
                 setMovies([...responseMessage.getItemsList()]);
                 setHasNextPage(responseMessage.getHasnextpage());
                 setPageNumber(responseMessage.getPagenumber());

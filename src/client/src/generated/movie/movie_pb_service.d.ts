@@ -31,11 +31,21 @@ type MovieGetFilteredMovies = {
   readonly responseType: typeof movie_pb.GetMoviesResponse;
 };
 
+type MovieGetMovieDetails = {
+  readonly methodName: string;
+  readonly service: typeof Movie;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof movie_pb.GetMovieDetailsRequest;
+  readonly responseType: typeof movie_pb.DetailedMovieInfo;
+};
+
 export class Movie {
   static readonly serviceName: string;
   static readonly GetLatestMovies: MovieGetLatestMovies;
   static readonly GetMovies: MovieGetMovies;
   static readonly GetFilteredMovies: MovieGetFilteredMovies;
+  static readonly GetMovieDetails: MovieGetMovieDetails;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -96,6 +106,15 @@ export class MovieClient {
   getFilteredMovies(
     requestMessage: movie_pb.GetFilteredMoviesRequest,
     callback: (error: ServiceError|null, responseMessage: movie_pb.GetMoviesResponse|null) => void
+  ): UnaryResponse;
+  getMovieDetails(
+    requestMessage: movie_pb.GetMovieDetailsRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: movie_pb.DetailedMovieInfo|null) => void
+  ): UnaryResponse;
+  getMovieDetails(
+    requestMessage: movie_pb.GetMovieDetailsRequest,
+    callback: (error: ServiceError|null, responseMessage: movie_pb.DetailedMovieInfo|null) => void
   ): UnaryResponse;
 }
 
