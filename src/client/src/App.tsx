@@ -16,6 +16,7 @@ import Repertoire from "./features/repertoire/Repertoire";
 import Offers from "./features/offers/Offers";
 import Tickets from "./features/tickets/Tickets";
 import Privacy from "./features/privacy/Privacy";
+import MovieDetails from "./features/movies/details/MovieDetails";
 
 function App() {    
     return (
@@ -33,6 +34,7 @@ function App() {
 
                         <Route path="repertoire" element={<Repertoire/>}/>
                         <Route path="offers" element={<Offers/>}/>
+                        <Route path="movie/:id" element={<MovieDetails/>}/>
                         
                         <Route path={`/${Role.client}/`}
                                element={<RequireAuth role={Role.client}/>}>

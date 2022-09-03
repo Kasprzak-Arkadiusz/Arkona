@@ -10,6 +10,7 @@ service Movie{
   rpc GetLatestMovies(GetLatestMoviesRequest) returns (GetLatestMoviesResponse);
   rpc GetMovies(GetMoviesRequest) returns (GetMoviesResponse);
   rpc GetFilteredMovies(GetFilteredMoviesRequest) returns (GetMoviesResponse);
+  rpc GetMovieDetails(GetMovieDetailsRequest) returns (DetailedMovieInfo);
 }
 
 // GetMovies
@@ -57,4 +58,20 @@ message GetFilteredMoviesRequest {
   google.protobuf.Timestamp date           = 4;
   int32                     pageNumber     = 5;
   int32                     pageSize       = 6;
+}
+
+// GetMovieDetails
+message GetMovieDetailsRequest {
+  int32 id = 1;
+}
+
+message DetailedMovieInfo {
+  int32                     id             = 1;
+  string                    title          = 2;
+  bytes                     image          = 3;
+  google.protobuf.Timestamp releaseDate    = 4;
+  int32                     duration       = 5;
+  repeated string           genres         = 6;
+  string                    ageRestriction = 7;
+  string                    description    = 8;
 }

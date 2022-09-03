@@ -4,6 +4,7 @@ using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
+using API.Extensions;
 
 namespace API.Services;
 
@@ -32,7 +33,7 @@ public class MovieService : Movie.MovieBase
             Title = i.Title,
             AgeRestriction = i.AgeRestriction,
             ReleaseDate = Timestamp.FromDateTime(
-                (DateTime.SpecifyKind(i.ReleaseDate.ToDateTime(new TimeOnly()), DateTimeKind.Utc))),
+                DateTime.SpecifyKind(i.ReleaseDate.ToDateTime(new TimeOnly()), DateTimeKind.Utc)),
             Duration = i.Duration
         }));
 
@@ -77,6 +78,27 @@ public class MovieService : Movie.MovieBase
             request.AgeRestriction, request.Date.ToDateTime(), request.PageNumber, request.PageSize));
 
         var response = ToGetMoviesResponse(paginatedList);
+        return response;
+    }
+
+    public override async Task<DetailedMovieInfo> GetMovieDetails(GetMovieDetailsRequest request,
+        ServerCallContext context)
+    {
+        var detailedMovieInfo = await _mediator.Send(new GetMovieDetailsQuery(request.Id));
+
+        var response = new DetailedMovieInfo
+        {
+            Id = detailedMovieInfo.Id,
+            Title = detailedMovieInfo.Title,
+            AgeRestriction = detailedMovieInfo.AgeRestriction,
+            ReleaseDate = Timestamp.FromDateTime(
+                DateTime.SpecifyKind(detailedMovieInfo.ReleaseDate.ToDateTime(new TimeOnly()), DateTimeKind.Utc)),
+            Duration = detailedMovieInfo.Duration,
+            Image = ByteString.CopyFrom(detailedMovieInfo.Image),
+            Description = detailedMovieInfo.Description
+        };
+
+        response.Genres.AddRange(detailedMovieInfo.Genres);
         return response;
     }
 }
