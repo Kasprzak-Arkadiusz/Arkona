@@ -37,12 +37,14 @@ public class PaginatedList<T>
         }
     }
 
-    public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageNumber, int pageSize)
+    public static async Task<PaginatedList<T>> CreateAsync(IOrderedQueryable<T> source, int pageNumber, int pageSize)
     {
         CheckArguments(ref pageNumber, ref pageSize);
 
         var count = await source.CountAsync();
         var totalPages = (int)Math.Ceiling(count / (double)pageSize);
+
+        totalPages = totalPages < 1 ? 1 : totalPages;
 
         if (pageNumber > totalPages)
         {

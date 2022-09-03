@@ -10,12 +10,30 @@ var Movie = (function () {
   return Movie;
 }());
 
+Movie.GetLatestMovies = {
+  methodName: "GetLatestMovies",
+  service: Movie,
+  requestStream: false,
+  responseStream: false,
+  requestType: movie_pb.GetLatestMoviesRequest,
+  responseType: movie_pb.GetLatestMoviesResponse
+};
+
 Movie.GetMovies = {
   methodName: "GetMovies",
   service: Movie,
   requestStream: false,
   responseStream: false,
   requestType: movie_pb.GetMoviesRequest,
+  responseType: movie_pb.GetMoviesResponse
+};
+
+Movie.GetFilteredMovies = {
+  methodName: "GetFilteredMovies",
+  service: Movie,
+  requestStream: false,
+  responseStream: false,
+  requestType: movie_pb.GetFilteredMoviesRequest,
   responseType: movie_pb.GetMoviesResponse
 };
 
@@ -26,11 +44,73 @@ function MovieClient(serviceHost, options) {
   this.options = options || {};
 }
 
+MovieClient.prototype.getLatestMovies = function getLatestMovies(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(Movie.GetLatestMovies, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
 MovieClient.prototype.getMovies = function getMovies(requestMessage, metadata, callback) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
   var client = grpc.unary(Movie.GetMovies, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+MovieClient.prototype.getFilteredMovies = function getFilteredMovies(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(Movie.GetFilteredMovies, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

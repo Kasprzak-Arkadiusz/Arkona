@@ -1,6 +1,8 @@
 ﻿import styled from "styled-components";
 
 export const Container = styled.a`
+    display:inline-block;
+
     width: 220px;
     max-width: 220px;
     height: auto;

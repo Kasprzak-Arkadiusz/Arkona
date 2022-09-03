@@ -4,9 +4,10 @@ import {OfferIcon} from 'assets/icons/Offer/Offer';
 import FilmHolder from './FilmHolder/FilmHolder';
 import OfferHolder from './OfferHolder/OfferHolder';
 import IconTitle from 'components/IconTitle/IconTitle'
+import SectionContainer from 'components/SectionContainer/SectionContainer'
 import * as home from './styled'
 import {MovieClient} from "generated/movie/movie_pb_service";
-import {GeneralMovieInfo, GetMoviesRequest} from "generated/movie/movie_pb";
+import {GeneralMovieInfo, GetLatestMoviesRequest} from "generated/movie/movie_pb";
 import {GeneralOfferInfo, GetLatestOffersRequest} from "generated/offer/offer_pb";
 import {OfferClient} from "generated/offer/offer_pb_service";
 
@@ -16,12 +17,13 @@ function Home() {
 
     useEffect(() => {
         const movieClient = new MovieClient(process.env.REACT_APP_SERVER_URL!);
-        const movieRequest = new GetMoviesRequest()
-        movieRequest.setPagenumber(1);
-        movieRequest.setPagesize(8);
+        const movieRequest = new GetLatestMoviesRequest();
+        movieRequest.setCount(8);
 
-        movieClient.getMovies(movieRequest, (error, responseMessage) => {
+        movieClient.getLatestMovies(movieRequest, (error, responseMessage) => {
             if (responseMessage !== null) {
+                console.log(responseMessage)
+                console.log(responseMessage.getItemsList())
                 setMovies(responseMessage.getItemsList());
             }
         });
@@ -39,7 +41,7 @@ function Home() {
 
     return (
         <main className="display-container">
-            <home.filmsContainer>
+            <SectionContainer>
                 <IconTitle Component={ProjectorIcon} title="Na ekranie"/>
                 <home.filmListContainer>
                     {movies.map((item) => {
@@ -54,8 +56,8 @@ function Home() {
                         Zobacz więcej
                     </home.seeMoreLink>
                 </home.seeMoreContainer>
-            </home.filmsContainer>
-            <home.offersContainer>
+            </SectionContainer>
+            <SectionContainer margin={"40px 12px 40px 12px"}>
                 <IconTitle Component={OfferIcon} title={"Oferty specjalne"}/>
                 <home.offerListContainer>
                     {offers.map((item) => {
@@ -70,7 +72,7 @@ function Home() {
                         Zobacz więcej
                     </home.seeMoreLink>
                 </home.seeMoreContainer>
-            </home.offersContainer>
+            </SectionContainer>
         </main>
     );
 }

@@ -1,14 +1,6 @@
 ﻿import styled from "styled-components";
 import {Link} from "react-router-dom";
 
-export const container = styled.div`
-    margin: 40px 12px auto 12px;
-    text-align: center;
-
-    background-color: ${props => props.theme.Palette.main};
-    border-radius: 50px;
-`
-
 export const externalProviderContainer = styled.div`
     width: 340px;
     height: auto;

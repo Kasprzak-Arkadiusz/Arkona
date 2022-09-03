@@ -24,5 +24,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
             .IsRequired();
         builder.HasOne(m => m.AgeRestriction)
             .WithMany(ac => ac.Movies);
+        builder.HasMany(m => m.Seances)
+            .WithOne(s => s.Movie);
     }
 }

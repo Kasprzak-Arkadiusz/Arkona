@@ -4,6 +4,7 @@ import facebook from 'assets/images/facebook-logo.png';
 import google from 'assets/images/google-logo.png';
 
 import SectionTitle from 'components/SectionTitle/SectionTitle'
+import SectionContainer from 'components/SectionContainer/SectionContainer'
 import RegisterForm from './RegisterForm/RegisterForm'
 import FacebookExternalLogin from "components/ExternalLogin/FacebookExternalLogin";
 import GoogleExternalLogin from "components/ExternalLogin/GoogleExternalLogin";
@@ -11,7 +12,7 @@ import GoogleExternalLogin from "components/ExternalLogin/GoogleExternalLogin";
 function Register() {
     return (
         <main className="display-container">
-            <register.container>
+            <SectionContainer>
                 <SectionTitle title="Rejestracja"/>
                 <RegisterForm/>
                 <register.externalProviderContainer>
@@ -26,7 +27,7 @@ function Register() {
                         Zaloguj się
                     </register.redirectContainerLink>
                 </register.redirectContainer>
-            </register.container>
+            </SectionContainer>
         </main>
     );
 }

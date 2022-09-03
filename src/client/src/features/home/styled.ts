@@ -1,14 +1,6 @@
 ﻿import styled from "styled-components";
 import {Link} from "react-router-dom";
 
-export const filmsContainer = styled.section`
-    min-height: 70px;
-    margin: 40px 12px 0 12px;
-
-    background-color: ${props => props.theme.Palette.main};
-    border-radius: 50px;
-`
-
 export const filmListContainer = styled.div`
     min-height: 384px;
     display: flex;
@@ -25,7 +17,7 @@ export const seeMoreContainer = styled.div `
 `
 
 export const seeMoreLink = styled(Link)`
-     width: 100px;
+    width: 100px;
     height: 50px;
     margin: 0 60px 0 auto;
     display: flex;
@@ -44,17 +36,8 @@ export const seeMoreLink = styled(Link)`
     color: ${props => props.theme.Palette.textMain};
 `
 
-export const offersContainer = styled.section`
-    min-height: 70px;
-    margin: 40px 12px 40px 12px;
-
-    background-color: ${props => props.theme.Palette.main};
-    border-radius: 50px;
-
-    text-align: center;
-`
-
  export const offerListContainer = styled.div`
+    min-height: 280px;
     display: flex;
     flex-wrap: wrap;
 `

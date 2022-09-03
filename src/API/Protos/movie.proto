@@ -4,26 +4,57 @@ option csharp_namespace = "API";
 
 package movie;
 
+import "google/protobuf/timestamp.proto";
+
 service Movie{
+  rpc GetLatestMovies(GetLatestMoviesRequest) returns (GetLatestMoviesResponse);
   rpc GetMovies(GetMoviesRequest) returns (GetMoviesResponse);
+  rpc GetFilteredMovies(GetFilteredMoviesRequest) returns (GetMoviesResponse);
 }
 
+// GetMovies
 message GetMoviesRequest {
   int32 pageNumber = 1;
   int32 pageSize   = 2;
 }
 
 message GetMoviesResponse {
-  int32                     pageNumber      = 1;
-  int32                     totalPages      = 2;
-  int32                     totalCount      = 3;
-  repeated GeneralMovieInfo Items           = 4;
-  bool                      hasPreviousPage = 5;
-  bool                      hasNextPage     = 6;
+  int32              pageNumber  = 1;
+  repeated MovieInfo Items       = 2;
+  bool               hasNextPage = 3;
+}
+
+message MovieInfo {
+  int32                     id             = 1;
+  string                    title          = 2;
+  bytes                     image          = 3;
+  google.protobuf.Timestamp releaseDate    = 4;
+  int32                     duration       = 5;
+  repeated string           genres         = 6;
+  string                    ageRestriction = 7;
+}
+
+// GetLatestMovies
+message GetLatestMoviesRequest {
+  int32 count = 1;
+}
+
+message GetLatestMoviesResponse {
+  repeated GeneralMovieInfo Items = 1;
 }
 
 message GeneralMovieInfo {
   int32  id    = 1;
   string title = 2;
   bytes  image = 3;
+}
+
+// GetFilteredMovies
+message GetFilteredMoviesRequest {
+  string                    title          = 1;
+  int32                     genre          = 2;
+  int32                     ageRestriction = 3;
+  google.protobuf.Timestamp date           = 4;
+  int32                     pageNumber     = 5;
+  int32                     pageSize       = 6;
 }

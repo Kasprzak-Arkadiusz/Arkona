@@ -4,6 +4,7 @@ import facebook from "assets/images/facebook-logo.png";
 import google from "assets/images/google-logo.png";
 
 import SectionTitle from "components/SectionTitle/SectionTitle";
+import SectionContainer from 'components/SectionContainer/SectionContainer'
 import FacebookExternalLogin from "components/ExternalLogin/FacebookExternalLogin";
 import GoogleExternalLogin from "components/ExternalLogin/GoogleExternalLogin";
 import LoginForm from "./LoginForm/LoginForm";
@@ -11,7 +12,7 @@ import LoginForm from "./LoginForm/LoginForm";
 function Login() {
     return (
         <main className="display-container">
-            <login.container>
+            <SectionContainer>
                 <SectionTitle title="Logowanie"/>
                 <LoginForm/>
                 <login.externalProviderContainer>
@@ -26,7 +27,7 @@ function Login() {
                         Zerejestruj się
                     </login.redirectContainerLink>
                 </login.redirectContainer>
-            </login.container>
+            </SectionContainer>
         </main>
     );
 }
