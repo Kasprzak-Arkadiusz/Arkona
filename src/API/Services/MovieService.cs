@@ -4,7 +4,6 @@ using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
-using API.Extensions;
 
 namespace API.Services;
 

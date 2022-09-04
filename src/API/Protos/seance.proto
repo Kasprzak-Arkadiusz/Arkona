@@ -1,0 +1,24 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "API";
+
+package seance;
+
+service Seance{
+  rpc GetClosestSeances(GetClosestSeancesRequest) returns (GetClosestSeancesResponse);
+}
+
+// GetClosestSeances
+message GetClosestSeancesRequest {
+  int32 movieId = 1;
+}
+
+message GetClosestSeancesResponse {
+  repeated SeanceInfo seances = 1;
+}
+
+message SeanceInfo {
+  int32  id        = 1;
+  string time      = 2;
+  string dayOfWeek = 3;
+}
