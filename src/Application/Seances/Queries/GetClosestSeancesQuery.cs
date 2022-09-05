@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Seances.Queries;
 
-public class GetClosestSeancesQuery : IRequest<IEnumerable<SeanceInfo>>
+public class GetClosestSeancesQuery : IRequest<IDictionary<string, List<SeanceInfo>>>
 {
     public int MovieId { get; }
 
@@ -16,7 +16,8 @@ public class GetClosestSeancesQuery : IRequest<IEnumerable<SeanceInfo>>
     }
 }
 
-public class GetClosestSeancesQueryHandler : IRequestHandler<GetClosestSeancesQuery, IEnumerable<SeanceInfo>>
+public class
+    GetClosestSeancesQueryHandler : IRequestHandler<GetClosestSeancesQuery, IDictionary<string, List<SeanceInfo>>>
 {
     private const int DaysAhead = 6;
     private readonly IApplicationDbContext _dbContext;
@@ -28,7 +29,8 @@ public class GetClosestSeancesQueryHandler : IRequestHandler<GetClosestSeancesQu
         _applicationSettings = applicationSettings;
     }
 
-    public async Task<IEnumerable<SeanceInfo>> Handle(GetClosestSeancesQuery query, CancellationToken cancellationToken)
+    public async Task<IDictionary<string, List<SeanceInfo>>> Handle(GetClosestSeancesQuery query,
+        CancellationToken cancellationToken)
     {
         var todayDate = DateTime.Today.Date;
         var maxDate = DateTime.Today.AddDays(DaysAhead).Date;
@@ -43,7 +45,10 @@ public class GetClosestSeancesQueryHandler : IRequestHandler<GetClosestSeancesQu
                 new SeanceInfo(s.Id, s.StartDateTime.ToString("HH:mm"),
                     culture.DateTimeFormat.GetDayName(s.StartDateTime.DayOfWeek)))
             .ToListAsync(cancellationToken);
+        
+        var seanceDict = seances.GroupBy(s => s.DayOfWeek)
+            .ToDictionary(s => s.Key, s => s.ToList());
 
-        return seances;
+        return seanceDict;
     }
 }

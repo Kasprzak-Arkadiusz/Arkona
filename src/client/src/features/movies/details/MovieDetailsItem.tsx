@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, {MouseEventHandler} from 'react';
 import {DetailedMovieInfo} from "generated/movie/movie_pb";
 import SectionContainer from "components/SectionContainer/SectionContainer";
 import * as style from "./styled";
@@ -7,9 +7,10 @@ import MovieDetailedInformation from "./MovieDetailedInformation";
 
 interface Props {
     movieInfo: DetailedMovieInfo;
+    onButtonClickHandler: MouseEventHandler<HTMLButtonElement>
 }
 
-function MovieDetailsItem({movieInfo}: Props) {
+function MovieDetailsItem({movieInfo, onButtonClickHandler}: Props) {
     return (
         <SectionContainer minHeight={"480px"} margin={"40px 12px"}>
             <style.ContentContainer>
@@ -19,12 +20,15 @@ function MovieDetailsItem({movieInfo}: Props) {
                             displayTitle={false}
                             height={"480px"}
                             width={"320px"}/>
-                <MovieDetailedInformation title={movieInfo.getTitle()}
-                                          genre={movieInfo.getGenresList().join(", ")}
-                                          ageRestriction={movieInfo.getAgerestriction()}
-                                          duration={movieInfo.getDuration()}
-                                          releaseDate={movieInfo.getReleasedate()}
-                                          description={movieInfo.getDescription()}/>
+                <style.InfoAndButtonContainer>
+                    <MovieDetailedInformation title={movieInfo.getTitle()}
+                                              genre={movieInfo.getGenresList().join(", ")}
+                                              ageRestriction={movieInfo.getAgerestriction()}
+                                              duration={movieInfo.getDuration()}
+                                              releaseDate={movieInfo.getReleasedate()}
+                                              description={movieInfo.getDescription()}/>
+                    <style.ViewSeancesButton onClick={onButtonClickHandler}>Zobacz seanse</style.ViewSeancesButton>
+                </style.InfoAndButtonContainer >
             </style.ContentContainer>
         </SectionContainer>
     )

@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 import {MovieClient} from "generated/movie/movie_pb_service";
 import {DetailedMovieInfo, GetMovieDetailsRequest} from "generated/movie/movie_pb";
 import MovieDetailsItem from "./MovieDetailsItem";
+import ClosestSeances from "features/seances/ClosestSeances/ClosestSeances";
 
 function MovieDetails() {
     const {id} = useParams();
     const navigate = useNavigate();
     const [movieClient, _] = useState<MovieClient>(new MovieClient(process.env.REACT_APP_SERVER_URL!));
     const [movie, setMovie] = useState<DetailedMovieInfo>(new DetailedMovieInfo());
+    const [seancesRequested, setSeancesRequested] = useState<boolean>(false);
 
     useEffect(() => {
         if (id === undefined){
@@ -30,7 +32,8 @@ function MovieDetails() {
     
     return (
         <main className="display-container">
-            <MovieDetailsItem movieInfo={movie}></MovieDetailsItem>
+            <MovieDetailsItem movieInfo={movie} onButtonClickHandler={() => setSeancesRequested(true)}></MovieDetailsItem>
+            {seancesRequested && <ClosestSeances movieId={movie.getId()}></ClosestSeances>}
         </main>
     )
 }

@@ -10,11 +10,16 @@ export const ContentContainer = styled.div`
     height: 100%;
 `
 
+export const InfoAndButtonContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
 export const InformationContainer = styled.div`
     width: auto;
     max-width: 360px;
     display: inline-grid;
-    margin: 20px;
+    margin: 20px 20px 0px 20px;
 `
 
 export const TitleContainer = styled.div`
@@ -48,4 +53,20 @@ export const PropertyLabel = styled.label`
 export const PropertyText = styled.span`
     font-size: 16px;
     margin: auto;
+`
+
+export const ViewSeancesButton = styled.button`
+    width: 100px;
+    margin: 20px auto;
+    border-radius: 10px;
+    
+    color: ${props => props.theme.Palette.main};
+    background-color: ${props => props.theme.Palette.gray};
+    
+     &:hover {
+        -webkit-text-fill-color: ${props => props.theme.Palette.blueBorder};
+        -webkit-text-stroke-color: ${props => props.theme.Palette.blueBorder};
+        border-color: ${props => props.theme.Palette.blueBorder};
+        transition: 500ms; 
+    }
 `

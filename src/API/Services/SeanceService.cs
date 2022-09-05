@@ -19,13 +19,21 @@ public class SeanceService : Seance.SeanceBase
         var seances = await _mediator.Send(new GetClosestSeancesQuery(request.MovieId));
 
         var response = new GetClosestSeancesResponse();
-        response.Seances.AddRange(seances.Select(s => new SeanceInfo
+        foreach (var dict in seances)
         {
-            Id = s.Id,
-            Time = s.Time,
-            DayOfWeek = s.DayOfWeek
-        }));
+            var seanceInfoArray = new SeanceInfoArray
+            {
+                Key = dict.Key
+            };
 
+            seanceInfoArray.Seances.AddRange(dict.Value.Select(si => new SeanceInfo
+            {
+                Id = si.Id,
+                Time = si.Time
+            }));
+
+            response.Values.Add(seanceInfoArray);
+        }
         return response;
     }
 }

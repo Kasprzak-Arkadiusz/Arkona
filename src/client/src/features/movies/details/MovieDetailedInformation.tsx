@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, {ReactChild} from 'react';
 import {Timestamp} from "google-protobuf/google/protobuf/timestamp_pb";
 import * as style from "./styled";
 import {toDateString} from "utils/dateUtils";

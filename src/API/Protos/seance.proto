@@ -14,11 +14,15 @@ message GetClosestSeancesRequest {
 }
 
 message GetClosestSeancesResponse {
-  repeated SeanceInfo seances = 1;
+  repeated SeanceInfoArray values = 1;
+}
+
+message SeanceInfoArray {
+  string              key     = 1;
+  repeated SeanceInfo seances = 2;
 }
 
 message SeanceInfo {
   int32  id        = 1;
   string time      = 2;
-  string dayOfWeek = 3;
 }
