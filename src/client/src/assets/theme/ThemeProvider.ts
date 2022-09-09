@@ -2,7 +2,9 @@
     Palette: {
         gray: "#c4c4c4",
         main: "#1f2126",
+        bluish: "#324872",
         darker: "#1e1e25",
+        lighter:"#818895",
         warning: "#ff0707",
         textMain: "#fafafa",
         blueBorder: "#3a6df1",

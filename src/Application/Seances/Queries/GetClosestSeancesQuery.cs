@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces.IApplicationDBContext;
 using Application.Seances.ViewModels;
-using Application.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,7 +39,7 @@ public class
         var seances = await _dbContext.Seances
             .Where(s => s.Movie.Id == query.MovieId
                         && s.StartDateTime.Date >= todayDate
-                        && s.StartDateTime <= maxDate)
+                        && s.StartDateTime.Date <= maxDate)
             .Select(s =>
                 new SeanceInfo(s.Id, s.StartDateTime.ToString("HH:mm"),
                     culture.DateTimeFormat.GetDayName(s.StartDateTime.DayOfWeek)))
