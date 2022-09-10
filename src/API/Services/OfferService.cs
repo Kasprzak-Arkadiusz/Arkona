@@ -27,4 +27,18 @@ public class OfferService : Offer.OfferBase
 
         return response;
     }
+
+    public override async Task<GetAvailableOffersResponse> GetAvailableOffers(GetAvailableOffersRequest request, ServerCallContext context)
+    {
+        var viewModel = await _mediator.Send(new GetAvailableOffersQuery(request.SeanceId));
+        var response = new GetAvailableOffersResponse();
+        response.Offers.AddRange(viewModel.Select(aoi => new AvailableOfferInfo
+        {
+            Id = aoi.Id,
+            Name = aoi.Name,
+            Description = aoi.Description
+        }));
+        
+        return response;
+    }
 }
