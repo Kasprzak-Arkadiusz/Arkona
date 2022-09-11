@@ -1,7 +1,7 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces.IApplicationDBContext;
+using Application.DbSelectors;
 using Application.Offers.ViewModels;
-using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,21 +44,20 @@ public class GetAvailableOffersQueryHandler : IRequestHandler<GetAvailableOffers
             throw new NotFoundException("Nie istnieje seans z podanym id.");
         }
 
-        var offerList = new List<Offer>();
+        var offerList = new List<AvailableOfferResult>();
         offerList.AddRange(await _dbContext.AgeOffers
-            .Where(o => o.ValidPeriod.ValidFrom <= seance.Date && o.ValidPeriod.ValidTo >= seance.Date)
-            .ToListAsync(cancellationToken));
-        
-        offerList.AddRange(await _dbContext.AmountOffers
-            .Where(o => o.ValidPeriod.ValidFrom <= seance.Date && o.ValidPeriod.ValidTo >= seance.Date)
-            .ToListAsync(cancellationToken));
-        
-        offerList.AddRange(await _dbContext.MovieGenreOffers
-            .Where(o => o.ValidPeriod.ValidFrom <= seance.Date && o.ValidPeriod.ValidTo >= seance.Date
-                    && seance.GenreIds.Contains(o.GenreId))
+            .GetAvailableOfferResult(seance.Date)
             .ToListAsync(cancellationToken));
 
-        var offers = offerList.Select(o => new AvailableOfferInfo(o.Id, o.Name, o.Description));
+        offerList.AddRange(await _dbContext.AmountOffers
+            .GetAvailableOfferResult(seance.Date)
+            .ToListAsync(cancellationToken));
+
+        offerList.AddRange(await _dbContext.MovieGenreOffers
+            .GetAvailableOfferResult(seance.Date, seance.GenreIds)
+            .ToListAsync(cancellationToken));
+
+        var offers = offerList.Select(o => new AvailableOfferInfo(o.Id, o.Name, o.Description, o.MinTickets));
         return offers;
     }
 }

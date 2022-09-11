@@ -36,7 +36,8 @@ public class OfferService : Offer.OfferBase
         {
             Id = aoi.Id,
             Name = aoi.Name,
-            Description = aoi.Description
+            Description = aoi.Description,
+            MinTickets = aoi.MinTickets
         }));
         
         return response;
