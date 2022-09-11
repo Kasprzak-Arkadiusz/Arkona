@@ -19,6 +19,15 @@ Offer.GetLatestOffers = {
   responseType: offer_pb.GetLatestOffersResponse
 };
 
+Offer.GetAvailableOffers = {
+  methodName: "GetAvailableOffers",
+  service: Offer,
+  requestStream: false,
+  responseStream: false,
+  requestType: offer_pb.GetAvailableOffersRequest,
+  responseType: offer_pb.GetAvailableOffersResponse
+};
+
 exports.Offer = Offer;
 
 function OfferClient(serviceHost, options) {
@@ -31,6 +40,37 @@ OfferClient.prototype.getLatestOffers = function getLatestOffers(requestMessage,
     callback = arguments[1];
   }
   var client = grpc.unary(Offer.GetLatestOffers, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+OfferClient.prototype.getAvailableOffers = function getAvailableOffers(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(Offer.GetAvailableOffers, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

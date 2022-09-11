@@ -20,7 +20,7 @@ function DayOfWeekItem({dayOfWeek, seanceDetails}: Props) {
             <style.ButtonContainer>
                 {seanceDetails.map((item) => {
                     return <style.SeanceButton key={item.getId()}
-                                               onClick={() => navigate(`/client/tickets-purchase/${item.getId()}`)}>{item.getTime()}</style.SeanceButton>
+                                               onClick={() => navigate(`/tickets-purchase/${item.getId()}`)}>{item.getTime()}</style.SeanceButton>
                 })}
             </style.ButtonContainer>
         </style.DayOfWeekContainer>

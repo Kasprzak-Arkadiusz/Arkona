@@ -14,7 +14,6 @@ import {Role} from "./utils/CustomTypes/Role";
 import RequireAuth from "./hooks/useAuth/RequireAuth";
 import Repertoire from "./features/repertoire/Repertoire";
 import Offers from "./features/offers/Offers";
-import Tickets from "./features/tickets/Tickets";
 import Privacy from "./features/privacy/Privacy";
 import MovieDetails from "./features/movies/details/MovieDetails";
 import TicketsPurchase from "./features/tickets/purchase/TicketsPurchase";
@@ -36,16 +35,14 @@ function App() {
                         <Route path="repertoire" element={<Repertoire/>}/>
                         <Route path="offers" element={<Offers/>}/>
                         <Route path="movie/:id" element={<MovieDetails/>}/>
+                        <Route path="tickets-purchase/:seanceId" element={<TicketsPurchase/>}/>
                         
                         <Route path={`/${Role.client}/`}
                                element={<RequireAuth role={Role.client}/>}>
-                            <Route path="tickets" element={<Tickets/>}/>
-                            <Route path="tickets-purchase/:seanceId" element={<TicketsPurchase/>}/>
                         </Route>)
                         
                         <Route path={`/${Role.worker}/`}
                                element={<RequireAuth role={Role.worker}/>}>
-                            <Route path="tickets" element={<Tickets/>}/>
                         </Route>
                     </Routes>
                 </ThemeProvider>
