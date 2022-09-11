@@ -37,6 +37,7 @@ function AvailableOffers({seanceId, numberOfTickets}: Props) {
 
     return (
         <style.ContentContainer>
+            <style.SectionTitle>Oferty</style.SectionTitle>
             {offers.map((item) => {
                 {
                     return (<AvailableOfferItem key={item.getId()} value={item.getId()} text={item.getName()}
@@ -46,7 +47,8 @@ function AvailableOffers({seanceId, numberOfTickets}: Props) {
                                                 changeHandler={ChangeHandler}
                                                 clickHandler={ClickHandler}/>)
                 }
-            })}</style.ContentContainer>
+            })}
+        </style.ContentContainer>
     )
 }
 

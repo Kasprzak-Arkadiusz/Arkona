@@ -1,11 +1,20 @@
 ﻿import styled from "styled-components";
 
 export const ContentContainer = styled.div`
+    max-width: 480px;
     width: fit-content;
     display: flex;
     flex-direction: column;
     align-content: center;
     margin: auto;
+`
+
+export const SectionTitle = styled.span`
+    width: fit-content;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: left;
 `
 
 interface Props {
@@ -19,7 +28,6 @@ export const RadioInput = styled.input`
 `
 
 export const AvailableOfferItemContainer = styled.label<Props>`
-    width: 50%;
     display: block;
     position: relative;
     margin: 10px auto;

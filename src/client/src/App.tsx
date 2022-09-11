@@ -35,7 +35,9 @@ function App() {
                         <Route path="repertoire" element={<Repertoire/>}/>
                         <Route path="offers" element={<Offers/>}/>
                         <Route path="movie/:id" element={<MovieDetails/>}/>
-                        <Route path="tickets-purchase/:seanceId" element={<TicketsPurchase/>}/>
+                        <Route path="tickets-purchase/:seanceId/:action" element={<TicketsPurchase/>}>
+                            
+                        </Route>
                         
                         <Route path={`/${Role.client}/`}
                                element={<RequireAuth role={Role.client}/>}>
