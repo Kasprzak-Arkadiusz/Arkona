@@ -8,6 +8,13 @@ export const TicketNumberContainer = styled.div`
     justify-content: center;
 `
 
+export const ErrorLabel = styled.label`
+    margin: 10px;
+    
+    font-weight: bold;
+    color: ${props => props.theme.Palette.warning};
+`
+
 export const TicketNumberLabel = styled.label`
     margin: 10px;
     
@@ -52,4 +59,20 @@ export const DecrementButton = styled.div<CounterProps>`
     
     visibility: ${props => props.isVisible ? "visible" : "hidden"};
     cursor: pointer;
+`
+
+export const NextButton = styled.button`
+    width: 100px;
+    margin: 20px auto;
+    border-radius: 10px;
+    
+    color: ${props => props.theme.Palette.main};
+    background-color: ${props => props.theme.Palette.gray};
+    
+     &:hover {
+        -webkit-text-fill-color: ${props => props.theme.Palette.blueBorder};
+        -webkit-text-stroke-color: ${props => props.theme.Palette.blueBorder};
+        border-color: ${props => props.theme.Palette.blueBorder};
+        transition: 500ms; 
+    }
 `

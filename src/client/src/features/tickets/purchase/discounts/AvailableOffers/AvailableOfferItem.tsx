@@ -6,12 +6,12 @@ interface Props {
     isChecked: boolean;
     text: string;
     description: string;
-    isTransparent: boolean;
+    isTransparent?: boolean;
     changeHandler: React.ChangeEventHandler<HTMLInputElement>;
     clickHandler: React.MouseEventHandler<HTMLInputElement>;
 }
 
-function AvailableOfferItem({value, isChecked, text, description, isTransparent, changeHandler, clickHandler}: Props) {
+function AvailableOfferItem({value, isChecked, text, description, isTransparent = false, changeHandler, clickHandler}: Props) {
     return (
         <style.AvailableOfferItemContainer isTransparent={isTransparent}>
             <style.CheckMark>

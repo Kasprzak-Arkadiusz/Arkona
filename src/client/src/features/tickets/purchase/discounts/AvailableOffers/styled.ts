@@ -7,6 +7,7 @@ export const ContentContainer = styled.div`
     flex-direction: column;
     align-content: center;
     margin: auto;
+    padding-bottom: 20px;
 `
 
 export const SectionTitle = styled.span`
@@ -30,7 +31,7 @@ export const RadioInput = styled.input`
 export const AvailableOfferItemContainer = styled.label<Props>`
     display: block;
     position: relative;
-    margin: 10px auto;
+    margin: 10px auto 10px 10px;
     padding-left: 35px;
     cursor: pointer;
     opacity: ${props => props.isTransparent ? "50%" : "100%"};

@@ -7,9 +7,10 @@ import {AvailableOfferInfo, GetAvailableOffersRequest} from "generated/offer/off
 interface Props {
     seanceId: number;
     numberOfTickets: number;
+    onCheckHandler: (offerId :number) => void;
 }
 
-function AvailableOffers({seanceId, numberOfTickets}: Props) {
+function AvailableOffers({seanceId, numberOfTickets, onCheckHandler}: Props) {
     const [offerClient, _] = useState<OfferClient>(new OfferClient(process.env.REACT_APP_SERVER_URL!));
     const [offers, setOffers] = useState<AvailableOfferInfo[]>(new Array<AvailableOfferInfo>());
     const [checkedOfferId, setCheckedOfferId] = useState<number>();
@@ -27,17 +28,20 @@ function AvailableOffers({seanceId, numberOfTickets}: Props) {
 
     const ChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.checked) {
-            setCheckedOfferId(parseInt(e.target.value));
+            const offerId = parseInt(e.target.value);
+            setCheckedOfferId(offerId);
+            setCheckedOfferId(offerId);
         }
     }
 
     const ClickHandler = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
         setCheckedOfferId(0);
+        onCheckHandler(0);
     }
 
     return (
         <style.ContentContainer>
-            <style.SectionTitle>Oferty</style.SectionTitle>
+            <style.SectionTitle>Dostępne oferty</style.SectionTitle>
             {offers.map((item) => {
                 {
                     return (<AvailableOfferItem key={item.getId()} value={item.getId()} text={item.getName()}

@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "API";
+
+package ticketDiscount;
+
+service TicketDiscount{
+  rpc GetTicketDiscounts(EmptyRequest) returns (GetTicketDiscountsResponse);
+}
+
+// GetTicketDiscounts
+message EmptyRequest {}
+
+message GetTicketDiscountsResponse{
+  repeated TicketDiscountsDetails ticketDiscount = 1;
+}
+
+message TicketDiscountsDetails{
+  int32  id            = 1;
+  string name          = 2;
+  string description   = 3;
+  string discountValue = 4;
+}

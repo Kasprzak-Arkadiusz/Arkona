@@ -94,6 +94,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapGrpcService<MovieService>().RequireCors(policyName);
     endpoints.MapGrpcService<OfferService>().RequireCors(policyName);
     endpoints.MapGrpcService<SeanceService>().RequireCors(policyName);
+    endpoints.MapGrpcService<TicketDiscountService>().RequireCors(policyName);
 });
 
 if (app.Environment.IsDevelopment())

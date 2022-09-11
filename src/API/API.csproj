@@ -11,6 +11,7 @@
         <Protobuf Include="Protos\movie.proto" GrpcServices="Server" />
         <Protobuf Include="Protos\offer.proto" GrpcServices="Server" />
         <Protobuf Include="Protos\seance.proto" GrpcServices="Server" />
+        <Protobuf Include="Protos\ticketDiscount.proto" GrpcServices="Server" />
     </ItemGroup>
 
     <ItemGroup>
