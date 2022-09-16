@@ -42,14 +42,14 @@ public static class DatabaseSeeder
     {
         var cinemaHalls = new List<CinemaHall>
         {
-            CinemaHall.Create(1, 240, 20),
-            CinemaHall.Create(2, 240, 20),
-            CinemaHall.Create(3, 360, 20),
-            CinemaHall.Create(4, 360, 20),
-            CinemaHall.Create(5, 240, 20),
-            CinemaHall.Create(6, 240, 20),
-            CinemaHall.Create(7, 360, 20),
-            CinemaHall.Create(8, 360, 20),
+            CinemaHall.Create(1, 240, 24),
+            CinemaHall.Create(2, 240, 24),
+            CinemaHall.Create(3, 360, 24),
+            CinemaHall.Create(4, 360, 24),
+            CinemaHall.Create(5, 240, 24),
+            CinemaHall.Create(6, 240, 24),
+            CinemaHall.Create(7, 360, 24),
+            CinemaHall.Create(8, 360, 24),
         };
 
         foreach (var cinemaHall in cinemaHalls)

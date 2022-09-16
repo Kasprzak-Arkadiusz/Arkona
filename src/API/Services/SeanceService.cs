@@ -1,4 +1,5 @@
 ﻿using Application.Seances.Queries;
+using Application.Seats.Queries;
 using Grpc.Core;
 using MediatR;
 
@@ -34,6 +35,46 @@ public class SeanceService : Seance.SeanceBase
 
             response.Values.Add(seanceInfoArray);
         }
+
+        return response;
+    }
+
+    public override async Task<GetSeatsBySeanceResponse> GetSeatsBySeance(GetSeatsBySeanceRequest request,
+        ServerCallContext context)
+    {
+        var seanceSeats = await _mediator.Send(new GetSeatsBySeanceQuery(request.SeanceId));
+
+        var leftSection = new SeanceSeatSection { Section = CinemaHallSection.Left };
+        leftSection.Seats.AddRange(seanceSeats.Where(ss => ss.Section == Domain.Enums.CinemaHallSection.Left)
+            .Select(ss => new SeanceSeatInfo
+            {
+                Id = ss.Id,
+                Number = ss.Number,
+                Row = ss.Row.ToString(),
+                IsFree = ss.IsFree
+            }));
+
+        var middleSection = new SeanceSeatSection { Section = CinemaHallSection.Middle };
+        middleSection.Seats.AddRange(seanceSeats.Where(ss => ss.Section == Domain.Enums.CinemaHallSection.Middle)
+            .Select(ss => new SeanceSeatInfo
+            {
+                Id = ss.Id,
+                Number = ss.Number,
+                Row = ss.Row.ToString(),
+                IsFree = ss.IsFree
+            }));
+
+        var rightSection = new SeanceSeatSection { Section = CinemaHallSection.Right };
+        rightSection.Seats.AddRange(seanceSeats.Where(ss => ss.Section == Domain.Enums.CinemaHallSection.Right)
+            .Select(ss => new SeanceSeatInfo
+            {
+                Id = ss.Id,
+                Number = ss.Number,
+                Row = ss.Row.ToString(),
+                IsFree = ss.IsFree
+            }));
+
+        var response = new GetSeatsBySeanceResponse { Sections = { leftSection, middleSection, rightSection } };
         return response;
     }
 }

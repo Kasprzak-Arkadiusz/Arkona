@@ -24,7 +24,7 @@ function Login() {
                 <login.redirectContainer>
                     <login.redirectContainerSpan>Nie masz konta?</login.redirectContainerSpan>
                     <login.redirectContainerLink to="/register">
-                        Zerejestruj się
+                        Zarejestruj się
                     </login.redirectContainerLink>
                 </login.redirectContainer>
             </SectionContainer>

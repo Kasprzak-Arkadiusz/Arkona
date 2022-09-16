@@ -6,6 +6,7 @@ package seance;
 
 service Seance{
   rpc GetClosestSeances(GetClosestSeancesRequest) returns (GetClosestSeancesResponse);
+  rpc GetSeatsBySeance(GetSeatsBySeanceRequest) returns (GetSeatsBySeanceResponse);
 }
 
 // GetClosestSeances
@@ -23,6 +24,33 @@ message SeanceInfoArray {
 }
 
 message SeanceInfo {
-  int32  id        = 1;
-  string time      = 2;
+  int32  id   = 1;
+  string time = 2;
+}
+
+// GetSeatsBySeance
+message GetSeatsBySeanceRequest {
+  int32 seanceId = 1;
+}
+
+message GetSeatsBySeanceResponse {
+  repeated SeanceSeatSection sections = 1;
+}
+
+message SeanceSeatSection {
+  CinemaHallSection       section = 1;
+  repeated SeanceSeatInfo seats   = 2;
+}
+
+enum CinemaHallSection {
+  Left   = 0;
+  Middle = 1;
+  Right  = 2;
+}
+
+message SeanceSeatInfo {
+  int32  id     = 1;
+  string row    = 2;
+  int32  number = 3;
+  bool   isFree = 4;
 }
