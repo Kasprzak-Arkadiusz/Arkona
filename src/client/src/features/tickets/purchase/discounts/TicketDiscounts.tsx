@@ -4,13 +4,15 @@ import AvailableOffers from "./AvailableOffers/AvailableOffers";
 import {useEffect, useState} from "react";
 import * as style from './styled';
 import AvailableDiscounts from "./AvailableDiscounts/AvailableDiscounts";
+import NavigationButtons from "../NavigationButtons/NavigationButtons";
 
 interface Props {
+    movieId: number;
     seanceId: number;
     onTicketCountChange: (ticketNumber: number) => void;
 }
 
-function TicketDiscounts({seanceId, onTicketCountChange}: Props) {
+function TicketDiscounts({movieId, seanceId, onTicketCountChange}: Props) {
     const maxTicketCount = 16;
     const minTicketCount = 0;
     const [ticketCount, setTicketCount] = useState<number>(0);
@@ -25,7 +27,7 @@ function TicketDiscounts({seanceId, onTicketCountChange}: Props) {
 
     const onClickHandler = () => {
         if (ticketCount > 0) {
-            navigate(`/tickets-purchase/${seanceId}/seatChoice`)
+            navigate(`/movie/${movieId}/tickets-purchase/${seanceId}/seatChoice`)
         } else {
             setShowError(true);
         }
@@ -58,7 +60,9 @@ function TicketDiscounts({seanceId, onTicketCountChange}: Props) {
                              onCheckHandler={(checkedOfferId) => setOfferId(checkedOfferId)
             }/>
             <AvailableDiscounts/>
-            <style.NextButton onClick={onClickHandler}>Dalej</style.NextButton>
+            <NavigationButtons onPrevClick={(e) => navigate(-1)}
+                               onNextClick={onClickHandler}/>
+
         </div>
     )
 }

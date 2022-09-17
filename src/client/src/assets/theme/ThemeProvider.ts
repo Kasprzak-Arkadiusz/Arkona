@@ -1,7 +1,9 @@
 ﻿const Theme = {
     Palette: {
+        free: "#65ff65",
         gray: "#c4c4c4",
         main: "#1f2126",
+        taken: "#ff4f4f",
         bluish: "#324872",
         darker: "#1e1e25",
         lighter:"#818895",
