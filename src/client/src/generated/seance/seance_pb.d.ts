@@ -95,3 +95,119 @@ export namespace SeanceInfo {
   }
 }
 
+export class GetSeatsBySeanceRequest extends jspb.Message {
+  getSeanceid(): number;
+  setSeanceid(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetSeatsBySeanceRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetSeatsBySeanceRequest): GetSeatsBySeanceRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetSeatsBySeanceRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetSeatsBySeanceRequest;
+  static deserializeBinaryFromReader(message: GetSeatsBySeanceRequest, reader: jspb.BinaryReader): GetSeatsBySeanceRequest;
+}
+
+export namespace GetSeatsBySeanceRequest {
+  export type AsObject = {
+    seanceid: number,
+  }
+}
+
+export class GetSeatsBySeanceResponse extends jspb.Message {
+  getNumberofrows(): number;
+  setNumberofrows(value: number): void;
+
+  clearSectionsList(): void;
+  getSectionsList(): Array<SeanceSeatSection>;
+  setSectionsList(value: Array<SeanceSeatSection>): void;
+  addSections(value?: SeanceSeatSection, index?: number): SeanceSeatSection;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetSeatsBySeanceResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetSeatsBySeanceResponse): GetSeatsBySeanceResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetSeatsBySeanceResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetSeatsBySeanceResponse;
+  static deserializeBinaryFromReader(message: GetSeatsBySeanceResponse, reader: jspb.BinaryReader): GetSeatsBySeanceResponse;
+}
+
+export namespace GetSeatsBySeanceResponse {
+  export type AsObject = {
+    numberofrows: number,
+    sectionsList: Array<SeanceSeatSection.AsObject>,
+  }
+}
+
+export class SeanceSeatSection extends jspb.Message {
+  getSection(): CinemaHallSectionMap[keyof CinemaHallSectionMap];
+  setSection(value: CinemaHallSectionMap[keyof CinemaHallSectionMap]): void;
+
+  getWidth(): number;
+  setWidth(value: number): void;
+
+  clearSeatsList(): void;
+  getSeatsList(): Array<SeanceSeatInfo>;
+  setSeatsList(value: Array<SeanceSeatInfo>): void;
+  addSeats(value?: SeanceSeatInfo, index?: number): SeanceSeatInfo;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SeanceSeatSection.AsObject;
+  static toObject(includeInstance: boolean, msg: SeanceSeatSection): SeanceSeatSection.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SeanceSeatSection, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SeanceSeatSection;
+  static deserializeBinaryFromReader(message: SeanceSeatSection, reader: jspb.BinaryReader): SeanceSeatSection;
+}
+
+export namespace SeanceSeatSection {
+  export type AsObject = {
+    section: CinemaHallSectionMap[keyof CinemaHallSectionMap],
+    width: number,
+    seatsList: Array<SeanceSeatInfo.AsObject>,
+  }
+}
+
+export class SeanceSeatInfo extends jspb.Message {
+  getId(): number;
+  setId(value: number): void;
+
+  getRow(): string;
+  setRow(value: string): void;
+
+  getNumber(): number;
+  setNumber(value: number): void;
+
+  getIsfree(): boolean;
+  setIsfree(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SeanceSeatInfo.AsObject;
+  static toObject(includeInstance: boolean, msg: SeanceSeatInfo): SeanceSeatInfo.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SeanceSeatInfo, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SeanceSeatInfo;
+  static deserializeBinaryFromReader(message: SeanceSeatInfo, reader: jspb.BinaryReader): SeanceSeatInfo;
+}
+
+export namespace SeanceSeatInfo {
+  export type AsObject = {
+    id: number,
+    row: string,
+    number: number,
+    isfree: boolean,
+  }
+}
+
+export interface CinemaHallSectionMap {
+  LEFT: 0;
+  MIDDLE: 1;
+  RIGHT: 2;
+}
+
+export const CinemaHallSection: CinemaHallSectionMap;
+

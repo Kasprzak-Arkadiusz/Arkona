@@ -34,12 +34,14 @@ message GetSeatsBySeanceRequest {
 }
 
 message GetSeatsBySeanceResponse {
-  repeated SeanceSeatSection sections = 1;
+  int32                      numberOfRows = 1;
+  repeated SeanceSeatSection sections     = 2;
 }
 
 message SeanceSeatSection {
   CinemaHallSection       section = 1;
-  repeated SeanceSeatInfo seats   = 2;
+  int32                   width   = 2;
+  repeated SeanceSeatInfo seats   = 3;
 }
 
 enum CinemaHallSection {

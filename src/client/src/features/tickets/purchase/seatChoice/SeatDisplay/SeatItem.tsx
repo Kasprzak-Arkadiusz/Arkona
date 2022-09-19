@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, {useEffect, useState} from 'react';
 import * as style from './styled';
 
 interface Props {
@@ -6,10 +6,20 @@ interface Props {
 }
 
 function SeatItem({isFree}: Props) {
+    const [isFreeTest, setIsFreeTest] = useState<boolean>(true);
+    
+    useEffect(() => {
+        setIsFreeTest(isFree);
+    }, [isFree]);
+    
+    const handleClick = () => {
+        if (isFree){
+            setIsFreeTest(prevState => !prevState)
+        }
+    }
+    
     return (
-        <style.SeatItemContainer isFree={isFree}>
-
-        </style.SeatItemContainer>
+        <style.SeatItemContainer isFree={isFreeTest} onClick={handleClick}/>
     )
 }
 

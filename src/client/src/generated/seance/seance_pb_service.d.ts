@@ -13,9 +13,19 @@ type SeanceGetClosestSeances = {
   readonly responseType: typeof seance_pb.GetClosestSeancesResponse;
 };
 
+type SeanceGetSeatsBySeance = {
+  readonly methodName: string;
+  readonly service: typeof Seance;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof seance_pb.GetSeatsBySeanceRequest;
+  readonly responseType: typeof seance_pb.GetSeatsBySeanceResponse;
+};
+
 export class Seance {
   static readonly serviceName: string;
   static readonly GetClosestSeances: SeanceGetClosestSeances;
+  static readonly GetSeatsBySeance: SeanceGetSeatsBySeance;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -58,6 +68,15 @@ export class SeanceClient {
   getClosestSeances(
     requestMessage: seance_pb.GetClosestSeancesRequest,
     callback: (error: ServiceError|null, responseMessage: seance_pb.GetClosestSeancesResponse|null) => void
+  ): UnaryResponse;
+  getSeatsBySeance(
+    requestMessage: seance_pb.GetSeatsBySeanceRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: seance_pb.GetSeatsBySeanceResponse|null) => void
+  ): UnaryResponse;
+  getSeatsBySeance(
+    requestMessage: seance_pb.GetSeatsBySeanceRequest,
+    callback: (error: ServiceError|null, responseMessage: seance_pb.GetSeatsBySeanceResponse|null) => void
   ): UnaryResponse;
 }
 

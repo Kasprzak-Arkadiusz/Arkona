@@ -1,17 +1,17 @@
 ﻿import React from 'react';
 import * as style from './styled';
-import {SeatItemContainer} from '../SeatDisplay/styled'
+import {DisabledSeatItemContainer} from '../SeatDisplay/styled'
 
 function Legend() {
     return (
         <style.LegendContainer>
             <style.Title>Legenda</style.Title>
             <style.LegendItemContainer>
-                <SeatItemContainer isFree={true}/>
+                <DisabledSeatItemContainer isFree={true}/>
                 <style.Label> - Miejsce wolne</style.Label>
             </style.LegendItemContainer>
             <style.LegendItemContainer>
-                <SeatItemContainer isFree={false}/>
+                <DisabledSeatItemContainer isFree={false}/>
                 <style.Label> - Miejsce zajęte</style.Label>
             </style.LegendItemContainer>
         </style.LegendContainer>

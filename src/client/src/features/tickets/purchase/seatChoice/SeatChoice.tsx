@@ -16,7 +16,7 @@ function SeatChoice({seanceId, movieId}: Props) {
         <div>
             <style.ContentContainer>
                 <Legend/>
-                <SeatDisplay/>
+                <SeatDisplay seanceId={seanceId}/>
             </style.ContentContainer>
             <NavigationButtons onPrevClick={(e) => navigate(`/movie/${movieId}/tickets-purchase/${seanceId}/discounts`)}
                                onNextClick={(e) => navigate(`/movie/${movieId}/tickets-purchase/${seanceId}/purchaseSummary`)}/>

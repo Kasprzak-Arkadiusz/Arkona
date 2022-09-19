@@ -1,5 +1,6 @@
 ﻿using Application.Seances.Queries;
 using Application.Seats.Queries;
+using Domain.Services;
 using Grpc.Core;
 using MediatR;
 
@@ -44,7 +45,11 @@ public class SeanceService : Seance.SeanceBase
     {
         var seanceSeats = await _mediator.Send(new GetSeatsBySeanceQuery(request.SeanceId));
 
-        var leftSection = new SeanceSeatSection { Section = CinemaHallSection.Left };
+        var leftSection = new SeanceSeatSection
+        {
+            Section = CinemaHallSection.Left,
+            Width = CinemaHallSectionService.NumberOfSeatsInSideSection
+        };
         leftSection.Seats.AddRange(seanceSeats.Where(ss => ss.Section == Domain.Enums.CinemaHallSection.Left)
             .Select(ss => new SeanceSeatInfo
             {
@@ -54,7 +59,12 @@ public class SeanceService : Seance.SeanceBase
                 IsFree = ss.IsFree
             }));
 
-        var middleSection = new SeanceSeatSection { Section = CinemaHallSection.Middle };
+        var middleSection = new SeanceSeatSection
+        {
+            Section = CinemaHallSection.Middle,
+            Width = CinemaHallSectionService.NumberOfSeatsInARow -
+                    2 * CinemaHallSectionService.NumberOfSeatsInSideSection
+        };
         middleSection.Seats.AddRange(seanceSeats.Where(ss => ss.Section == Domain.Enums.CinemaHallSection.Middle)
             .Select(ss => new SeanceSeatInfo
             {
@@ -64,7 +74,11 @@ public class SeanceService : Seance.SeanceBase
                 IsFree = ss.IsFree
             }));
 
-        var rightSection = new SeanceSeatSection { Section = CinemaHallSection.Right };
+        var rightSection = new SeanceSeatSection
+        {
+            Section = CinemaHallSection.Right,
+            Width = CinemaHallSectionService.NumberOfSeatsInSideSection
+        };
         rightSection.Seats.AddRange(seanceSeats.Where(ss => ss.Section == Domain.Enums.CinemaHallSection.Right)
             .Select(ss => new SeanceSeatInfo
             {
@@ -74,7 +88,11 @@ public class SeanceService : Seance.SeanceBase
                 IsFree = ss.IsFree
             }));
 
-        var response = new GetSeatsBySeanceResponse { Sections = { leftSection, middleSection, rightSection } };
+        var response = new GetSeatsBySeanceResponse
+        {
+            Sections = { leftSection, middleSection, rightSection },
+            NumberOfRows = seanceSeats.Count / CinemaHallSectionService.NumberOfSeatsInARow
+        };
         return response;
     }
 }

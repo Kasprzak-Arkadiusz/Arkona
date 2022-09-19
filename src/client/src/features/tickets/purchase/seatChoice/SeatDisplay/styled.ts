@@ -41,7 +41,7 @@ export const LeftSection = styled.div<SectionProps>`
 `
 
 export const MiddleSection = styled.div<SectionProps>`
-    margin: auto 10px;
+    margin: 0px 10px;
     width: ${props => `${props.width * 25}px`};
     display: flex;
     flex-wrap: wrap;
@@ -53,13 +53,31 @@ export const RightSection = styled.div<SectionProps>`
     flex-wrap: wrap;
 `
 
+export const RowLabelsContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+export const RowLabel = styled.span`
+    margin: 5px;
+`
+
 interface SeatItemProps {
     isFree: boolean;
 }
 
-export const SeatItemContainer = styled.div<SeatItemProps>`
+export const DisabledSeatItemContainer = styled.div<SeatItemProps>`
     width: 15px;
     height: 15px;
     margin: 5px;
-    background: ${props => props.isFree ? props.theme.Palette.free : props.theme.Palette.taken}
+    background: ${props => props.isFree ? props.theme.Palette.free : props.theme.Palette.taken};
+`
+
+export const SeatItemContainer = styled(DisabledSeatItemContainer)`
+    width: 15px;
+    height: 15px;
+    margin: 5px;
+    background: ${props => props.isFree ? props.theme.Palette.free : props.theme.Palette.taken};
+       
+    cursor: ${props => props.isFree ? "pointer" : "auto"};
 `
