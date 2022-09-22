@@ -7,6 +7,9 @@ package seance;
 service Seance{
   rpc GetClosestSeances(GetClosestSeancesRequest) returns (GetClosestSeancesResponse);
   rpc GetSeatsBySeance(GetSeatsBySeanceRequest) returns (GetSeatsBySeanceResponse);
+//  rpc JoinSeanceRoom(JoinSeanceRoomRequest) returns (stream JoinSeanceRoomResponse);
+  rpc ChooseSeat(stream ChooseSeatRequest) returns (stream ChooseSeatResponse);
+//  rpc LeaveSeanceRoom(LeaveSeanceRoomRequest) returns (LeaveSeanceRoomResponse);
 }
 
 // GetClosestSeances
@@ -56,3 +59,36 @@ message SeanceSeatInfo {
   int32  number = 3;
   bool   isFree = 4;
 }
+//
+//// JoinSeanceRoom
+//message JoinSeanceRoomRequest {
+//  int32 seanceId = 1;
+//  int32 userId   = 2;
+//}
+//
+//message JoinSeanceRoomResponse {
+//  bool success = 1;
+//}
+
+// ChooseSeat
+message ChooseSeatRequest{
+  int32 seanceId = 1;
+  int32 seatId   = 2;
+  int32 userId   = 3;
+  bool  isChosen = 4;
+}
+
+message ChooseSeatResponse {
+  int32 seanceId = 1;
+  int32 seatId   = 2;
+  bool  isFree   = 3;
+}
+
+//// LeaveSeanceRoom
+//message LeaveSeanceRoomRequest {
+//  int32 seanceId = 1;
+//  int32 userId   = 2;
+//}
+//
+//message LeaveSeanceRoomResponse {
+//}

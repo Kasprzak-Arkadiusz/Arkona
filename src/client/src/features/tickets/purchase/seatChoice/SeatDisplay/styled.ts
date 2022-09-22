@@ -73,7 +73,7 @@ export const DisabledSeatItemContainer = styled.div<SeatItemProps>`
     background: ${props => props.isFree ? props.theme.Palette.free : props.theme.Palette.taken};
 `
 
-export const SeatItemContainer = styled(DisabledSeatItemContainer)`
+export const SeatItemContainer = styled.div<SeatItemProps>`
     width: 15px;
     height: 15px;
     margin: 5px;

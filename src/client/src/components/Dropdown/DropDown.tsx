@@ -10,7 +10,6 @@ interface Props {
 
 function Dropdown({label, values, onChangeHandler}: Props) {
     const onChangePrivateHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        console.log(event.target.value)
         onChangeHandler(parseInt(event.target.value));
     };
     

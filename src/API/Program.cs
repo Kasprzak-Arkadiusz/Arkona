@@ -2,6 +2,7 @@ using System.Text;
 using API.Extensions;
 using API.Interceptors;
 using API.Services;
+using API.Services.CustomServices;
 using Application;
 using Application.Common.Interfaces;
 using Calzolari.Grpc.AspNetCore.Validation;
@@ -39,6 +40,8 @@ builder.Services.AddGrpc(options =>
 });
 builder.Services.AddGrpcReflection();
 builder.Services.AddGrpcFluentValidation();
+
+builder.Services.AddSingleton<SeanceRoomService>();
 
 const string policyName = "MyPolicy";
 builder.Services.AddCors(o =>

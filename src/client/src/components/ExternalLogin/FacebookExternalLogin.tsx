@@ -42,7 +42,6 @@ function FacebookExternalLogin({providerName, buttonText, imgSource}: Props) {
     }
 
     const onFailHandler = (status: string) => {
-        console.log(status);
         setErrorMessage("Wystąpił problem podczas połączenia z serwerem Facebooka");
     }
 

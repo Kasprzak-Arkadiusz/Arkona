@@ -203,6 +203,66 @@ export namespace SeanceSeatInfo {
   }
 }
 
+export class ChooseSeatRequest extends jspb.Message {
+  getSeanceid(): number;
+  setSeanceid(value: number): void;
+
+  getSeatid(): number;
+  setSeatid(value: number): void;
+
+  getUserid(): number;
+  setUserid(value: number): void;
+
+  getIschosen(): boolean;
+  setIschosen(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ChooseSeatRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ChooseSeatRequest): ChooseSeatRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ChooseSeatRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ChooseSeatRequest;
+  static deserializeBinaryFromReader(message: ChooseSeatRequest, reader: jspb.BinaryReader): ChooseSeatRequest;
+}
+
+export namespace ChooseSeatRequest {
+  export type AsObject = {
+    seanceid: number,
+    seatid: number,
+    userid: number,
+    ischosen: boolean,
+  }
+}
+
+export class ChooseSeatResponse extends jspb.Message {
+  getSeanceid(): number;
+  setSeanceid(value: number): void;
+
+  getSeatid(): number;
+  setSeatid(value: number): void;
+
+  getIsfree(): boolean;
+  setIsfree(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ChooseSeatResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: ChooseSeatResponse): ChooseSeatResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ChooseSeatResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ChooseSeatResponse;
+  static deserializeBinaryFromReader(message: ChooseSeatResponse, reader: jspb.BinaryReader): ChooseSeatResponse;
+}
+
+export namespace ChooseSeatResponse {
+  export type AsObject = {
+    seanceid: number,
+    seatid: number,
+    isfree: boolean,
+  }
+}
+
 export interface CinemaHallSectionMap {
   LEFT: 0;
   MIDDLE: 1;

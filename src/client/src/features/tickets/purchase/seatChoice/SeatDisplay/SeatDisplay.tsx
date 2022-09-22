@@ -3,13 +3,13 @@ import * as style from './styled';
 import SeatItem from "./SeatItem";
 import {SeanceClient} from "generated/seance/seance_pb_service";
 import {CinemaHallSection, GetSeatsBySeanceRequest, SeanceSeatSection} from "generated/seance/seance_pb";
+import DisabledSeatItem from "./SeatItemDisabled";
 
 interface Props {
     seanceId: number
 }
 
 function SeatDisplay({seanceId}: Props) {
-    console.log(seanceId)
     const [seanceIdNumber, setSeanceIdNumber] = useState<number>(0);
     const [seanceClient, _] = useState<SeanceClient>(new SeanceClient(process.env.REACT_APP_SERVER_URL!));
     const [seanceSeatSection, setSeanceSeatSection] = useState<Array<SeanceSeatSection>>(new Array<SeanceSeatSection>());
@@ -18,7 +18,7 @@ function SeatDisplay({seanceId}: Props) {
     useEffect(() => {
         setSeanceIdNumber(seanceId);
     }, [seanceId]);
-    
+
     useEffect(() => {
         const request = new GetSeatsBySeanceRequest();
         request.setSeanceid(seanceIdNumber);
@@ -58,8 +58,11 @@ function SeatDisplay({seanceId}: Props) {
                                     return (
                                         <style.LeftSection key={CinemaHallSection.LEFT} width={item.getWidth()}>
                                             {item.getSeatsList().map(seat => {
-                                                return <SeatItem key={seat.getId()} isFree={seat.getIsfree()}/>
-                                            })}
+                                                return seat.getIsfree() ?
+                                                    <SeatItem key={seat.getId()} occupiedByUserId={1}/> :
+                                                    <DisabledSeatItem key={seat.getId()}/>
+                                            })
+                                            }
                                         </style.LeftSection>
                                     )
                                 }
@@ -67,8 +70,11 @@ function SeatDisplay({seanceId}: Props) {
                                     return (
                                         <style.MiddleSection key={CinemaHallSection.MIDDLE} width={item.getWidth()}>
                                             {item.getSeatsList().map(seat => {
-                                                return <SeatItem key={seat.getId()} isFree={seat.getIsfree()}/>
-                                            })}
+                                                return seat.getIsfree() ?
+                                                    <SeatItem key={seat.getId()} occupiedByUserId={1}/> :
+                                                    <DisabledSeatItem key={seat.getId()}/>
+                                            })
+                                            }
                                         </style.MiddleSection>
                                     )
                                 }
@@ -76,8 +82,11 @@ function SeatDisplay({seanceId}: Props) {
                                     return (
                                         <style.RightSection key={CinemaHallSection.RIGHT} width={item.getWidth()}>
                                             {item.getSeatsList().map(seat => {
-                                                return <SeatItem key={seat.getId()} isFree={seat.getIsfree()}/>
-                                            })}
+                                                return seat.getIsfree() ?
+                                                    <SeatItem key={seat.getId()} occupiedByUserId={1}/> :
+                                                    <DisabledSeatItem key={seat.getId()}/>
+                                            })
+                                            }
                                         </style.RightSection>
                                     )
                                 }

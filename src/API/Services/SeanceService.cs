@@ -1,4 +1,5 @@
-﻿using Application.Seances.Queries;
+﻿using API.Services.CustomServices;
+using Application.Seances.Queries;
 using Application.Seats.Queries;
 using Domain.Services;
 using Grpc.Core;
@@ -9,10 +10,12 @@ namespace API.Services;
 public class SeanceService : Seance.SeanceBase
 {
     private readonly IMediator _mediator;
+    private readonly SeanceRoomService _seanceRoomService;
 
-    public SeanceService(IMediator mediator)
+    public SeanceService(IMediator mediator, SeanceRoomService seanceRoomService)
     {
         _mediator = mediator;
+        _seanceRoomService = seanceRoomService;
     }
 
     public override async Task<GetClosestSeancesResponse> GetClosestSeances(GetClosestSeancesRequest request,
@@ -94,5 +97,34 @@ public class SeanceService : Seance.SeanceBase
             NumberOfRows = seanceSeats.Count / CinemaHallSectionService.NumberOfSeatsInARow
         };
         return response;
+    }
+
+    public override async Task ChooseSeat(IAsyncStreamReader<ChooseSeatRequest> requestStream,
+        IServerStreamWriter<ChooseSeatResponse> responseStream, ServerCallContext context)
+    {
+        var result = await requestStream.MoveNext(context.CancellationToken);
+        var seanceId = requestStream.Current.SeanceId;
+        var userId = requestStream.Current.UserId;
+
+        try
+        {
+            _seanceRoomService.Join(seanceId, userId, responseStream);
+
+            while (!context.CancellationToken.IsCancellationRequested)
+            {
+                while (result)
+                {
+                    var current = requestStream.Current;
+                    await _seanceRoomService.BroadcastAsync(current);
+                    result = await requestStream.MoveNext(context.CancellationToken);
+                }
+
+                await Task.Delay(100);
+            }
+        }
+        finally
+        {
+            _seanceRoomService.Leave(seanceId, userId, responseStream);
+        }
     }
 }
