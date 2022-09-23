@@ -102,7 +102,7 @@ public class SeanceService : Seance.SeanceBase
     public override async Task ChooseSeat(IAsyncStreamReader<ChooseSeatRequest> requestStream,
         IServerStreamWriter<ChooseSeatResponse> responseStream, ServerCallContext context)
     {
-        var result = await requestStream.MoveNext(context.CancellationToken);
+        await requestStream.MoveNext(context.CancellationToken);
         var seanceId = requestStream.Current.SeanceId;
         var userId = requestStream.Current.UserId;
 
@@ -112,11 +112,10 @@ public class SeanceService : Seance.SeanceBase
 
             while (!context.CancellationToken.IsCancellationRequested)
             {
-                while (result)
+                while (await requestStream.MoveNext(context.CancellationToken))
                 {
                     var current = requestStream.Current;
                     await _seanceRoomService.BroadcastAsync(current);
-                    result = await requestStream.MoveNext(context.CancellationToken);
                 }
 
                 await Task.Delay(100);

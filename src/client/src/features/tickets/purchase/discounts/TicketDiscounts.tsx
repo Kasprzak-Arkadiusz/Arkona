@@ -16,6 +16,7 @@ function TicketDiscounts({movieId, seanceId, onTicketCountChange}: Props) {
     const maxTicketCount = 16;
     const minTicketCount = 0;
     const [ticketCount, setTicketCount] = useState<number>(0);
+    const [movieIdState, setMovieIdState] = useState<number>(0);
     const [offerId, setOfferId] = useState<number>(0);
     const [showError, setShowError] = useState<boolean>(false);
     const errorMessage = "Wybierz przynajmniej jeden bilet";
@@ -24,10 +25,14 @@ function TicketDiscounts({movieId, seanceId, onTicketCountChange}: Props) {
     useEffect(() => {
         onTicketCountChange(ticketCount);
     }, [ticketCount]);
+    
+    useEffect(() => {
+        setMovieIdState(movieId);
+    },[movieId]);
 
     const onClickHandler = () => {
         if (ticketCount > 0) {
-            navigate(`/movie/${movieId}/tickets-purchase/${seanceId}/seatChoice`)
+            navigate(`/movie/${movieIdState}/tickets-purchase/${seanceId}/seatChoice`)
         } else {
             setShowError(true);
         }

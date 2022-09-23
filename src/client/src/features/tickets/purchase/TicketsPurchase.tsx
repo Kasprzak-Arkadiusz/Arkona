@@ -8,7 +8,7 @@ import SeatChoice from "./seatChoice/SeatChoice";
 import PurchaseSummary from "./purchaseSummary/PurchaseSummary";
 
 function TicketPurchase() {
-    const {movieId, seanceId, action} = useParams();
+    const {id, seanceId, action} = useParams();
     const [seanceIdNumber, setSeanceIdNumber] = useState<number>(0);
     const [movieIdNumber, setMovieIdNumber] = useState<number>(0);
     const [ticketCount, setTicketCount] = useState<number>(0);
@@ -16,12 +16,13 @@ function TicketPurchase() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (seanceId === undefined && movieId === undefined) {
+        if (seanceId === undefined || id === undefined) {
             navigate("/");
         }
 
-        setMovieIdNumber(parseInt(movieId!));
+        setMovieIdNumber(parseInt(id!));
         setSeanceIdNumber(parseInt(seanceId!));
+
     }, [seanceId]);
 
     useEffect(() => {
@@ -37,9 +38,10 @@ function TicketPurchase() {
     const render = () => {
         switch (action) {
             case "discounts":
-                return <TicketDiscounts movieId={movieIdNumber} seanceId={seanceIdNumber} onTicketCountChange={(ticketNumber) => {
-                    setTicketCount(ticketNumber)
-                }}/>
+                return <TicketDiscounts movieId={movieIdNumber} seanceId={seanceIdNumber}
+                                        onTicketCountChange={(ticketNumber) => {
+                                            setTicketCount(ticketNumber)
+                                        }}/>
             case "seatChoice":
                 return <SeatChoice seanceId={seanceIdNumber} movieId={movieIdNumber}/>
             case "purchaseSummary":

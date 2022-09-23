@@ -18,7 +18,7 @@ import Privacy from "./features/privacy/Privacy";
 import MovieDetails from "./features/movies/details/MovieDetails";
 import TicketsPurchase from "./features/tickets/purchase/TicketsPurchase";
 
-function App() {    
+function App() {
     return (
         <Router>
             <AuthProvider>
@@ -36,11 +36,11 @@ function App() {
                         <Route path="offers" element={<Offers/>}/>
                         <Route path="movie/:id/" element={<MovieDetails/>}/>
                         <Route path="movie/:id/tickets-purchase/:seanceId/:action" element={<TicketsPurchase/>}/>
-                        
+
                         <Route path={`/${Role.client}/`}
                                element={<RequireAuth role={Role.client}/>}>
                         </Route>)
-                        
+
                         <Route path={`/${Role.worker}/`}
                                element={<RequireAuth role={Role.worker}/>}>
                         </Route>

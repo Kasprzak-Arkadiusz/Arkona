@@ -1,8 +1,8 @@
-﻿import { AuthenticationResponse } from "generated/user/user_pb";
+﻿import {AuthenticationResponse} from "generated/user/user_pb";
 
 const storage = localStorage;
 
-export function getStorageItem (key: string): AuthenticationResponse.AsObject | null {
+export function getStorageItem(key: string): AuthenticationResponse.AsObject | null {
     try {
         const serializedItem = storage.getItem(key);
 
@@ -14,7 +14,7 @@ export function getStorageItem (key: string): AuthenticationResponse.AsObject | 
     } catch (error) {
         return null;
     }
-};
+}
 
 export const setStorageItem = (key: string, value: object | null) => {
     try {
@@ -28,3 +28,16 @@ export const setStorageItem = (key: string, value: object | null) => {
     } catch (error) {
     }
 };
+
+export function getStorageString(key: string): string | null {
+    return storage.getItem(key);
+}
+
+export function setStorageString(key: string, value: string | null) {
+    if (value === null) {
+        storage.removeItem(key);
+        return;
+    }
+
+    storage.setItem(key, value);
+}

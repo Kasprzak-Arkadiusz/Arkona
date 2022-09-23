@@ -4,8 +4,6 @@ import * as style from './styled';
 import Legend from "./Legend/Legend";
 import NavigationButtons from "../NavigationButtons/NavigationButtons";
 import {useNavigate} from "react-router-dom";
-import {BidirectionalStream, SeanceClient} from "generated/seance/seance_pb_service";
-import {ChooseSeatRequest, ChooseSeatResponse} from "generated/seance/seance_pb";
 
 interface Props {
     seanceId: number,
@@ -13,32 +11,12 @@ interface Props {
 }
 
 function SeatChoice({seanceId, movieId}: Props) {
+    const [movieIdState, setMovieIdState] = useState<number>(0);
     const navigate = useNavigate();
-    const [seanceClient, _] = useState<SeanceClient>(new SeanceClient(process.env.REACT_APP_SERVER_URL!));
-    const [stream, setStream] = useState<BidirectionalStream<ChooseSeatRequest, ChooseSeatResponse>>();
-    
-    useEffect(() => {
-        let streamTemp = seanceClient.chooseSeat();
-        setStream(streamTemp);        
-    }, []);
-    
-    useEffect(() => {
-        const request = new ChooseSeatRequest();
-        request.setSeanceid(seanceId);
-        request.setUserid(1);
-        request.setSeatid(8);
-        request.setIschosen(true);
 
-        if (stream !== undefined){
-            stream?.on("data", (message) => {
-                console.log("data");
-                console.log(message);
-            });
-            
-            stream.write(request);
-        }
-        
-    }, [stream]);
+    useEffect(() => {
+        setMovieIdState(movieId);
+    }, [movieId]);
     
     return (
         <div>
@@ -46,8 +24,8 @@ function SeatChoice({seanceId, movieId}: Props) {
                 <Legend/>
                 <SeatDisplay seanceId={seanceId}/>
             </style.ContentContainer>
-            <NavigationButtons onPrevClick={() => navigate(`/movie/${movieId}/tickets-purchase/${seanceId}/discounts`)}
-                               onNextClick={() => navigate(`/movie/${movieId}/tickets-purchase/${seanceId}/purchaseSummary`)}/>
+            <NavigationButtons onPrevClick={() => navigate(`/movie/${movieIdState}/tickets-purchase/${seanceId}/discounts`)}
+                               onNextClick={() => navigate(`/movie/${movieIdState}/tickets-purchase/${seanceId}/purchaseSummary`)}/>
         </div>)
 }
 

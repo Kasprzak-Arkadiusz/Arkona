@@ -15,7 +15,7 @@ public class SeanceRoomService
 
         _seanceRooms.AddOrUpdate(seanceId, dictionary, (key, value) =>
         {
-            value.TryAdd(key, response);
+            value.TryAdd(userId, response);
             return value;
         });
     }
@@ -57,8 +57,10 @@ public class SeanceRoomService
         {
             SeanceId = message.SeanceId,
             SeatId = message.SeatId,
-            IsFree = !message.IsChosen
+            IsFree = false
         };
+
+        response.IsFree = false;
 
         await streamWriter.Value.WriteAsync(response);
     }
