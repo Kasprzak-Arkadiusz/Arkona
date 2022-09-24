@@ -13,6 +13,7 @@ export const NavigationButton = styled.button`
     
     color: ${props => props.theme.Palette.main};
     background-color: ${props => props.theme.Palette.gray};
+    user-select: none;
     
      &:hover {
         -webkit-text-fill-color: ${props => props.theme.Palette.blueBorder};

@@ -17,6 +17,7 @@ import {SeatInfo} from "utils/CustomTypes/SeatInfo";
 interface Props {
     seanceId: number
     ticketsCount: number
+    closeStreamIndicator: number
 }
 
 const getRowLabels = (n: number): Array<JSX.Element> => {
@@ -31,7 +32,7 @@ const getRowLabels = (n: number): Array<JSX.Element> => {
     return array;
 }
 
-function SeatDisplay({seanceId, ticketsCount}: Props) {
+function SeatDisplay({seanceId, ticketsCount, closeStreamIndicator}: Props) {
     const [seanceClient,] = useState<SeanceClient>(new SeanceClient(process.env.REACT_APP_SERVER_URL!));
     const [sections, _setSections] = useState<SeanceSeatSection[]>(new Array<SeanceSeatSection>());
     const sectionsRef = useRef(sections);
@@ -69,7 +70,25 @@ function SeatDisplay({seanceId, ticketsCount}: Props) {
             });
         }
     }, [seanceId]);
+    
+    useEffect(() => {
+        if (stream !== undefined){
+            stream.on("data", handleDataStream);
+            const request = new ChooseSeatRequest();
+            request.setSeanceid(seanceId);
+            request.setUserid(userId);
 
+            stream.write(request);
+        }
+        
+        if (stream !== undefined) {
+            return () => {
+                stream?.cancel();
+                setStream(undefined);
+            }
+        }
+    }, [stream]);
+    
     function setSections(sectionsUpdated: Array<SeanceSeatSection>) {
         sectionsRef.current = sectionsUpdated;
         const defaultUserId = "0";
@@ -127,15 +146,6 @@ function SeatDisplay({seanceId, ticketsCount}: Props) {
         rightSeatsRef.current = rightSeatsStateUpdated;
         _setRightSeatsState(rightSeatsStateUpdated);
     }
-
-    useEffect(() => {
-        stream?.on("data", handleDataStream);
-        const request = new ChooseSeatRequest();
-        request.setSeanceid(seanceId);
-        request.setUserid(userId);
-
-        stream?.write(request);
-    }, [stream]);
 
     const handleDataStream = (message?: ChooseSeatResponse) => {
         if (message === undefined) {

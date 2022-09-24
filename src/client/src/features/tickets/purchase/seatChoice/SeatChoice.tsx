@@ -13,20 +13,33 @@ interface Props {
 
 function SeatChoice({seanceId, movieId, ticketsCount}: Props) {
     const [movieIdState, setMovieIdState] = useState<number>(0);
+    const [closeStreamIndicator, closeStream] = useState<number>(0);
     const navigate = useNavigate();
 
     useEffect(() => {
         setMovieIdState(movieId);
     }, [movieId]);
+
+    useEffect(()=> {
+        console.log(closeStreamIndicator);
+    }, [closeStreamIndicator]);
     
     return (
         <div>
             <style.ContentContainer>
                 <Legend/>
-                <SeatDisplay seanceId={seanceId} ticketsCount={ticketsCount}/>
+                <SeatDisplay seanceId={seanceId} ticketsCount={ticketsCount} closeStreamIndicator={closeStreamIndicator}/>
             </style.ContentContainer>
-            <NavigationButtons onPrevClick={() => navigate(`/movie/${movieIdState}/tickets-purchase/${seanceId}/discounts`)}
-                               onNextClick={() => navigate(`/movie/${movieIdState}/tickets-purchase/${seanceId}/purchaseSummary`)}/>
+            <NavigationButtons onPrevClick={() => {
+                                    console.log("Prev -> Requested to update closeStreamIndicator");
+                                    closeStream(prevState => prevState + 1);
+                                    navigate(`/movie/${movieIdState}/tickets-purchase/${seanceId}/discounts`);
+                                }}
+                               onNextClick={() => {
+                                   console.log("Next -> Requested to update closeStreamIndicator");
+                                   closeStream(prevState => prevState + 1);
+                                   navigate(`/movie/${movieIdState}/tickets-purchase/${seanceId}/purchaseSummary`);
+                               }}/>
         </div>)
 }
 

@@ -47,6 +47,7 @@ export const IncrementButton = styled.div<CounterProps>`
     
     visibility: ${props => props.isVisible ? "visible" : "hidden"};
     cursor: pointer;
+    user-select: none;
 `
 
 export const DecrementButton = styled.div<CounterProps>`
@@ -59,6 +60,7 @@ export const DecrementButton = styled.div<CounterProps>`
     
     visibility: ${props => props.isVisible ? "visible" : "hidden"};
     cursor: pointer;
+    user-select: none;
 `
 
 export const NextButton = styled.button`

@@ -124,7 +124,7 @@ public class SeanceService : Seance.SeanceBase
         }
         finally
         {
-            _seanceRoomService.Leave(seanceId, userId, responseStream);
+            _seanceRoomService.Leave(seanceId, userId);
         }
     }
 }
