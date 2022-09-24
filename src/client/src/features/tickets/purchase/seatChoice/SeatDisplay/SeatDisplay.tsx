@@ -16,6 +16,7 @@ import {SeatInfo} from "utils/CustomTypes/SeatInfo";
 
 interface Props {
     seanceId: number
+    ticketsCount: number
 }
 
 const getRowLabels = (n: number): Array<JSX.Element> => {
@@ -30,7 +31,7 @@ const getRowLabels = (n: number): Array<JSX.Element> => {
     return array;
 }
 
-function SeatDisplay({seanceId}: Props) {
+function SeatDisplay({seanceId, ticketsCount}: Props) {
     const [seanceClient,] = useState<SeanceClient>(new SeanceClient(process.env.REACT_APP_SERVER_URL!));
     const [sections, _setSections] = useState<SeanceSeatSection[]>(new Array<SeanceSeatSection>());
     const sectionsRef = useRef(sections);
@@ -45,6 +46,8 @@ function SeatDisplay({seanceId}: Props) {
     const rightSeatsRef = useRef(rightSeatsState);
 
     const [userId,] = useState<string>(useUserId());
+    const [numberOfSelectedSeats, setNumberOfSelectedSeats] = useState<number>(0);
+    const [maxNumberOfSeats, ] = useState<number>(ticketsCount);
     const [numberOfRows, setNumberOfRows] = useState<number>(0);
     const [stream, setStream] = useState<BidirectionalStream<ChooseSeatRequest, ChooseSeatResponse>>();
 
@@ -166,7 +169,17 @@ function SeatDisplay({seanceId}: Props) {
         }
     }
 
-    const handleSeatClick = (seatId: number, userId: string, seatState: boolean) => {
+    const handleSeatClick = (seatId: number, userId: string, seatState: boolean): boolean => {
+        let currentNumberOfSelectedSeats = numberOfSelectedSeats;
+        if (seatState) {
+            currentNumberOfSelectedSeats++;
+        } else {
+            currentNumberOfSelectedSeats--;
+        }
+        
+        if (currentNumberOfSelectedSeats > maxNumberOfSeats) {
+            return false;
+        }
         if (stream !== undefined) {
             const request = new ChooseSeatRequest();
             request.setSeanceid(seanceId);
@@ -175,7 +188,12 @@ function SeatDisplay({seanceId}: Props) {
 
             request.setIschosen(seatState);
             stream.write(request);
+
+            setNumberOfSelectedSeats(currentNumberOfSelectedSeats);
+            return true;
         }
+
+        return false;
     }
 
     const renderSeatSections = (section: 0 | 1 | 2): Array<JSX.Element> => {
@@ -223,7 +241,7 @@ function SeatDisplay({seanceId}: Props) {
 
     return (
         <style.ContentContainer>
-            <style.Title>Wybierz miejsca</style.Title>
+            <style.Title>Wybierz miejsca: {ticketsCount}</style.Title>
             <style.Screen>Ekran</style.Screen>
             <style.SeatDisplayContainer>
                 <style.RowLabelsContainer>

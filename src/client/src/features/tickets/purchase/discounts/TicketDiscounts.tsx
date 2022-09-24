@@ -10,12 +10,13 @@ interface Props {
     movieId: number;
     seanceId: number;
     onTicketCountChange: (ticketNumber: number) => void;
+    ticketsCount: number;
 }
 
-function TicketDiscounts({movieId, seanceId, onTicketCountChange}: Props) {
+function TicketDiscounts({movieId, seanceId, onTicketCountChange, ticketsCount}: Props) {
     const maxTicketCount = 16;
     const minTicketCount = 0;
-    const [ticketCount, setTicketCount] = useState<number>(0);
+    const [ticketCount, setTicketCount] = useState<number>(ticketsCount);
     const [movieIdState, setMovieIdState] = useState<number>(0);
     const [offerId, setOfferId] = useState<number>(0);
     const [showError, setShowError] = useState<boolean>(false);
@@ -65,7 +66,7 @@ function TicketDiscounts({movieId, seanceId, onTicketCountChange}: Props) {
                              onCheckHandler={(checkedOfferId) => setOfferId(checkedOfferId)
             }/>
             <AvailableDiscounts/>
-            <NavigationButtons onPrevClick={(e) => navigate(-1)}
+            <NavigationButtons onPrevClick={(e) => navigate(`/movie/${movieIdState}/`)}
                                onNextClick={onClickHandler}/>
 
         </div>

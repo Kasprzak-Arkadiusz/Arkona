@@ -5,7 +5,7 @@ import {useUserId} from "hooks/useUserId";
 interface Props {
     seatId: number;
     occupiedByUserId: string;
-    onClickHandler: (seatId: number, userId: string, seatState: boolean) => void;
+    onClickHandler: (seatId: number, userId: string, seatState: boolean) => boolean;
 }
 
 function SeatItem({seatId, occupiedByUserId, onClickHandler}: Props) {
@@ -19,6 +19,11 @@ function SeatItem({seatId, occupiedByUserId, onClickHandler}: Props) {
     }, [occupiedByUserId]);
 
     const handleClick = () => {
+        const result = onClickHandler(seatId, currentUserId, isFreeState);
+        if (!result) {
+            return;
+        }
+
         if (isFreeState) {
             setIsFreeState(false);
             setUserIdState(currentUserId);
@@ -28,7 +33,6 @@ function SeatItem({seatId, occupiedByUserId, onClickHandler}: Props) {
             setIsFreeState(true);
             setUserIdState(defaultUserId);
         }
-        onClickHandler(seatId, currentUserId, isFreeState);
     }
 
     return (

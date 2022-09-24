@@ -11,7 +11,7 @@ function TicketPurchase() {
     const {id, seanceId, action} = useParams();
     const [seanceIdNumber, setSeanceIdNumber] = useState<number>(0);
     const [movieIdNumber, setMovieIdNumber] = useState<number>(0);
-    const [ticketCount, setTicketCount] = useState<number>(0);
+    const [ticketsCount, setTicketsCount] = useState<number>(0);
     const [stage, setStage] = useState<number>(0);
     const navigate = useNavigate();
 
@@ -38,12 +38,12 @@ function TicketPurchase() {
     const render = () => {
         switch (action) {
             case "discounts":
-                return <TicketDiscounts movieId={movieIdNumber} seanceId={seanceIdNumber}
+                return <TicketDiscounts movieId={movieIdNumber} seanceId={seanceIdNumber} ticketsCount={ticketsCount}
                                         onTicketCountChange={(ticketNumber) => {
-                                            setTicketCount(ticketNumber)
+                                            setTicketsCount(ticketNumber)
                                         }}/>
             case "seatChoice":
-                return <SeatChoice seanceId={seanceIdNumber} movieId={movieIdNumber}/>
+                return <SeatChoice seanceId={seanceIdNumber} movieId={movieIdNumber} ticketsCount={ticketsCount}/>
             case "purchaseSummary":
                 return <PurchaseSummary/>
             default:

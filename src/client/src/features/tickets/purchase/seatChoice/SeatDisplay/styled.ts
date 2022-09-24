@@ -86,6 +86,6 @@ export const SeatItemContainer = styled.div<SeatItemProps>`
     background: ${props => props.isFree ? props.theme.Palette.free :
                            props.isCurrentUser ? props.theme.Palette.takenByUser : props.theme.Palette.taken};
        
-    cursor: ${props => props.isFree ? "pointer" : "auto"};
+    cursor: ${props => props.isFree ? "pointer" : props.isCurrentUser ? "pointer" : "auto"};
     user-select: none;
 `
