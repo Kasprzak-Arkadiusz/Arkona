@@ -1670,7 +1670,7 @@ proto.seance.ChooseSeatRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     seanceid: jspb.Message.getFieldWithDefault(msg, 1, 0),
     seatid: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    userid: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    userid: jspb.Message.getFieldWithDefault(msg, 3, ""),
     ischosen: jspb.Message.getBooleanFieldWithDefault(msg, 4, false)
   };
 
@@ -1717,7 +1717,7 @@ proto.seance.ChooseSeatRequest.deserializeBinaryFromReader = function(msg, reade
       msg.setSeatid(value);
       break;
     case 3:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {string} */ (reader.readString());
       msg.setUserid(value);
       break;
     case 4:
@@ -1768,8 +1768,8 @@ proto.seance.ChooseSeatRequest.serializeBinaryToWriter = function(message, write
     );
   }
   f = message.getUserid();
-  if (f !== 0) {
-    writer.writeInt32(
+  if (f.length > 0) {
+    writer.writeString(
       3,
       f
     );
@@ -1821,20 +1821,20 @@ proto.seance.ChooseSeatRequest.prototype.setSeatid = function(value) {
 
 
 /**
- * optional int32 userId = 3;
- * @return {number}
+ * optional string userId = 3;
+ * @return {string}
  */
 proto.seance.ChooseSeatRequest.prototype.getUserid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.seance.ChooseSeatRequest} returns this
  */
 proto.seance.ChooseSeatRequest.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3IntField(this, 3, value);
+  return jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
@@ -1888,9 +1888,8 @@ proto.seance.ChooseSeatResponse.prototype.toObject = function(opt_includeInstanc
  */
 proto.seance.ChooseSeatResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    seanceid: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    seatid: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    isfree: jspb.Message.getBooleanFieldWithDefault(msg, 3, false)
+    seatid: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    isfree: jspb.Message.getBooleanFieldWithDefault(msg, 2, false)
   };
 
   if (includeInstance) {
@@ -1929,13 +1928,9 @@ proto.seance.ChooseSeatResponse.deserializeBinaryFromReader = function(msg, read
     switch (field) {
     case 1:
       var value = /** @type {number} */ (reader.readInt32());
-      msg.setSeanceid(value);
-      break;
-    case 2:
-      var value = /** @type {number} */ (reader.readInt32());
       msg.setSeatid(value);
       break;
-    case 3:
+    case 2:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setIsfree(value);
       break;
@@ -1968,24 +1963,17 @@ proto.seance.ChooseSeatResponse.prototype.serializeBinary = function() {
  */
 proto.seance.ChooseSeatResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getSeanceid();
+  f = message.getSeatid();
   if (f !== 0) {
     writer.writeInt32(
       1,
       f
     );
   }
-  f = message.getSeatid();
-  if (f !== 0) {
-    writer.writeInt32(
-      2,
-      f
-    );
-  }
   f = message.getIsfree();
   if (f) {
     writer.writeBool(
-      3,
+      2,
       f
     );
   }
@@ -1993,10 +1981,10 @@ proto.seance.ChooseSeatResponse.serializeBinaryToWriter = function(message, writ
 
 
 /**
- * optional int32 seanceId = 1;
+ * optional int32 seatId = 1;
  * @return {number}
  */
-proto.seance.ChooseSeatResponse.prototype.getSeanceid = function() {
+proto.seance.ChooseSeatResponse.prototype.getSeatid = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
@@ -2005,35 +1993,17 @@ proto.seance.ChooseSeatResponse.prototype.getSeanceid = function() {
  * @param {number} value
  * @return {!proto.seance.ChooseSeatResponse} returns this
  */
-proto.seance.ChooseSeatResponse.prototype.setSeanceid = function(value) {
+proto.seance.ChooseSeatResponse.prototype.setSeatid = function(value) {
   return jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
 /**
- * optional int32 seatId = 2;
- * @return {number}
- */
-proto.seance.ChooseSeatResponse.prototype.getSeatid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.seance.ChooseSeatResponse} returns this
- */
-proto.seance.ChooseSeatResponse.prototype.setSeatid = function(value) {
-  return jspb.Message.setProto3IntField(this, 2, value);
-};
-
-
-/**
- * optional bool isFree = 3;
+ * optional bool isFree = 2;
  * @return {boolean}
  */
 proto.seance.ChooseSeatResponse.prototype.getIsfree = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 3, false));
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 2, false));
 };
 
 
@@ -2042,7 +2012,7 @@ proto.seance.ChooseSeatResponse.prototype.getIsfree = function() {
  * @return {!proto.seance.ChooseSeatResponse} returns this
  */
 proto.seance.ChooseSeatResponse.prototype.setIsfree = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 3, value);
+  return jspb.Message.setProto3BooleanField(this, 2, value);
 };
 
 

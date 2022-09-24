@@ -10,6 +10,7 @@
         warning: "#ff0707",
         textMain: "#fafafa",
         blueBorder: "#3a6df1",
+        takenByUser: "#3a6df1",
         rootBackground: "#121212"
     },
     Fonts: {

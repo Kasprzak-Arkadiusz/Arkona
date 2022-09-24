@@ -210,8 +210,8 @@ export class ChooseSeatRequest extends jspb.Message {
   getSeatid(): number;
   setSeatid(value: number): void;
 
-  getUserid(): number;
-  setUserid(value: number): void;
+  getUserid(): string;
+  setUserid(value: string): void;
 
   getIschosen(): boolean;
   setIschosen(value: boolean): void;
@@ -230,15 +230,12 @@ export namespace ChooseSeatRequest {
   export type AsObject = {
     seanceid: number,
     seatid: number,
-    userid: number,
+    userid: string,
     ischosen: boolean,
   }
 }
 
 export class ChooseSeatResponse extends jspb.Message {
-  getSeanceid(): number;
-  setSeanceid(value: number): void;
-
   getSeatid(): number;
   setSeatid(value: number): void;
 
@@ -257,7 +254,6 @@ export class ChooseSeatResponse extends jspb.Message {
 
 export namespace ChooseSeatResponse {
   export type AsObject = {
-    seanceid: number,
     seatid: number,
     isfree: boolean,
   }

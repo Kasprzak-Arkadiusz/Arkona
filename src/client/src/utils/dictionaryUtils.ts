@@ -15,3 +15,12 @@ export function toDictionary<V>(array: Array<{ key: number, value: V }>): Dictio
 
     return dictionary;
 }
+
+export function deepCopy<V>(dictionary: Dictionary<V>): Dictionary<V> {
+    let newDictionary = new Dictionary<V>();
+
+    for (let key in dictionary.values) {
+        newDictionary.values[key] = dictionary.values[key];
+    }
+    return newDictionary;
+}

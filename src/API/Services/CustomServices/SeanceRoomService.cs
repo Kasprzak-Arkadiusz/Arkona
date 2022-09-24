@@ -5,12 +5,12 @@ namespace API.Services.CustomServices;
 
 public class SeanceRoomService
 {
-    private ConcurrentDictionary<int, ConcurrentDictionary<int, IServerStreamWriter<ChooseSeatResponse>>> _seanceRooms =
-        new();
+    private readonly ConcurrentDictionary<int, ConcurrentDictionary<string, IServerStreamWriter<ChooseSeatResponse>>>
+        _seanceRooms = new();
 
-    public void Join(int seanceId, int userId, IServerStreamWriter<ChooseSeatResponse> response)
+    public void Join(int seanceId, string userId, IServerStreamWriter<ChooseSeatResponse> response)
     {
-        var dictionary = new ConcurrentDictionary<int, IServerStreamWriter<ChooseSeatResponse>>();
+        var dictionary = new ConcurrentDictionary<string, IServerStreamWriter<ChooseSeatResponse>>();
         dictionary.TryAdd(userId, response);
 
         _seanceRooms.AddOrUpdate(seanceId, dictionary, (key, value) =>
@@ -20,7 +20,7 @@ public class SeanceRoomService
         });
     }
 
-    public void Leave(int seanceId, int userId, IServerStreamWriter<ChooseSeatResponse> response)
+    public void Leave(int seanceId, string userId, IServerStreamWriter<ChooseSeatResponse> response)
     {
         if (!_seanceRooms.TryGetValue(seanceId, out var dictionary))
         {
@@ -41,7 +41,7 @@ public class SeanceRoomService
     {
         _seanceRooms.TryGetValue(message.SeanceId, out var dictionary);
 
-        if (dictionary != null)
+        if (dictionary != null && message.SeatId != 0)
         {
             foreach (var streamWriter in dictionary.Where(d => d.Key != message.UserId))
             {
@@ -51,16 +51,13 @@ public class SeanceRoomService
     }
 
     private static async Task SendMessageToSubscriberAsync(
-        KeyValuePair<int, IServerStreamWriter<ChooseSeatResponse>> streamWriter, ChooseSeatRequest message)
+        KeyValuePair<string, IServerStreamWriter<ChooseSeatResponse>> streamWriter, ChooseSeatRequest message)
     {
         var response = new ChooseSeatResponse
         {
-            SeanceId = message.SeanceId,
             SeatId = message.SeatId,
-            IsFree = false
+            IsFree = !message.IsChosen
         };
-
-        response.IsFree = false;
 
         await streamWriter.Value.WriteAsync(response);
     }

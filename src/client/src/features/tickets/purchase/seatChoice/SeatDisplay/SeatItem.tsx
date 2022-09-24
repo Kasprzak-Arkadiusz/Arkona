@@ -19,27 +19,21 @@ function SeatItem({seatId, occupiedByUserId, onClickHandler}: Props) {
     }, [occupiedByUserId]);
 
     const handleClick = () => {
-        // Wolne
         if (isFreeState) {
-            // Zmień na zajęte przez tego użytkownika    
             setIsFreeState(false);
             setUserIdState(currentUserId);
         }
 
-        // Zajęte przez tego użytkownika
         if (userIdState === currentUserId) {
-            // Zmień na wolne
             setIsFreeState(true);
             setUserIdState(defaultUserId);
         }
-
-        // Zajęte przez innego użytkownika
-        // zignoruj
         onClickHandler(seatId, currentUserId, isFreeState);
     }
 
     return (
-        <style.SeatItemContainer isFree={isFreeState} onClick={handleClick}/>
+        <style.SeatItemContainer isFree={isFreeState} isCurrentUser={currentUserId === userIdState}
+                                 onClick={handleClick}/>
     )
 }
 

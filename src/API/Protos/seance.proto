@@ -60,14 +60,13 @@ message SeanceSeatInfo {
 
 // ChooseSeat
 message ChooseSeatRequest{
-  int32 seanceId = 1;
-  int32 seatId   = 2;
-  int32 userId   = 3;
-  bool  isChosen = 4;
+  int32  seanceId = 1;
+  int32  seatId   = 2;
+  string userId   = 3;
+  bool   isChosen = 4;
 }
 
 message ChooseSeatResponse {
-  int32 seanceId = 1;
-  int32 seatId   = 2;
-  bool  isFree   = 3;
+  int32 seatId   = 1;
+  bool  isFree   = 2;
 }

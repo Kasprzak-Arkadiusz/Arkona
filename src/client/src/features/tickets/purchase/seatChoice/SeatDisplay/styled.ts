@@ -32,6 +32,7 @@ export const Screen = styled.div`
     background: ${props => props.theme.Palette.textMain};
     border-style: double;
     border-width: 10px;
+    user-select: none;
 `
 
 export const LeftSection = styled.div<SectionProps>`
@@ -64,20 +65,27 @@ export const RowLabel = styled.span`
 
 interface SeatItemProps {
     isFree: boolean;
+    isCurrentUser: boolean;
 }
 
 export const DisabledSeatItemContainer = styled.div<SeatItemProps>`
     width: 15px;
+    min-width: 15px;
     height: 15px;
+    min-height: 15px;
     margin: 5px;
-    background: ${props => props.isFree ? props.theme.Palette.free : props.theme.Palette.taken};
+    background: ${props => props.isFree ? props.theme.Palette.free :
+                           props.isCurrentUser ? props.theme.Palette.takenByUser : props.theme.Palette.taken};
+    user-select: none;
 `
 
 export const SeatItemContainer = styled.div<SeatItemProps>`
     width: 15px;
     height: 15px;
     margin: 5px;
-    background: ${props => props.isFree ? props.theme.Palette.free : props.theme.Palette.taken};
+    background: ${props => props.isFree ? props.theme.Palette.free :
+                           props.isCurrentUser ? props.theme.Palette.takenByUser : props.theme.Palette.taken};
        
     cursor: ${props => props.isFree ? "pointer" : "auto"};
+    user-select: none;
 `
