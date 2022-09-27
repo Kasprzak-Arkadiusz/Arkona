@@ -16,8 +16,9 @@ import {SeatInfo} from "utils/CustomTypes/SeatInfo";
 
 interface Props {
     seanceId: number
-    ticketsCount: number
-    closeStreamIndicator: number
+    ticketsCount: number,
+    onSeatClick: (seatId: number) => void,
+    userSeatIds: Array<number>
 }
 
 const getRowLabels = (n: number): Array<JSX.Element> => {
@@ -32,7 +33,7 @@ const getRowLabels = (n: number): Array<JSX.Element> => {
     return array;
 }
 
-function SeatDisplay({seanceId, ticketsCount, closeStreamIndicator}: Props) {
+function SeatDisplay({seanceId, ticketsCount, onSeatClick, userSeatIds = new Array<number>()}: Props) {
     const [seanceClient,] = useState<SeanceClient>(new SeanceClient(process.env.REACT_APP_SERVER_URL!));
     const [sections, _setSections] = useState<SeanceSeatSection[]>(new Array<SeanceSeatSection>());
     const sectionsRef = useRef(sections);
@@ -79,6 +80,13 @@ function SeatDisplay({seanceId, ticketsCount, closeStreamIndicator}: Props) {
             request.setUserid(userId);
 
             stream.write(request);
+
+            console.log("Making up user seats");
+            for (let id of userSeatIds){
+                console.log(id);
+                request.setSeatid(id);
+                stream.write(request);
+            }
         }
         
         if (stream !== undefined) {
@@ -199,6 +207,7 @@ function SeatDisplay({seanceId, ticketsCount, closeStreamIndicator}: Props) {
             request.setIschosen(seatState);
             stream.write(request);
 
+            onSeatClick(seatId);
             setNumberOfSelectedSeats(currentNumberOfSelectedSeats);
             return true;
         }

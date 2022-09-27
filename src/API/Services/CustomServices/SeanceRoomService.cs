@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Grpc.Core;
+
 namespace API.Services.CustomServices;
 
 public class SeanceRoomService
@@ -14,33 +15,32 @@ public class SeanceRoomService
         var dictionary = new ConcurrentDictionary<string, IServerStreamWriter<ChooseSeatResponse>>();
         dictionary.TryAdd(userId, response);
 
-        var addResult = true;
         _seanceRooms.AddOrUpdate(seanceId, dictionary, (_, value) =>
         {
             lock (value)
             {
-                addResult = value.TryAdd(userId, response);
+                value.TryAdd(userId, response);
                 return value;
             }
         });
 
-        if (!addResult)
-        {
-            return;
-        }
-
-        var getChangesResult = _seatsState.TryGetValue(seanceId, out var changes);
-        if (!getChangesResult)
-        {
-            return;
-        }
-
-        foreach (var change in changes!)
-        {
-            SendMessageToSubscriberAsync(
-                    new KeyValuePair<string, IServerStreamWriter<ChooseSeatResponse>>(userId, response), change.Value)
-                .Wait();
-        }
+        // if (!addResult)
+        // {
+        //     return;
+        // }
+        //
+        // var getChangesResult = _seatsState.TryGetValue(seanceId, out var changes);
+        // if (!getChangesResult)
+        // {
+        //     return;
+        // }
+        //
+        // foreach (var change in changes!)
+        // {
+        //     SendMessageToSubscriberAsync(
+        //             new KeyValuePair<string, IServerStreamWriter<ChooseSeatResponse>>(userId, response), change.Value)
+        //         .Wait();
+        // }
     }
 
     public void Leave(int seanceId, string userId)
@@ -59,6 +59,32 @@ public class SeanceRoomService
 
         _seanceRooms.TryRemove(seanceId, out _);
         _seatsState.TryRemove(seanceId, out _);
+    }
+
+    public void MakeUpChanges(int seanceId, string userId, IServerStreamWriter<ChooseSeatResponse> streamWriter)
+    {
+        var roomExists = _seanceRooms.TryGetValue(seanceId, out var dictionary);
+        var userExists = dictionary?.TryGetValue(userId, out _);
+        // Jeżeli nie istnieje pokój, to wyjdź
+        // Jeżeli istnieje pokój, to sprawdź, czy istnieje użytkownik
+        // Jeżeli istnieje użytkownik, to wyjdź
+        if (!roomExists || (userExists != null && userExists.Value))
+        {
+            return;
+        }
+
+        var getChangesResult = _seatsState.TryGetValue(seanceId, out var changes);
+        if (!getChangesResult)
+        {
+            return;
+        }
+
+        foreach (var change in changes!)
+        {
+            SendMessageToSubscriberAsync(
+                new KeyValuePair<string, IServerStreamWriter<ChooseSeatResponse>>(userId, streamWriter),
+                change.Value).Wait();
+        }
     }
 
     public async Task BroadcastAsync(ChooseSeatRequest message) => await BroadcastMessagesAsync(message);

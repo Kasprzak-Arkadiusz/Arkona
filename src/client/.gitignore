@@ -23,3 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 .prettierignore
 .prettierrc.js
+
+# Https cert files
+local.crt
+local.key

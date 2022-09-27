@@ -12,6 +12,7 @@ function TicketPurchase() {
     const [seanceIdNumber, setSeanceIdNumber] = useState<number>(0);
     const [movieIdNumber, setMovieIdNumber] = useState<number>(0);
     const [ticketsCount, setTicketsCount] = useState<number>(0);
+    const [userSeatIds, setUserSeatIds] = useState<Array<number>>(new Array<number>());
     const [stage, setStage] = useState<number>(0);
     const navigate = useNavigate();
 
@@ -35,6 +36,29 @@ function TicketPurchase() {
         }
     }, [action]);
 
+
+    const handleSeatClick = (seatId: number) => {
+        const userSeatIdIndex = userSeatIds.findIndex(item => {
+            return item === seatId;
+        });
+
+        if (userSeatIdIndex === -1) {
+            setUserSeatIds([...userSeatIds, seatId]);
+        } else {
+            userSeatIds.splice(userSeatIdIndex, 1);
+            setUserSeatIds(userSeatIds);
+        }
+    }
+
+    const onPrevButtonClick = () => {
+        setUserSeatIds(new Array<number>());
+        navigate(`/movie/${movieIdNumber}/tickets-purchase/${seanceId}/discounts`)
+    }
+
+    const onNextButtonClick = () => {
+        navigate(`/movie/${movieIdNumber}/tickets-purchase/${seanceId}/purchaseSummary`);
+    }
+
     const render = () => {
         switch (action) {
             case "discounts":
@@ -43,7 +67,9 @@ function TicketPurchase() {
                                             setTicketsCount(ticketNumber)
                                         }}/>
             case "seatChoice":
-                return <SeatChoice seanceId={seanceIdNumber} movieId={movieIdNumber} ticketsCount={ticketsCount}/>
+                return <SeatChoice seanceId={seanceIdNumber} ticketsCount={ticketsCount}
+                                   onSeatClick={handleSeatClick} onPrevClick={onPrevButtonClick}
+                                   onNextClick={onNextButtonClick} userSeatIds={userSeatIds}/>
             case "purchaseSummary":
                 return <PurchaseSummary/>
             default:

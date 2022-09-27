@@ -108,6 +108,7 @@ public class SeanceService : Seance.SeanceBase
 
         try
         {
+            _seanceRoomService.MakeUpChanges(seanceId, userId, responseStream);
             _seanceRoomService.Join(seanceId, userId, responseStream);
 
             while (!context.CancellationToken.IsCancellationRequested)
