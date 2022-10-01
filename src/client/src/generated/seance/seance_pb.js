@@ -1671,7 +1671,8 @@ proto.seance.ChooseSeatRequest.toObject = function(includeInstance, msg) {
     seanceid: jspb.Message.getFieldWithDefault(msg, 1, 0),
     seatid: jspb.Message.getFieldWithDefault(msg, 2, 0),
     userid: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    ischosen: jspb.Message.getBooleanFieldWithDefault(msg, 4, false)
+    ischosen: jspb.Message.getBooleanFieldWithDefault(msg, 4, false),
+    makeupchanges: jspb.Message.getBooleanFieldWithDefault(msg, 5, false)
   };
 
   if (includeInstance) {
@@ -1723,6 +1724,10 @@ proto.seance.ChooseSeatRequest.deserializeBinaryFromReader = function(msg, reade
     case 4:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setIschosen(value);
+      break;
+    case 5:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setMakeupchanges(value);
       break;
     default:
       reader.skipField();
@@ -1778,6 +1783,13 @@ proto.seance.ChooseSeatRequest.serializeBinaryToWriter = function(message, write
   if (f) {
     writer.writeBool(
       4,
+      f
+    );
+  }
+  f = message.getMakeupchanges();
+  if (f) {
+    writer.writeBool(
+      5,
       f
     );
   }
@@ -1856,6 +1868,24 @@ proto.seance.ChooseSeatRequest.prototype.setIschosen = function(value) {
 };
 
 
+/**
+ * optional bool makeUpChanges = 5;
+ * @return {boolean}
+ */
+proto.seance.ChooseSeatRequest.prototype.getMakeupchanges = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 5, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.seance.ChooseSeatRequest} returns this
+ */
+proto.seance.ChooseSeatRequest.prototype.setMakeupchanges = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 5, value);
+};
+
+
 
 
 
@@ -1889,7 +1919,8 @@ proto.seance.ChooseSeatResponse.prototype.toObject = function(opt_includeInstanc
 proto.seance.ChooseSeatResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     seatid: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    isfree: jspb.Message.getBooleanFieldWithDefault(msg, 2, false)
+    isfree: jspb.Message.getBooleanFieldWithDefault(msg, 2, false),
+    userid: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
 
   if (includeInstance) {
@@ -1934,6 +1965,10 @@ proto.seance.ChooseSeatResponse.deserializeBinaryFromReader = function(msg, read
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setIsfree(value);
       break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUserid(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -1977,6 +2012,13 @@ proto.seance.ChooseSeatResponse.serializeBinaryToWriter = function(message, writ
       f
     );
   }
+  f = message.getUserid();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
 };
 
 
@@ -2013,6 +2055,24 @@ proto.seance.ChooseSeatResponse.prototype.getIsfree = function() {
  */
 proto.seance.ChooseSeatResponse.prototype.setIsfree = function(value) {
   return jspb.Message.setProto3BooleanField(this, 2, value);
+};
+
+
+/**
+ * optional string userId = 3;
+ * @return {string}
+ */
+proto.seance.ChooseSeatResponse.prototype.getUserid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.seance.ChooseSeatResponse} returns this
+ */
+proto.seance.ChooseSeatResponse.prototype.setUserid = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
 };
 
 

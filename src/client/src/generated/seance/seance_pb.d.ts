@@ -216,6 +216,9 @@ export class ChooseSeatRequest extends jspb.Message {
   getIschosen(): boolean;
   setIschosen(value: boolean): void;
 
+  getMakeupchanges(): boolean;
+  setMakeupchanges(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ChooseSeatRequest.AsObject;
   static toObject(includeInstance: boolean, msg: ChooseSeatRequest): ChooseSeatRequest.AsObject;
@@ -232,6 +235,7 @@ export namespace ChooseSeatRequest {
     seatid: number,
     userid: string,
     ischosen: boolean,
+    makeupchanges: boolean,
   }
 }
 
@@ -241,6 +245,9 @@ export class ChooseSeatResponse extends jspb.Message {
 
   getIsfree(): boolean;
   setIsfree(value: boolean): void;
+
+  getUserid(): string;
+  setUserid(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ChooseSeatResponse.AsObject;
@@ -256,6 +263,7 @@ export namespace ChooseSeatResponse {
   export type AsObject = {
     seatid: number,
     isfree: boolean,
+    userid: string,
   }
 }
 

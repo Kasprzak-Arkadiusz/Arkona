@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Grpc.Core;
+using Serilog;
 
 namespace API.Services.CustomServices;
 
@@ -23,33 +24,17 @@ public class SeanceRoomService
                 return value;
             }
         });
-
-        // if (!addResult)
-        // {
-        //     return;
-        // }
-        //
-        // var getChangesResult = _seatsState.TryGetValue(seanceId, out var changes);
-        // if (!getChangesResult)
-        // {
-        //     return;
-        // }
-        //
-        // foreach (var change in changes!)
-        // {
-        //     SendMessageToSubscriberAsync(
-        //             new KeyValuePair<string, IServerStreamWriter<ChooseSeatResponse>>(userId, response), change.Value)
-        //         .Wait();
-        // }
     }
 
     public void Leave(int seanceId, string userId)
     {
+        Log.Information("User: {UserId} left", userId);
         if (!_seanceRooms.TryGetValue(seanceId, out var dictionary))
         {
             return;
         }
 
+        Log.Information("User: {UserId} removed from listeners", userId);
         dictionary.TryRemove(userId, out _);
 
         if (dictionary.Any())
@@ -57,20 +42,22 @@ public class SeanceRoomService
             return;
         }
 
+        Log.Information("Seance room {SeanceId} removed", seanceId);
         _seanceRooms.TryRemove(seanceId, out _);
         _seatsState.TryRemove(seanceId, out _);
     }
 
     public void MakeUpChanges(int seanceId, string userId, IServerStreamWriter<ChooseSeatResponse> streamWriter)
     {
-        var roomExists = _seanceRooms.TryGetValue(seanceId, out var dictionary);
-        var userExists = dictionary?.TryGetValue(userId, out _);
-        if (!roomExists || (userExists != null && userExists.Value))
+        var roomExists = _seanceRooms.TryGetValue(seanceId, out _);
+        Log.Information("Room exists? {RoomExists}", roomExists);
+        if (!roomExists)
         {
             return;
         }
 
         var getChangesResult = _seatsState.TryGetValue(seanceId, out var changes);
+        Log.Information("Changes exist? {ChangesExist}", getChangesResult);
         if (!getChangesResult)
         {
             return;
@@ -88,8 +75,6 @@ public class SeanceRoomService
 
     private async Task BroadcastMessagesAsync(ChooseSeatRequest message)
     {
-        _seanceRooms.TryGetValue(message.SeanceId, out var dictionary);
-
         if (message.SeatId == 0)
         {
             return;
@@ -97,14 +82,19 @@ public class SeanceRoomService
 
         SaveSeatChange(message);
 
+        _seanceRooms.TryGetValue(message.SeanceId, out var dictionary);
         if (dictionary != null)
         {
+            Log.Information(
+                "Message broadcasted from {UserId} with content: {{isFree: {IsFree}, seatId: {SeatId}, userId: {UserId2}}}",
+                message.UserId, !message.IsChosen, message.SeatId, message.UserId);
             foreach (var streamWriter in dictionary.Where(d => d.Key != message.UserId))
             {
                 var response = new ChooseSeatResponse
                 {
                     SeatId = message.SeatId,
-                    IsFree = !message.IsChosen
+                    IsFree = !message.IsChosen,
+                    UserId = message.UserId
                 };
 
                 await SendMessageToSubscriberAsync(streamWriter, response);
@@ -117,8 +107,11 @@ public class SeanceRoomService
         var response = new ChooseSeatResponse
         {
             SeatId = message.SeatId,
-            IsFree = !message.IsChosen
+            IsFree = !message.IsChosen,
+            UserId = message.UserId
         };
+        Log.Information("Seat change SeatId: {SeatId}, IsFree: {IsFree}, UserId: {UserId} saved",
+            response.SeatId, response.IsFree, response.UserId);
 
         var dictionary = new ConcurrentDictionary<int, ChooseSeatResponse>();
         dictionary.TryAdd(message.SeatId, response);
@@ -137,6 +130,9 @@ public class SeanceRoomService
     private static async Task SendMessageToSubscriberAsync(
         KeyValuePair<string, IServerStreamWriter<ChooseSeatResponse>> streamWriter, ChooseSeatResponse response)
     {
+        Log.Information(
+            "Message sent to user: {UserId} with content: {{isFree: {IsFree}, seatId: {SeatId}, userId: {UserId2}}}",
+            response.UserId, response.IsFree, response.SeatId, response.UserId);
         await streamWriter.Value.WriteAsync(response);
     }
 }

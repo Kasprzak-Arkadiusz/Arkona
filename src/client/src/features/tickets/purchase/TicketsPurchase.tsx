@@ -14,6 +14,7 @@ function TicketPurchase() {
     const {id, seanceId, action} = useParams();
     const [seanceIdNumber, setSeanceIdNumber] = useState<number>(0);
     const [movieIdNumber, setMovieIdNumber] = useState<number>(0);
+    const [userId,] = useState<string>(useUserId());
     
     const [ticketsCount, setTicketsCount] = useState<number>(0);
     const [userSeatIds, setUserSeatIds] = useState<Array<number>>(new Array<number>());
@@ -31,12 +32,16 @@ function TicketPurchase() {
         setMovieIdNumber(parseInt(id!));
         setSeanceIdNumber(parseInt(seanceId!));
 
-        let streamTemp = seanceClient.chooseSeat();
-        setStream(streamTemp);
+        setStream(seanceClient.chooseSeat());
     }, [seanceId]);
 
     useEffect(() => {
         if (stream !== undefined) {
+            const request = new ChooseSeatRequest();
+            request.setSeanceid(seanceIdNumber);
+            request.setUserid(userId);
+            stream!.write(request);
+            
             return () => {
                 stream?.cancel();
                 setStream(undefined);

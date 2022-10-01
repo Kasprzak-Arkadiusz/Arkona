@@ -35,7 +35,8 @@ const getRowLabels = (n: number): Array<JSX.Element> => {
     return array;
 }
 
-function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream, userSeatIds}: Props) {
+function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream}: Props) {
+    console.log("Render SeatDisplay")
     const [sections, _setSections] = useState<SeanceSeatSection[]>(new Array<SeanceSeatSection>());
     const sectionsRef = useRef(sections);
     const [userId,] = useState<string>(useUserId());
@@ -52,15 +53,18 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream,
     const [numberOfSelectedSeats, setNumberOfSelectedSeats] = useState<number>(0);
     const [maxNumberOfSeats,] = useState<number>(ticketsCount);
     const [numberOfRows, setNumberOfRows] = useState<number>(0);
-    const [streamOnRegistered, setStreamOnRegistered] = useState<boolean>(false);
-
-    useEffect(() => {
-        return () => {
-            setStreamOnRegistered(false);
-        }
-    }, []);
+    const [streamRegistered, setStreamRegistered] = useState<boolean>(false);
+    const [databaseStateLoaded, setDatabaseStateLoaded] = useState<boolean>(false);
     
     useEffect(() => {
+        return () => {
+            setStreamRegistered(false);
+        }
+    },[]);
+    
+    useEffect(() => {
+        console.log("UseEffect seanceId");
+        console.log(seanceId)
         if (seanceId !== 0) {
             const request = new GetSeatsBySeanceRequest();
             request.setSeanceid(seanceId);
@@ -73,31 +77,34 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream,
             });
         }
     }, [seanceId]);
-
-    useEffect(() => {
-        if (stream !== undefined) {
-            stream.on("data", handleDataStream)
-            setStreamOnRegistered(true);
-        }
-    }, [stream]);
     
     useEffect(() => {
-        if (streamOnRegistered) {
-            console.log("registered")
+        console.log("UseEffect stream");
+        console.log(stream);
+        if (stream !== undefined && databaseStateLoaded) {
+            console.log("SET HANDLE DATA STREAM")
+            stream.on("data", handleDataStream)
+            setStreamRegistered(true);
+        }
+    }, [stream, databaseStateLoaded]);
+    
+    useEffect(() => {
+        console.log("DATABASE STATE LOADED")
+        setDatabaseStateLoaded(true);
+    }, [sections])
+
+    useEffect(() => {
+        console.log("UseEffect streamRegistered");
+        console.log(streamRegistered);
+        if (streamRegistered) {
+            console.log("Make up changes")
             const request = new ChooseSeatRequest();
             request.setSeanceid(seanceId);
             request.setUserid(userId);
+            request.setMakeupchanges(true);
             stream!.write(request);
-
-            console.log("Making up seat changes")
-            stream!.write(request);
-            for (let id of userSeatIds) {
-                console.log(id);
-                request.setSeatid(id);
-                stream!.write(request);
-            }
         }
-    }, [streamOnRegistered]);
+    }, [streamRegistered]);
 
     function setSections(sectionsUpdated: Array<SeanceSeatSection>) {
         sectionsRef.current = sectionsUpdated;
@@ -158,17 +165,25 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream,
     }
 
     const handleDataStream = (message?: ChooseSeatResponse) => {
-        console.log("handling data stream")
-        console.log(message);
         if (message === undefined) {
             return;
         }
+
+        console.log("handling data stream")
+        console.log(message);
 
         const seatId = message.getSeatid();
 
         let seat = leftSeatsRef.current.values[seatId];
         if (seat !== undefined) {
+            console.log(`New seat parameters: isFree: ${message.getIsfree()}, userId: ${message.getUserid()}`);
+            
+            console.log("Seat before")
+            console.log(seat)
             seat.isFree = message.getIsfree();
+            seat.setUserId(message.getUserid());
+            console.log("Seat after")
+            console.log(seat)
             const newDictionary = deepCopy<SeatInfo>(leftSeatsRef.current);
             setLeftSeatsState(newDictionary);
             return;
@@ -177,6 +192,9 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream,
         seat = middleSeatsRef.current.values[seatId]
         if (seat !== undefined) {
             seat.isFree = message.getIsfree();
+            seat.setUserId(message.getUserid());
+            console.log("Updated seat details")
+            console.log(seat)
             const newDictionary = deepCopy<SeatInfo>(middleSeatsRef.current);
             setMiddleSeatsState(newDictionary);
             return;
@@ -185,6 +203,9 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream,
         seat = rightSeatsRef.current.values[seatId]
         if (seat !== undefined) {
             seat.isFree = message.getIsfree();
+            seat.setUserId(message.getUserid());
+            console.log("Updated seat details")
+            console.log(seat)
             const newDictionary = deepCopy<SeatInfo>(rightSeatsRef.current);
             setRightSeatsState(newDictionary);
             return;
@@ -192,6 +213,7 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream,
     }
 
     const handleSeatClick = (seatId: number, userId: string, seatState: boolean): boolean => {
+        console.log("Handling seat click");
         let currentNumberOfSelectedSeats = numberOfSelectedSeats;
         if (seatState) {
             currentNumberOfSelectedSeats++;
@@ -203,12 +225,13 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream,
             return false;
         }
         if (stream !== undefined) {
+            console.log("Sending request for seat change")
             const request = new ChooseSeatRequest();
             request.setSeanceid(seanceId);
             request.setUserid(userId);
             request.setSeatid(seatId);
-
             request.setIschosen(seatState);
+
             stream.write(request);
 
             onSeatClick(seatId);
@@ -226,8 +249,8 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream,
                 for (let key in leftSeatsRef.current.values) {
                     const seatId = parseInt(key);
                     const seat = leftSeatsRef.current.values[key];
-                    array.push(seat.isFree ?
-                        <SeatItem key={seatId} seatId={seatId}
+                    array.push(seat.isFree || seat.userId === userId ?
+                        <SeatItem key={seatId} seatId={seatId} isFree={seat.isFree}
                                   occupiedByUserId={seat.userId}
                                   onClickHandler={handleSeatClick}/> :
                         <DisabledSeatItem key={seatId}/>)
@@ -238,8 +261,8 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream,
                 for (let key in middleSeatsRef.current.values) {
                     const seatId = parseInt(key);
                     const seat = middleSeatsRef.current.values[key];
-                    array.push(seat.isFree ?
-                        <SeatItem key={seatId} seatId={seatId}
+                    array.push(seat.isFree || seat.userId === userId ?
+                        <SeatItem key={seatId} seatId={seatId} isFree={seat.isFree}
                                   occupiedByUserId={seat.userId}
                                   onClickHandler={handleSeatClick}/> :
                         <DisabledSeatItem key={seatId}/>)
@@ -250,8 +273,8 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream,
                 for (let key in rightSeatsRef.current.values) {
                     const seatId = parseInt(key);
                     const seat = rightSeatsRef.current.values[key];
-                    array.push(seat.isFree ?
-                        <SeatItem key={seatId} seatId={seatId}
+                    array.push(seat.isFree || seat.userId === userId ?
+                        <SeatItem key={seatId} seatId={seatId} isFree={seat.isFree}
                                   occupiedByUserId={seat.userId}
                                   onClickHandler={handleSeatClick}/> :
                         <DisabledSeatItem key={seatId}/>)
@@ -262,7 +285,6 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream,
         return array
     }
 
-    console.log("rerender")
     return (
         <style.ContentContainer>
             <style.Title>Wybierz miejsca: {ticketsCount}</style.Title>

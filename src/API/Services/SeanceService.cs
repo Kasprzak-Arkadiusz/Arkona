@@ -4,6 +4,7 @@ using Application.Seats.Queries;
 using Domain.Services;
 using Grpc.Core;
 using MediatR;
+using Serilog;
 
 namespace API.Services;
 
@@ -102,13 +103,21 @@ public class SeanceService : Seance.SeanceBase
     public override async Task ChooseSeat(IAsyncStreamReader<ChooseSeatRequest> requestStream,
         IServerStreamWriter<ChooseSeatResponse> responseStream, ServerCallContext context)
     {
+        Log.Information("Request received");
         var result = await requestStream.MoveNext(context.CancellationToken);
         var seanceId = requestStream.Current.SeanceId;
         var userId = requestStream.Current.UserId;
+        var makeUpChanges = requestStream.Current.MakeUpChanges;
+        Log.Information("SeanceId: {seanceId}, userId: {userId}, makeUpChanges: {makeUpChanges}",
+            seanceId, userId, makeUpChanges);
 
         try
         {
-            _seanceRoomService.MakeUpChanges(seanceId, userId, responseStream);
+            if (makeUpChanges)
+            {
+                _seanceRoomService.MakeUpChanges(seanceId, userId, responseStream);
+            }
+
             _seanceRoomService.Join(seanceId, userId, responseStream);
 
             while (!context.CancellationToken.IsCancellationRequested)
