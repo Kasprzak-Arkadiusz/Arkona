@@ -1,14 +1,18 @@
-﻿import {getStorageString, setStorageString} from "utils/storage";
+﻿import {getSessionStorageItem, setSessionStorageItem} from "utils/storage";
 
 const userIdKey = "userId";
 
 export function useUserId(): string {    
-    const userId = getStorageString(userIdKey);
+    const userId = getSessionStorageItem(userIdKey);
     if (userId === null) {
         const newUserId = self.crypto.randomUUID()
-        setStorageString(userIdKey, newUserId);
+        setSessionStorageItem(userIdKey, newUserId);
         return newUserId;
     }
 
     return userId;
+}
+
+export function clearUserId() {
+    setSessionStorageItem(userIdKey, null);
 }

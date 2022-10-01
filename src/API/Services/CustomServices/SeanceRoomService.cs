@@ -65,9 +65,6 @@ public class SeanceRoomService
     {
         var roomExists = _seanceRooms.TryGetValue(seanceId, out var dictionary);
         var userExists = dictionary?.TryGetValue(userId, out _);
-        // Jeżeli nie istnieje pokój, to wyjdź
-        // Jeżeli istnieje pokój, to sprawdź, czy istnieje użytkownik
-        // Jeżeli istnieje użytkownik, to wyjdź
         if (!roomExists || (userExists != null && userExists.Value))
         {
             return;

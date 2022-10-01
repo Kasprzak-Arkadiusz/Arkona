@@ -1,6 +1,7 @@
 ﻿import {AuthenticationResponse} from "generated/user/user_pb";
 
 const storage = localStorage;
+const storageSession = sessionStorage;
 
 export function getStorageItem(key: string): AuthenticationResponse.AsObject | null {
     try {
@@ -29,15 +30,15 @@ export const setStorageItem = (key: string, value: object | null) => {
     }
 };
 
-export function getStorageString(key: string): string | null {
-    return storage.getItem(key);
+export function getSessionStorageItem(key: string): string | null {
+    return storageSession.getItem(key);
 }
 
-export function setStorageString(key: string, value: string | null) {
+export function setSessionStorageItem(key: string, value: string | null) {
     if (value === null) {
-        storage.removeItem(key);
+        storageSession.removeItem(key);
         return;
     }
 
-    storage.setItem(key, value);
+    storageSession.setItem(key, value);
 }

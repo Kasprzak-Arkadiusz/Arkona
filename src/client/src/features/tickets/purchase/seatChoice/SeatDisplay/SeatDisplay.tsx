@@ -1,7 +1,6 @@
 ﻿import React, {useEffect, useRef, useState} from 'react';
 import * as style from './styled';
 import SeatItem from "./SeatItem";
-import {BidirectionalStream, SeanceClient} from "generated/seance/seance_pb_service";
 import {
     ChooseSeatRequest,
     ChooseSeatResponse,
@@ -10,15 +9,18 @@ import {
     SeanceSeatSection
 } from "generated/seance/seance_pb";
 import DisabledSeatItem from "./SeatItemDisabled";
-import {useUserId} from "hooks/useUserId";
 import {deepCopy, Dictionary, toDictionary} from "utils/dictionaryUtils";
 import {SeatInfo} from "utils/CustomTypes/SeatInfo";
+import {BidirectionalStream, SeanceClient} from 'generated/seance/seance_pb_service';
+import {useUserId} from "hooks/useUserId";
 
 interface Props {
     seanceId: number
     ticketsCount: number,
     onSeatClick: (seatId: number) => void,
-    userSeatIds: Array<number>
+    userSeatIds: Array<number>,
+    seanceClient: SeanceClient,
+    stream: BidirectionalStream<ChooseSeatRequest, ChooseSeatResponse> | undefined
 }
 
 const getRowLabels = (n: number): Array<JSX.Element> => {
@@ -33,10 +35,10 @@ const getRowLabels = (n: number): Array<JSX.Element> => {
     return array;
 }
 
-function SeatDisplay({seanceId, ticketsCount, onSeatClick, userSeatIds = new Array<number>()}: Props) {
-    const [seanceClient,] = useState<SeanceClient>(new SeanceClient(process.env.REACT_APP_SERVER_URL!));
+function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream, userSeatIds}: Props) {
     const [sections, _setSections] = useState<SeanceSeatSection[]>(new Array<SeanceSeatSection>());
     const sectionsRef = useRef(sections);
+    const [userId,] = useState<string>(useUserId());
 
     const [leftSeatsState, _setLeftSeatsState] = useState<Dictionary<SeatInfo>>(new Dictionary<SeatInfo>());
     const [middleSeatsState, _setMiddleSeatsState] = useState<Dictionary<SeatInfo>>(new Dictionary<SeatInfo>());
@@ -47,17 +49,17 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, userSeatIds = new Arr
     const middleSeatsRef = useRef(middleSeatsState);
     const rightSeatsRef = useRef(rightSeatsState);
 
-    const [userId,] = useState<string>(useUserId());
     const [numberOfSelectedSeats, setNumberOfSelectedSeats] = useState<number>(0);
-    const [maxNumberOfSeats, ] = useState<number>(ticketsCount);
+    const [maxNumberOfSeats,] = useState<number>(ticketsCount);
     const [numberOfRows, setNumberOfRows] = useState<number>(0);
-    const [stream, setStream] = useState<BidirectionalStream<ChooseSeatRequest, ChooseSeatResponse>>();
+    const [streamOnRegistered, setStreamOnRegistered] = useState<boolean>(false);
 
     useEffect(() => {
-        let streamTemp = seanceClient.chooseSeat();
-        setStream(streamTemp);
+        return () => {
+            setStreamOnRegistered(false);
+        }
     }, []);
-
+    
     useEffect(() => {
         if (seanceId !== 0) {
             const request = new GetSeatsBySeanceRequest();
@@ -71,32 +73,32 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, userSeatIds = new Arr
             });
         }
     }, [seanceId]);
-    
+
     useEffect(() => {
-        if (stream !== undefined){
-            stream.on("data", handleDataStream);
-            const request = new ChooseSeatRequest();
-            request.setSeanceid(seanceId);
-            request.setUserid(userId);
-
-            stream.write(request);
-
-            console.log("Making up user seats");
-            for (let id of userSeatIds){
-                console.log(id);
-                request.setSeatid(id);
-                stream.write(request);
-            }
-        }
-        
         if (stream !== undefined) {
-            return () => {
-                stream?.cancel();
-                setStream(undefined);
-            }
+            stream.on("data", handleDataStream)
+            setStreamOnRegistered(true);
         }
     }, [stream]);
     
+    useEffect(() => {
+        if (streamOnRegistered) {
+            console.log("registered")
+            const request = new ChooseSeatRequest();
+            request.setSeanceid(seanceId);
+            request.setUserid(userId);
+            stream!.write(request);
+
+            console.log("Making up seat changes")
+            stream!.write(request);
+            for (let id of userSeatIds) {
+                console.log(id);
+                request.setSeatid(id);
+                stream!.write(request);
+            }
+        }
+    }, [streamOnRegistered]);
+
     function setSections(sectionsUpdated: Array<SeanceSeatSection>) {
         sectionsRef.current = sectionsUpdated;
         const defaultUserId = "0";
@@ -156,6 +158,8 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, userSeatIds = new Arr
     }
 
     const handleDataStream = (message?: ChooseSeatResponse) => {
+        console.log("handling data stream")
+        console.log(message);
         if (message === undefined) {
             return;
         }
@@ -194,7 +198,7 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, userSeatIds = new Arr
         } else {
             currentNumberOfSelectedSeats--;
         }
-        
+
         if (currentNumberOfSelectedSeats > maxNumberOfSeats) {
             return false;
         }
@@ -258,6 +262,7 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, userSeatIds = new Arr
         return array
     }
 
+    console.log("rerender")
     return (
         <style.ContentContainer>
             <style.Title>Wybierz miejsca: {ticketsCount}</style.Title>
