@@ -4,6 +4,7 @@ export const ContentContainer = styled.div`
     margin: auto;
     width: fit-content;
     padding: 10px;
+    user-select: none;
 `
 
 export const NavigationButton = styled.button`

@@ -1,7 +1,6 @@
 ﻿import React, {useEffect, useState} from 'react';
 import {
     EmptyRequest,
-    GetTicketDiscountsResponse,
     TicketDiscountsDetails
 } from "generated/ticketDiscount/ticketDiscount_pb";
 import {TicketDiscountClient, TicketDiscount} from 'generated/ticketDiscount/ticketDiscount_pb_service'
