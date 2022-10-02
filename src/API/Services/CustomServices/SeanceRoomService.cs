@@ -34,8 +34,15 @@ public class SeanceRoomService
             return;
         }
 
-        Log.Information("User: {UserId} removed from listeners", userId);
-        dictionary.TryRemove(userId, out _);
+        if (!dictionary.TryRemove(userId, out _))
+        {
+            Log.Information("User: {UserId} already removed from listeners", userId);
+            return;
+        }
+
+        Log.Information("User: {UserId} just removed from listeners", userId);
+
+        RemoveUserChanges(seanceId, userId);
 
         if (dictionary.Any())
         {
@@ -47,23 +54,53 @@ public class SeanceRoomService
         _seatsState.TryRemove(seanceId, out _);
     }
 
+    private void RemoveUserChanges(int seanceId, string userId)
+    {
+        if (!_seatsState.TryGetValue(seanceId, out var dictionary))
+        {
+            return;
+        }
+
+        Log.Information("Removing user: {UserId} changes", userId);
+
+        lock (dictionary)
+        {
+            var changeMessage = new ChooseSeatResponse
+            {
+                UserId = userId,
+                IsFree = true
+            };
+
+            _seanceRooms.TryGetValue(seanceId, out var seanceDictionary);
+            if (seanceDictionary == null)
+            {
+                return;
+            }
+
+            foreach (var (seatId, _) in dictionary.Where(d => d.Value.UserId == userId))
+            {
+                dictionary.TryRemove(seatId, out _);
+                changeMessage.SeatId = seatId;
+                BroadcastChangeAsync(changeMessage, seanceDictionary).Wait();
+            }
+
+            Log.Information("User: {UserId} changes removed", userId);
+        }
+    }
+
     public void MakeUpChanges(int seanceId, string userId, IServerStreamWriter<ChooseSeatResponse> streamWriter)
     {
-        var roomExists = _seanceRooms.TryGetValue(seanceId, out _);
-        Log.Information("Room exists? {RoomExists}", roomExists);
-        if (!roomExists)
+        if (!_seanceRooms.TryGetValue(seanceId, out _))
         {
             return;
         }
 
-        var getChangesResult = _seatsState.TryGetValue(seanceId, out var changes);
-        Log.Information("Changes exist? {ChangesExist}", getChangesResult);
-        if (!getChangesResult)
+        if (!_seatsState.TryGetValue(seanceId, out var changes))
         {
             return;
         }
 
-        foreach (var change in changes!)
+        foreach (var change in changes)
         {
             SendMessageToSubscriberAsync(
                 new KeyValuePair<string, IServerStreamWriter<ChooseSeatResponse>>(userId, streamWriter),
@@ -75,30 +112,35 @@ public class SeanceRoomService
 
     private async Task BroadcastMessagesAsync(ChooseSeatRequest message)
     {
+        Log.Information(
+            "Request from user: {UserId} with content: {{isFree: {IsFree}, seatId: {SeatId}, userId: {UserId2}, makeUpChanges: {MakeUpChanges}}}",
+            message.UserId, message.IsChosen, message.SeatId, message.UserId, message.MakeUpChanges);
         if (message.SeatId == 0)
         {
             return;
         }
 
         SaveSeatChange(message);
+        var response = new ChooseSeatResponse
+        {
+            SeatId = message.SeatId,
+            IsFree = !message.IsChosen,
+            UserId = message.UserId
+        };
 
         _seanceRooms.TryGetValue(message.SeanceId, out var dictionary);
         if (dictionary != null)
         {
-            Log.Information(
-                "Message broadcasted from {UserId} with content: {{isFree: {IsFree}, seatId: {SeatId}, userId: {UserId2}}}",
-                message.UserId, !message.IsChosen, message.SeatId, message.UserId);
-            foreach (var streamWriter in dictionary.Where(d => d.Key != message.UserId))
-            {
-                var response = new ChooseSeatResponse
-                {
-                    SeatId = message.SeatId,
-                    IsFree = !message.IsChosen,
-                    UserId = message.UserId
-                };
+            await BroadcastChangeAsync(response, dictionary);
+        }
+    }
 
-                await SendMessageToSubscriberAsync(streamWriter, response);
-            }
+    private static async Task BroadcastChangeAsync(ChooseSeatResponse response,
+        ConcurrentDictionary<string, IServerStreamWriter<ChooseSeatResponse>> seanceRoom)
+    {
+        foreach (var streamWriter in seanceRoom.Where(d => d.Key != response.UserId))
+        {
+            await SendMessageToSubscriberAsync(streamWriter, response);
         }
     }
 
@@ -110,7 +152,7 @@ public class SeanceRoomService
             IsFree = !message.IsChosen,
             UserId = message.UserId
         };
-        Log.Information("Seat change SeatId: {SeatId}, IsFree: {IsFree}, UserId: {UserId} saved",
+        Log.Information("Seat change {{ SeatId: {SeatId}, IsFree: {IsFree}, UserId: {UserId} }} saved",
             response.SeatId, response.IsFree, response.UserId);
 
         var dictionary = new ConcurrentDictionary<int, ChooseSeatResponse>();
@@ -132,7 +174,7 @@ public class SeanceRoomService
     {
         Log.Information(
             "Message sent to user: {UserId} with content: {{isFree: {IsFree}, seatId: {SeatId}, userId: {UserId2}}}",
-            response.UserId, response.IsFree, response.SeatId, response.UserId);
+            streamWriter.Key, response.IsFree, response.SeatId, response.UserId);
         await streamWriter.Value.WriteAsync(response);
     }
 }

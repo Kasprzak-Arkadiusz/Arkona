@@ -12,18 +12,18 @@ interface Props {
     onSeatClick: (seatId: number) => void,
     onPrevClick: () => void,
     onNextClick: () => void,
-    userSeatIds: Array<number>,
+    selectedSeats: number,
     seanceClient: SeanceClient,
     stream: BidirectionalStream<ChooseSeatRequest, ChooseSeatResponse> | undefined
 }
 
-function SeatChoice({seanceId, ticketsCount, onSeatClick, onPrevClick, onNextClick, userSeatIds, stream, seanceClient}: Props) {
+function SeatChoice({seanceId, ticketsCount, onSeatClick, onPrevClick, onNextClick, selectedSeats, stream, seanceClient}: Props) {
     return (
         <div>
             <style.ContentContainer>
                 <Legend/>
                 <SeatDisplay seanceId={seanceId} ticketsCount={ticketsCount} onSeatClick={onSeatClick}
-                             userSeatIds={userSeatIds} seanceClient={seanceClient} stream={stream}/>
+                             selectedSeats={selectedSeats} seanceClient={seanceClient} stream={stream}/>
             </style.ContentContainer>
             <NavigationButtons onPrevClick={onPrevClick} onNextClick={onNextClick}/>
         </div>)

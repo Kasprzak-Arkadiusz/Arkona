@@ -18,8 +18,8 @@ interface Props {
     seanceId: number
     ticketsCount: number,
     onSeatClick: (seatId: number) => void,
-    userSeatIds: Array<number>,
     seanceClient: SeanceClient,
+    selectedSeats: number,
     stream: BidirectionalStream<ChooseSeatRequest, ChooseSeatResponse> | undefined
 }
 
@@ -35,7 +35,7 @@ const getRowLabels = (n: number): Array<JSX.Element> => {
     return array;
 }
 
-function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream}: Props) {
+function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selectedSeats, stream}: Props) {
     console.log("Render SeatDisplay")
     const [sections, _setSections] = useState<SeanceSeatSection[]>(new Array<SeanceSeatSection>());
     const sectionsRef = useRef(sections);
@@ -50,7 +50,7 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream}
     const middleSeatsRef = useRef(middleSeatsState);
     const rightSeatsRef = useRef(rightSeatsState);
 
-    const [numberOfSelectedSeats, setNumberOfSelectedSeats] = useState<number>(0);
+    const [numberOfSelectedSeats, setNumberOfSelectedSeats] = useState<number>(selectedSeats);
     const [maxNumberOfSeats,] = useState<number>(ticketsCount);
     const [numberOfRows, setNumberOfRows] = useState<number>(0);
     const [streamRegistered, setStreamRegistered] = useState<boolean>(false);
@@ -87,6 +87,10 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream}
             setStreamRegistered(true);
         }
     }, [stream, databaseStateLoaded]);
+    
+    useEffect(() => {
+        console.log("Stream value: ", stream);
+    }, [stream])
     
     useEffect(() => {
         console.log("DATABASE STATE LOADED")
@@ -165,6 +169,7 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream}
     }
 
     const handleDataStream = (message?: ChooseSeatResponse) => {
+        console.log(message);
         if (message === undefined) {
             return;
         }
@@ -224,6 +229,8 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream}
         if (currentNumberOfSelectedSeats > maxNumberOfSeats) {
             return false;
         }
+
+        console.log(stream)
         if (stream !== undefined) {
             console.log("Sending request for seat change")
             const request = new ChooseSeatRequest();
@@ -258,6 +265,7 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, stream}
                 break;
             }
             case CinemaHallSection.MIDDLE: {
+                console.log(middleSeatsRef.current.values);
                 for (let key in middleSeatsRef.current.values) {
                     const seatId = parseInt(key);
                     const seat = middleSeatsRef.current.values[key];

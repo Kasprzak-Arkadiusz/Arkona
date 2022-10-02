@@ -4,6 +4,7 @@ using Application.DbSelectors;
 using Application.Offers.ViewModels;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace Application.Offers.Queries;
 

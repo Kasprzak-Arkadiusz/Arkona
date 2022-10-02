@@ -16,14 +16,16 @@ function AvailableOffers({seanceId, numberOfTickets, onCheckHandler}: Props) {
     const [checkedOfferId, setCheckedOfferId] = useState<number>();
 
     useEffect(() => {
-        const request = new GetAvailableOffersRequest();
-        request.setSeanceid(seanceId);
+        if (seanceId != 0){
+            const request = new GetAvailableOffersRequest();
+            request.setSeanceid(seanceId);
 
-        offerClient.getAvailableOffers(request, (error, responseMessage) => {
-            if (responseMessage !== null) {
-                setOffers(responseMessage.getOffersList());
-            }
-        });
+            offerClient.getAvailableOffers(request, (error, responseMessage) => {
+                if (responseMessage !== null) {
+                    setOffers(responseMessage.getOffersList());
+                }
+            });
+        }
     }, [seanceId]);
 
     const ChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {

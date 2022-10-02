@@ -92,7 +92,7 @@ function TicketPurchase() {
             case "seatChoice":
                 return <SeatChoice seanceId={seanceIdNumber} ticketsCount={ticketsCount}
                                    onSeatClick={handleSeatClick} onPrevClick={onPrevButtonClick}
-                                   onNextClick={onNextButtonClick} userSeatIds={userSeatIds} seanceClient={seanceClient}
+                                   onNextClick={onNextButtonClick} selectedSeats={userSeatIds.length} seanceClient={seanceClient}
                                    stream={stream}/>
             case "purchaseSummary":
                 return <PurchaseSummary/>
