@@ -1,5 +1,4 @@
 ﻿import React, {useEffect, useState} from 'react';
-import * as style from './styled';
 import * as mainStyle from '../styled';
 import AvailableOfferItem from "./AvailableOfferItem";
 import {OfferClient} from "generated/offer/offer_pb_service";

@@ -19,8 +19,9 @@ interface Props {
     ticketsCount: number,
     onSeatClick: (seatId: number) => void,
     seanceClient: SeanceClient,
-    selectedSeats: number,
-    stream: BidirectionalStream<ChooseSeatRequest, ChooseSeatResponse> | undefined
+    selectedSeats: Array<number>,
+    stream: BidirectionalStream<ChooseSeatRequest, ChooseSeatResponse> | undefined,
+    errorMessage: string | undefined
 }
 
 const getRowLabels = (n: number): Array<JSX.Element> => {
@@ -35,7 +36,7 @@ const getRowLabels = (n: number): Array<JSX.Element> => {
     return array;
 }
 
-function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selectedSeats, stream}: Props) {
+function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selectedSeats, stream, errorMessage}: Props) {
     const [sections, _setSections] = useState<SeanceSeatSection[]>(new Array<SeanceSeatSection>());
     const sectionsRef = useRef(sections);
     const [userId,] = useState<string>(useUserId());
@@ -49,18 +50,18 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selecte
     const middleSeatsRef = useRef(middleSeatsState);
     const rightSeatsRef = useRef(rightSeatsState);
 
-    const [numberOfSelectedSeats, setNumberOfSelectedSeats] = useState<number>(selectedSeats);
+    const [numberOfSelectedSeats, setNumberOfSelectedSeats] = useState<number>(selectedSeats.length);
     const [maxNumberOfSeats,] = useState<number>(ticketsCount);
     const [numberOfRows, setNumberOfRows] = useState<number>(0);
     const [streamRegistered, setStreamRegistered] = useState<boolean>(false);
     const [databaseStateLoaded, setDatabaseStateLoaded] = useState<boolean>(false);
-    
+
     useEffect(() => {
         return () => {
             setStreamRegistered(false);
         }
-    },[]);
-    
+    }, []);
+
     useEffect(() => {
         if (seanceId !== 0) {
             const request = new GetSeatsBySeanceRequest();
@@ -74,19 +75,21 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selecte
             });
         }
     }, [seanceId]);
-    
+
     useEffect(() => {
         if (stream !== undefined && databaseStateLoaded) {
             stream.on("data", handleDataStream)
             setStreamRegistered(true);
         }
     }, [stream, databaseStateLoaded]);
-    
+
     useEffect(() => {
     }, [stream])
-    
+
     useEffect(() => {
-        setDatabaseStateLoaded(true);
+        if (sections.length !== 0){
+            setDatabaseStateLoaded(true);
+        }
     }, [sections])
 
     useEffect(() => {
@@ -161,13 +164,12 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selecte
         if (message === undefined) {
             return;
         }
-
-
+        
         const seatId = message.getSeatid();
 
         let seat = leftSeatsRef.current.values[seatId];
         if (seat !== undefined) {
-            
+
             seat.isFree = message.getIsfree();
             seat.setUserId(message.getUserid());
             const newDictionary = deepCopy<SeatInfo>(leftSeatsRef.current);
@@ -269,6 +271,7 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selecte
     return (
         <style.ContentContainer>
             <style.Title>Wybierz miejsca: {ticketsCount}</style.Title>
+            {errorMessage && <style.ErrorMessage>{errorMessage}</style.ErrorMessage>}
             <style.Screen>Ekran</style.Screen>
             <style.SeatDisplayContainer>
                 <style.RowLabelsContainer>

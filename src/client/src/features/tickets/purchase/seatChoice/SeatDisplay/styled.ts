@@ -18,6 +18,12 @@ export const Title = styled.span`
     font-size: 16px;
 `
 
+export const ErrorMessage = styled.span`
+    margin: 10px;
+    font-size: 14px;
+    color: ${props => props.theme.Palette.warning};
+`
+
 interface SectionProps {
     width: number;
 }

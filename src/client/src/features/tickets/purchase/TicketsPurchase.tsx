@@ -46,8 +46,10 @@ function TicketPurchase() {
             stream!.write(request);
 
             return () => {
+                console.log("Stream closed")
                 stream?.cancel();
                 setStream(undefined);
+                setUserSeatIds(new Array<number>());
                 clearUserId();
             }
         }
@@ -75,14 +77,6 @@ function TicketPurchase() {
             setUserSeatIds(userSeatIds);
         }
     }
-    
-    const onPrevButtonClick = () => {
-        navigate(`/movie/${movieIdNumber}/tickets-purchase/${seanceId}/discounts`)
-    }
-
-    const onNextButtonClick = () => {
-        navigate(`/movie/${movieIdNumber}/tickets-purchase/${seanceId}/purchaseSummary`);
-    }
 
     const onDiscountChange = (changedDiscount: TicketDiscountsDetails, ticketsCount: number): void => {
         const ticket = tickets.find(t => t.id === changedDiscount.getId())
@@ -105,10 +99,9 @@ function TicketPurchase() {
                                         }}
                                         onDiscountChange={onDiscountChange}/>
             case "seatChoice":
-                return <SeatChoice seanceId={seanceIdNumber}
+                return <SeatChoice seanceId={seanceIdNumber} movieId={movieIdNumber}
                                    ticketsCount={tickets.reduce((prev, curr) => prev + curr.numberOfTickets, 0)}
-                                   onSeatClick={handleSeatClick} onPrevClick={onPrevButtonClick}
-                                   onNextClick={onNextButtonClick} selectedSeats={userSeatIds.length}
+                                   onSeatClick={handleSeatClick} selectedSeats={userSeatIds}
                                    seanceClient={seanceClient}
                                    stream={stream}/>
             case "purchaseSummary":
@@ -117,6 +110,14 @@ function TicketPurchase() {
                 navigate("/")
         }
     }
+
+    useEffect(() => {
+        console.log(userSeatIds);
+    }, [userSeatIds])
+
+    useEffect(() => {
+        console.log(userId);
+    }, [userId])
 
     return (
         <main className="display-container">
