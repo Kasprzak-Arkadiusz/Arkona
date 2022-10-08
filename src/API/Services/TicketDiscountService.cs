@@ -13,7 +13,8 @@ public class TicketDiscountService : TicketDiscount.TicketDiscountBase
         _mediator = mediator;
     }
 
-    public override async Task<GetTicketDiscountsResponse> GetTicketDiscounts(EmptyRequest request, ServerCallContext context)
+    public override async Task<GetTicketDiscountsResponse> GetTicketDiscounts(EmptyRequest request,
+        ServerCallContext context)
     {
         var viewModel = await _mediator.Send(new GetTicketDiscountsQuery());
         var response = new GetTicketDiscountsResponse();
@@ -22,9 +23,9 @@ public class TicketDiscountService : TicketDiscount.TicketDiscountBase
             Id = td.Id,
             Name = td.Name,
             Description = td.Description,
-            DiscountValue = $"-{((1 - td.DiscountValue) * 100):F0}%"
+            DiscountValue = td.DiscountValue == 1 ? string.Empty : $"-{((1 - td.DiscountValue) * 100):F0}%"
         }));
-        
+
         return response;
     }
 }

@@ -76,7 +76,10 @@ public static class DatabaseSeeder
                 (decimal)0.4),
             TicketDiscount.Create(4, "Zniżka dla seniorów",
                 "Zniżka przysługuje osobom z ukończonymi 65 latami.",
-                (decimal)0.8)
+                (decimal)0.8),
+            TicketDiscount.Create(5, "Brak zniżki",
+                "Cena normalna",
+                1)
         };
 
         await _context.TicketDiscounts.AddRangeAsync(discounts);
