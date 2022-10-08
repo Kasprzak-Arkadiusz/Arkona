@@ -1,35 +1,11 @@
 ﻿import styled from "styled-components";
 
-export const ContentContainer = styled.div`
-    max-width: 480px;
-    width: fit-content;
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    margin: auto;
-    padding-bottom: 20px;
-`
-
-export const SectionTitle = styled.span`
-    width: fit-content;
-    margin-bottom: 10px;
-    font-weight: bold;
-    font-size: 16px;
-    text-align: left;
-`
-
 interface Props {
     isTransparent: boolean;
 }
 
-export const RadioInput = styled.input`
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-`
-
 export const AvailableOfferItemContainer = styled.label<Props>`
-    display: block;
+    display: flex;
     position: relative;
     margin: 10px auto 10px 10px;
     padding-left: 35px;
@@ -40,6 +16,12 @@ export const AvailableOfferItemContainer = styled.label<Props>`
         width: auto;
         margin: 12px;
     }
+`
+
+export const RadioInput = styled.input`
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
 `
 
 interface SubCheckMarkProps {
@@ -67,20 +49,4 @@ export const SubCheckMark = styled(CheckMark)<SubCheckMarkProps>`
     height: 8px;
     border-radius: 50%;
     background: ${props => props.theme.Palette.blueBorder}; 
-`
-
-export const InformationContainer = styled.div`
-    width: fit-content;
-    display: flex;
-    flex-direction: column;
-`
-
-export const Title = styled.span`
-    margin-bottom: 10px;
-    font-weight: bold;
-    text-align: left;
-`
-
-export const Description = styled.span`
-   text-align: left; 
 `

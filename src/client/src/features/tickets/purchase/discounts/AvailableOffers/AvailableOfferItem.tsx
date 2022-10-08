@@ -1,5 +1,6 @@
 ﻿import React from 'react';
-import * as style from './styled'
+import * as style from './styled';
+import * as mainStyle from '../styled';
 
 interface Props {
     value: number;
@@ -19,10 +20,10 @@ function AvailableOfferItem({value, isChecked, text, description, isTransparent 
             </style.CheckMark>
             <style.RadioInput value={value} type={"radio"} checked={isChecked} disabled={isTransparent}
                               onChange={changeHandler} onClick={clickHandler}/>
-            <style.InformationContainer>
-                <style.Title>{text}</style.Title>
-                <style.Description>{description}</style.Description>
-            </style.InformationContainer>
+            <mainStyle.InformationContainer>
+                <mainStyle.Title>{text}</mainStyle.Title>
+                <mainStyle.Description>{description}</mainStyle.Description>
+            </mainStyle.InformationContainer>
         </style.AvailableOfferItemContainer>
     )
 }

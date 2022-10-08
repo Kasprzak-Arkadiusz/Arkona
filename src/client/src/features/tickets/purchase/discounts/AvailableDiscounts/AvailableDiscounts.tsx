@@ -3,18 +3,22 @@ import {
     EmptyRequest,
     TicketDiscountsDetails
 } from "generated/ticketDiscount/ticketDiscount_pb";
-import {TicketDiscountClient, TicketDiscount} from 'generated/ticketDiscount/ticketDiscount_pb_service'
-import * as style from "../AvailableOffers/styled";
-import AvailableOfferItem from "../AvailableOffers/AvailableOfferItem";
+import {TicketDiscountClient} from 'generated/ticketDiscount/ticketDiscount_pb_service'
+import * as mainStyle from '../styled';
+import AvailableDiscountItem from "./AvailableDiscountItem";
+import {TicketDetails} from "../../models/TicketDetails";
 
-function AvailableDiscounts() {
+interface Props {
+    onChange: (discount: TicketDiscountsDetails, ticketsCount: number) => void;
+    initialTickets: Array<TicketDetails>;
+}
+
+function AvailableDiscounts({onChange, initialTickets}: Props) {
     const [ticketDiscountClient, _] = useState<TicketDiscountClient>(new TicketDiscountClient(process.env.REACT_APP_SERVER_URL!));
     const [ticketDiscounts, setTicketDiscounts] = useState<TicketDiscountsDetails[]>(new Array<TicketDiscountsDetails>());
-    const [checkedDiscountId, setCheckedDiscountId] = useState<number>();
 
     useEffect(() => {
         const request = new EmptyRequest();
-
         ticketDiscountClient.getTicketDiscounts(request, (error, responseMessage) => {
             if (responseMessage !== null) {
                 setTicketDiscounts(responseMessage.getTicketdiscountList());
@@ -22,29 +26,30 @@ function AvailableDiscounts() {
         });
     }, []);
 
-    const ChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.checked) {
-            setCheckedDiscountId(parseInt(e.target.value));
+    const ChangeHandler = (discountId: number, ticketsCount: number) => {
+        const discount = ticketDiscounts.find(item => item.getId() === discountId);
+        if (discount !== undefined) {
+            onChange(discount, ticketsCount);
         }
     }
 
-    const ClickHandler = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-        setCheckedDiscountId(0);
-    }
-
     return (
-        <style.ContentContainer>
-            <style.SectionTitle>Dostępne zniżki</style.SectionTitle>
+        <mainStyle.ContentContainer>
+            <mainStyle.SectionTitle>Dostępne zniżki</mainStyle.SectionTitle>
             {ticketDiscounts.map((item) => {
                 {
-                    return (<AvailableOfferItem key={item.getId()} value={item.getId()} text={item.getName() + " " + item.getDiscountvalue()}
-                                                description={item.getDescription()}
-                                                isChecked={checkedDiscountId === item.getId()}
-                                                changeHandler={ChangeHandler}
-                                                clickHandler={ClickHandler}/>)
+                    let initialNumberOfTickets = 0;
+                    
+                    const initialTicket = initialTickets.find(t => t.id === item.getId());
+                    if (initialTicket !== undefined) {
+                        initialNumberOfTickets = initialTicket.numberOfTickets;
+                    }
+
+                    return (<AvailableDiscountItem key={item.getId()} details={item} onChangeHandler={ChangeHandler}
+                                                   initialNumberOfTickets={initialNumberOfTickets}/>)
                 }
             })}
-        </style.ContentContainer>
+        </mainStyle.ContentContainer>
     )
 }
 

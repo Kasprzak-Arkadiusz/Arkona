@@ -6,8 +6,15 @@ import SeanceSection from "./SeanceSection";
 import PromotionSection from "./PromotionSection";
 import TicketsSection from "./TicketsSection";
 import PriceSection from "./PriceSection";
+import {TicketDetails} from "../models/TicketDetails";
 
-function PurchaseSummary() {
+interface Props {
+    seanceId: number,
+    promotionId: number,
+    discountedTickets: Array<TicketDetails>
+}
+
+function PurchaseSummary({seanceId, promotionId, discountedTickets}: Props) {
     const navigate = useNavigate();
     return (
         <style.ContentContainer>
@@ -15,7 +22,7 @@ function PurchaseSummary() {
                 <style.SummaryHeader>Podsumowanie</style.SummaryHeader>
                 <SeanceSection/>
                 <PromotionSection/>
-                <TicketsSection/>
+                <TicketsSection discountedTickets={discountedTickets}/>
                 <PriceSection/>
             </style.SummaryContainer>
             <NavigationButtons onPrevClick={() => navigate(-1)}
