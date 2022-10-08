@@ -267,6 +267,58 @@ export namespace ChooseSeatResponse {
   }
 }
 
+export class GetSeanceDetailsRequest extends jspb.Message {
+  getSeanceid(): number;
+  setSeanceid(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetSeanceDetailsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetSeanceDetailsRequest): GetSeanceDetailsRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetSeanceDetailsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetSeanceDetailsRequest;
+  static deserializeBinaryFromReader(message: GetSeanceDetailsRequest, reader: jspb.BinaryReader): GetSeanceDetailsRequest;
+}
+
+export namespace GetSeanceDetailsRequest {
+  export type AsObject = {
+    seanceid: number,
+  }
+}
+
+export class GetSeanceDetailsResponse extends jspb.Message {
+  getMovietitle(): string;
+  setMovietitle(value: string): void;
+
+  getSeancedate(): string;
+  setSeancedate(value: string): void;
+
+  getSeancetime(): string;
+  setSeancetime(value: string): void;
+
+  getHallnumber(): number;
+  setHallnumber(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetSeanceDetailsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetSeanceDetailsResponse): GetSeanceDetailsResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetSeanceDetailsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetSeanceDetailsResponse;
+  static deserializeBinaryFromReader(message: GetSeanceDetailsResponse, reader: jspb.BinaryReader): GetSeanceDetailsResponse;
+}
+
+export namespace GetSeanceDetailsResponse {
+  export type AsObject = {
+    movietitle: string,
+    seancedate: string,
+    seancetime: string,
+    hallnumber: number,
+  }
+}
+
 export interface CinemaHallSectionMap {
   LEFT: 0;
   MIDDLE: 1;

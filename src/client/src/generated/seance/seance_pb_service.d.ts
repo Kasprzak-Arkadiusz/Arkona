@@ -31,11 +31,21 @@ type SeanceChooseSeat = {
   readonly responseType: typeof seance_pb.ChooseSeatResponse;
 };
 
+type SeanceGetSeanceDetails = {
+  readonly methodName: string;
+  readonly service: typeof Seance;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof seance_pb.GetSeanceDetailsRequest;
+  readonly responseType: typeof seance_pb.GetSeanceDetailsResponse;
+};
+
 export class Seance {
   static readonly serviceName: string;
   static readonly GetClosestSeances: SeanceGetClosestSeances;
   static readonly GetSeatsBySeance: SeanceGetSeatsBySeance;
   static readonly ChooseSeat: SeanceChooseSeat;
+  static readonly GetSeanceDetails: SeanceGetSeanceDetails;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -89,5 +99,14 @@ export class SeanceClient {
     callback: (error: ServiceError|null, responseMessage: seance_pb.GetSeatsBySeanceResponse|null) => void
   ): UnaryResponse;
   chooseSeat(metadata?: grpc.Metadata): BidirectionalStream<seance_pb.ChooseSeatRequest, seance_pb.ChooseSeatResponse>;
+  getSeanceDetails(
+    requestMessage: seance_pb.GetSeanceDetailsRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: seance_pb.GetSeanceDetailsResponse|null) => void
+  ): UnaryResponse;
+  getSeanceDetails(
+    requestMessage: seance_pb.GetSeanceDetailsRequest,
+    callback: (error: ServiceError|null, responseMessage: seance_pb.GetSeanceDetailsResponse|null) => void
+  ): UnaryResponse;
 }
 

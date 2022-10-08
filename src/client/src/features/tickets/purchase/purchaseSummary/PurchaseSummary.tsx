@@ -20,7 +20,7 @@ function PurchaseSummary({seanceId, promotionId, discountedTickets}: Props) {
         <style.ContentContainer>
             <style.SummaryContainer>
                 <style.SummaryHeader>Podsumowanie</style.SummaryHeader>
-                <SeanceSection/>
+                <SeanceSection seanceId={seanceId}/>
                 <PromotionSection promotionId={promotionId}/>
                 <TicketsSection discountedTickets={discountedTickets}/>
                 <PriceSection/>
