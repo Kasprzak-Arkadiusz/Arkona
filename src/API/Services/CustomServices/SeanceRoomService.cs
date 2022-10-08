@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using Grpc.Core;
-using Serilog;
 
 namespace API.Services.CustomServices;
 
@@ -28,7 +27,6 @@ public class SeanceRoomService
 
     public void Leave(int seanceId, string userId)
     {
-        Log.Information("User: {UserId} left", userId);
         if (!_seanceRooms.TryGetValue(seanceId, out var dictionary))
         {
             return;
@@ -36,11 +34,8 @@ public class SeanceRoomService
 
         if (!dictionary.TryRemove(userId, out _))
         {
-            Log.Information("User: {UserId} already removed from listeners", userId);
             return;
         }
-
-        Log.Information("User: {UserId} just removed from listeners", userId);
 
         RemoveUserChanges(seanceId, userId);
 
@@ -49,7 +44,6 @@ public class SeanceRoomService
             return;
         }
 
-        Log.Information("Seance room {SeanceId} removed", seanceId);
         _seanceRooms.TryRemove(seanceId, out _);
         _seatsState.TryRemove(seanceId, out _);
     }
@@ -60,9 +54,7 @@ public class SeanceRoomService
         {
             return;
         }
-
-        Log.Information("Removing user: {UserId} changes", userId);
-
+        
         lock (dictionary)
         {
             var changeMessage = new ChooseSeatResponse
@@ -83,8 +75,6 @@ public class SeanceRoomService
                 changeMessage.SeatId = seatId;
                 BroadcastChangeAsync(changeMessage, seanceDictionary).Wait();
             }
-
-            Log.Information("User: {UserId} changes removed", userId);
         }
     }
 
@@ -112,9 +102,6 @@ public class SeanceRoomService
 
     private async Task BroadcastMessagesAsync(ChooseSeatRequest message)
     {
-        Log.Information(
-            "Request from user: {UserId} with content: {{isFree: {IsFree}, seatId: {SeatId}, userId: {UserId2}, makeUpChanges: {MakeUpChanges}}}",
-            message.UserId, message.IsChosen, message.SeatId, message.UserId, message.MakeUpChanges);
         if (message.SeatId == 0)
         {
             return;
@@ -152,9 +139,7 @@ public class SeanceRoomService
             IsFree = !message.IsChosen,
             UserId = message.UserId
         };
-        Log.Information("Seat change {{ SeatId: {SeatId}, IsFree: {IsFree}, UserId: {UserId} }} saved",
-            response.SeatId, response.IsFree, response.UserId);
-
+        
         var dictionary = new ConcurrentDictionary<int, ChooseSeatResponse>();
         dictionary.TryAdd(message.SeatId, response);
 
@@ -172,9 +157,6 @@ public class SeanceRoomService
     private static async Task SendMessageToSubscriberAsync(
         KeyValuePair<string, IServerStreamWriter<ChooseSeatResponse>> streamWriter, ChooseSeatResponse response)
     {
-        Log.Information(
-            "Message sent to user: {UserId} with content: {{isFree: {IsFree}, seatId: {SeatId}, userId: {UserId2}}}",
-            streamWriter.Key, response.IsFree, response.SeatId, response.UserId);
         await streamWriter.Value.WriteAsync(response);
     }
 }

@@ -7,6 +7,7 @@ package offer;
 service Offer{
   rpc GetLatestOffers(GetLatestOffersRequest) returns (GetLatestOffersResponse);
   rpc GetAvailableOffers(GetAvailableOffersRequest) returns (GetAvailableOffersResponse);
+  rpc GetOfferById(GetOfferByIdRequest) returns (GetOfferByIdResponse);
 }
 
 // GetLatestOffer
@@ -38,4 +39,14 @@ message AvailableOfferInfo {
   string name        = 2;
   string description = 3;
   int32  minTickets  = 4;
+}
+
+// GetOfferById
+message GetOfferByIdRequest {
+  int32 offerId = 1;
+}
+
+message GetOfferByIdResponse {
+  int32  id   = 1;
+  string name = 2;
 }
