@@ -133,4 +133,18 @@ public class SeanceService : Seance.SeanceBase
             _seanceRoomService.Leave(seanceId, userId);
         }
     }
+
+    public override async Task<GetSeanceDetailsResponse> GetSeanceDetails(GetSeanceDetailsRequest request, ServerCallContext context)
+    {
+        var viewModel = await _mediator.Send(new GetSeanceDetailsQuery(request.SeanceId));
+        
+        var response = new GetSeanceDetailsResponse
+        {
+            MovieTitle = viewModel.MovieTitle,
+            SeanceDate = viewModel.SeanceDate,
+            SeanceTime = viewModel.SeanceTime,
+            HallNumber = viewModel.HallNumber
+        };
+        return response;
+    }
 }

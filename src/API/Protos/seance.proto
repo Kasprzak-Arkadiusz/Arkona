@@ -8,6 +8,7 @@ service Seance{
   rpc GetClosestSeances(GetClosestSeancesRequest) returns (GetClosestSeancesResponse);
   rpc GetSeatsBySeance(GetSeatsBySeanceRequest) returns (GetSeatsBySeanceResponse);
   rpc ChooseSeat(stream ChooseSeatRequest) returns (stream ChooseSeatResponse);
+  rpc GetSeanceDetails(GetSeanceDetailsRequest) returns (GetSeanceDetailsResponse);
 }
 
 // GetClosestSeances
@@ -59,7 +60,7 @@ message SeanceSeatInfo {
 }
 
 // ChooseSeat
-message ChooseSeatRequest{
+message ChooseSeatRequest {
   int32  seanceId      = 1;
   int32  seatId        = 2;
   string userId        = 3;
@@ -71,4 +72,16 @@ message ChooseSeatResponse {
   int32  seatId = 1;
   bool   isFree = 2;
   string userId = 3;
+}
+
+// GetSeanceDetails
+message GetSeanceDetailsRequest {
+  int32 seanceId = 1;
+}
+
+message GetSeanceDetailsResponse {
+  string movieTitle = 1;
+  string seanceDate = 2;
+  string seanceTime = 3;
+  int32  hallNumber = 4;
 }
