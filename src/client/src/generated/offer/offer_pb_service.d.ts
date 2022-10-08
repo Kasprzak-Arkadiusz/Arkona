@@ -22,10 +22,20 @@ type OfferGetAvailableOffers = {
   readonly responseType: typeof offer_pb.GetAvailableOffersResponse;
 };
 
+type OfferGetOfferById = {
+  readonly methodName: string;
+  readonly service: typeof Offer;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof offer_pb.GetOfferByIdRequest;
+  readonly responseType: typeof offer_pb.GetOfferByIdResponse;
+};
+
 export class Offer {
   static readonly serviceName: string;
   static readonly GetLatestOffers: OfferGetLatestOffers;
   static readonly GetAvailableOffers: OfferGetAvailableOffers;
+  static readonly GetOfferById: OfferGetOfferById;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -77,6 +87,15 @@ export class OfferClient {
   getAvailableOffers(
     requestMessage: offer_pb.GetAvailableOffersRequest,
     callback: (error: ServiceError|null, responseMessage: offer_pb.GetAvailableOffersResponse|null) => void
+  ): UnaryResponse;
+  getOfferById(
+    requestMessage: offer_pb.GetOfferByIdRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: offer_pb.GetOfferByIdResponse|null) => void
+  ): UnaryResponse;
+  getOfferById(
+    requestMessage: offer_pb.GetOfferByIdRequest,
+    callback: (error: ServiceError|null, responseMessage: offer_pb.GetOfferByIdResponse|null) => void
   ): UnaryResponse;
 }
 
