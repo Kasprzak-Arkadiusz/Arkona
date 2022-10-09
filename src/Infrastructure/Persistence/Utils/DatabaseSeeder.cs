@@ -177,9 +177,9 @@ public static class DatabaseSeeder
                 Period.Create(new DateOnly(2022, 04, 02),
                     new DateOnly(2022, 04, 03),
                     new DateOnly(2022, 03, 03))),
-            AgeOffer.Create("Rodzinny tydzień - Dorośli płacą tyle co dzieci!",
+            AgeOffer.Create("Rodzinny tydzień - taniej z dziećmi!",
                 "Ciesz się oglądaniem filmów wraz z dziećmi! " +
-                "Zabierz dziecko na film oznaczony kategorią od lat 7 i zapłać tyle samo co dziecko.",
+                "Zabierz dziecko na film oznaczony kategorią od lat 7 i zapłać 15% mniej za całe zamówienie.",
                 (decimal)0.5, ageRestrictions[AgeRestrictionId.OdLat7],
                 Period.Create(new DateOnly(2022, 03, 28),
                     new DateOnly(2022, 04, 03),

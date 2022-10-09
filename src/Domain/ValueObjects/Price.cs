@@ -16,7 +16,7 @@ public record Price
     {
         return discountValue is null ? new Price(0) : new Price(discountValue.Value);
     }
-    
+
     public void ApplyDiscount(decimal discountValue)
     {
         if (discountValue is > 0 and < 1)
@@ -26,5 +26,15 @@ public record Price
         }
 
         DiscountedPrice = BasePrice;
+    }
+
+    public static decimal ApplyDiscount(decimal discountValue, decimal price)
+    {
+        if (discountValue is > 0 and < 1)
+        {
+            return price * discountValue;
+        }
+
+        return price;
     }
 }

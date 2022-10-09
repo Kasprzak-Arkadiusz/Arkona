@@ -4,7 +4,7 @@ option csharp_namespace = "API";
 
 package offer;
 
-service Offer{
+service Offer {
   rpc GetLatestOffers(GetLatestOffersRequest) returns (GetLatestOffersResponse);
   rpc GetAvailableOffers(GetAvailableOffersRequest) returns (GetAvailableOffersResponse);
   rpc GetOfferById(GetOfferByIdRequest) returns (GetOfferByIdResponse);

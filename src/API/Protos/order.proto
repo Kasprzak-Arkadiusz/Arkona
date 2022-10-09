@@ -1,0 +1,24 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "API";
+
+package order;
+
+service Order {
+  rpc GetTotalPrice(GetTotalPriceRequest) returns (GetTotalPriceResponse);
+}
+
+// GetTotalPrice
+message GetTotalPriceRequest {
+  repeated SelectedTicket selectedTickets = 1;
+  int32                   offerId         = 2;
+}
+
+message SelectedTicket {
+  float discountValue = 1;
+  int32 count         = 2;
+}
+
+message GetTotalPriceResponse {
+  float price = 1;
+}

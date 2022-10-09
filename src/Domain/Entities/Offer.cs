@@ -1,4 +1,5 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Common;
+using Domain.ValueObjects;
 
 namespace Domain.Entities;
 
@@ -27,10 +28,18 @@ public abstract class Offer
 
     public virtual void ApplyOffer(List<Ticket> tickets)
     {
-        foreach (var ticket in tickets.Where(ticket => !ticket.IsTicketDiscountApplied()))
+        foreach (var ticket in tickets)
         {
             ticket.Price.ApplyDiscount(DiscountValue);
         }
+    }
+
+    public virtual decimal GetPriceAfterDiscount(IList<SelectedTicket> tickets)
+    {
+        var totalPrice = (from ticket in tickets
+            let price = Price.Create(ticket.DiscountValue)
+            select ticket.Count * price.DiscountedPrice).Sum();
+        return totalPrice * DiscountValue;
     }
 
     protected void ExtendTheOffer(DateOnly validTo)

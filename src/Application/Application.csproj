@@ -24,6 +24,7 @@
     <ItemGroup>
       <Folder Include="Movies\Commands" />
       <Folder Include="Offers\Commands" />
+      <Folder Include="Orders\ViewModels" />
       <Folder Include="Users\Queries" />
     </ItemGroup>
 
