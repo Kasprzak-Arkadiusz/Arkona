@@ -2,7 +2,7 @@
 import SectionContainer from "components/SectionContainer/SectionContainer";
 import ProgressBar from "./ProgressBar/ProgressBar";
 import {useParams} from "react-router";
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import TicketDiscounts from "./discounts/TicketDiscounts";
 import {BidirectionalStream, SeanceClient} from "generated/seance/seance_pb_service";
 import {ChooseSeatRequest, ChooseSeatResponse} from "generated/seance/seance_pb";
@@ -46,7 +46,6 @@ function TicketPurchase() {
             stream!.write(request);
 
             return () => {
-                console.log("Stream closed")
                 stream?.cancel();
                 setStream(undefined);
                 setUserSeatIds(new Array<number>());
@@ -98,26 +97,26 @@ function TicketPurchase() {
                                             setOfferId(changedOfferId);
                                         }}
                                         onDiscountChange={onDiscountChange}/>
-            case "seatChoice":
+            case "seatChoice": {
+                if (tickets.length === 0) {
+                    return <Navigate to={`/movie/${movieIdNumber}/tickets-purchase/${seanceId}/discounts`}/>
+                }
                 return <SeatChoice seanceId={seanceIdNumber} movieId={movieIdNumber}
                                    ticketsCount={tickets.reduce((prev, curr) => prev + curr.numberOfTickets, 0)}
                                    onSeatClick={handleSeatClick} selectedSeats={userSeatIds}
                                    seanceClient={seanceClient}
                                    stream={stream}/>
-            case "purchaseSummary":
+            }
+            case "purchaseSummary": {
+                if (tickets.length === 0) {
+                    return <Navigate to={`/movie/${movieIdNumber}/tickets-purchase/${seanceId}/discounts`}/>
+                }
                 return <PurchaseSummary seanceId={seanceIdNumber} promotionId={offerId} discountedTickets={tickets}/>
+            }
             default:
                 navigate("/")
         }
     }
-
-    useEffect(() => {
-        console.log(userSeatIds);
-    }, [userSeatIds])
-
-    useEffect(() => {
-        console.log(userId);
-    }, [userId])
 
     return (
         <main className="display-container">

@@ -23,7 +23,7 @@ function PurchaseSummary({seanceId, promotionId, discountedTickets}: Props) {
                 <SeanceSection seanceId={seanceId}/>
                 <PromotionSection promotionId={promotionId}/>
                 <TicketsSection discountedTickets={discountedTickets}/>
-                <PriceSection/>
+                <PriceSection promotionId={promotionId} discountedTickets={discountedTickets}/>
             </style.SummaryContainer>
             <NavigationButtons onPrevClick={() => navigate(-1)}
                                nextText={"Zapłać"} onNextClick={() => navigate("/")}/>

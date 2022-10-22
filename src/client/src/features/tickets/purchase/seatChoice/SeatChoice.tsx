@@ -23,7 +23,6 @@ function SeatChoice({seanceId, movieId, ticketsCount, onSeatClick, selectedSeats
     const navigate = useNavigate();
 
     const onNextButtonClick = () => {
-        console.log(selectedSeats);
         if (selectedSeats.length !== ticketsCount) {
             setErrorMessage(errMessage);
             return;
