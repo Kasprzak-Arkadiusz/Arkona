@@ -1,13 +1,20 @@
-﻿namespace Domain.Common;
+﻿using Domain.Entities;
+
+namespace Domain.Common;
 
 public class SelectedTicket
 {
-    public decimal DiscountValue { get; init; }
+    public TicketDiscount Discount { get; init; }
     public byte Count { get; init; }
 
-    public SelectedTicket(decimal discountValue, byte count)
+    public SelectedTicket()
     {
-        DiscountValue = discountValue;
+        
+    }
+    
+    public SelectedTicket(TicketDiscount discount, byte count)
+    {
+        Discount = discount;
         Count = count;
     }
 }

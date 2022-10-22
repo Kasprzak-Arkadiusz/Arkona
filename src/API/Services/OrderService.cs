@@ -1,4 +1,6 @@
-﻿using Application.Orders.Queries;
+﻿using Application.Orders.Commands;
+using Application.Orders.Queries;
+using Application.Orders.ViewModels;
 using Grpc.Core;
 using MediatR;
 
@@ -16,14 +18,34 @@ public class OrderService : Order.OrderBase
     public override async Task<GetTotalPriceResponse> GetTotalPrice(GetTotalPriceRequest request,
         ServerCallContext context)
     {
-        var selectedTickets = request.SelectedTickets.Select(st =>
-            new Domain.Common.SelectedTicket(Convert.ToDecimal(st.DiscountValue), (byte)st.Count)).ToList();
+        var ticketDiscountVm = request.SelectedTickets.Select(st =>
+            new TicketDiscountVm
+            {
+                DiscountId = st.DiscountId,
+                Count = st.Count
+            }).ToList();
 
-        var totalPrice = await _mediator.Send(new GetTotalPriceQuery(selectedTickets, request.OfferId));
+        var totalPrice = await _mediator.Send(new GetTotalPriceQuery(ticketDiscountVm, request.OfferId));
         var response = new GetTotalPriceResponse
         {
             Price = (float)totalPrice
         };
         return response;
+    }
+
+    public override async Task<FinalizeOrderResponse> FinalizeOrder(FinalizeOrderRequest request,
+        ServerCallContext context)
+    {
+        var ticketDiscountVm = request.SelectedTickets.Select(st =>
+            new TicketDiscountVm
+            {
+                DiscountId = st.DiscountId,
+                Count = st.Count
+            }).ToList();
+
+        await _mediator.Send(new FinalizeOrderCommand(ticketDiscountVm, request.SeatIds.ToList(), request.UserId,
+            request.OfferId));
+
+        return new FinalizeOrderResponse();
     }
 }

@@ -20,5 +20,6 @@ public interface IApplicationDbContext
     public DbSet<Ticket> Tickets { get; set; }
     public DbSet<TicketDiscount> TicketDiscounts { get; set; }
     public DbSet<UsedTicket> UsedTickets  { get; set; }
+    
     Task<int> SaveChangesAsync();
 }

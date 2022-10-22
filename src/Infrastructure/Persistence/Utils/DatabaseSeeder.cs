@@ -222,27 +222,27 @@ public static class DatabaseSeeder
     {
         var orders = new List<Order>
         {
-            Order.Create(new DateTime(2022, 03, 27, 14, 34, 54),
+            Order.Create(
                 new List<Ticket>
                 {
                     tickets[0], tickets[1], tickets[2]
                 },
-                userIds[0], offers[0]),
-            Order.Create(new DateTime(2022, 03, 28, 13, 59, 13),
+                userIds[0], offers[0],new DateTime(2022, 03, 27, 14, 34, 54)),
+            Order.Create(
                 new List<Ticket>
                 {
                     tickets[3], tickets[4]
-                }, userIds[0], offers[1]),
-            Order.Create(new DateTime(2022, 03, 25, 07, 13, 20),
+                }, userIds[0], offers[1], new DateTime(2022, 03, 28, 13, 59, 13)),
+            Order.Create(
                 new List<Ticket>
                 {
                     tickets[5]
-                }, userIds[0]),
-            Order.Create(new DateTime(2022, 03, 26, 21, 18, 31),
+                }, userIds[0], null, new DateTime(2022, 03, 25, 07, 13, 20)),
+            Order.Create(
                 new List<Ticket>
                 {
                     tickets[6], tickets[7]
-                }, userIds[0])
+                }, userIds[0], null, new DateTime(2022, 03, 26, 21, 18, 31))
         };
 
         await _context.Orders.AddRangeAsync(orders);

@@ -48,6 +48,16 @@ public class SeanceRoomService
         _seatsState.TryRemove(seanceId, out _);
     }
 
+    public void Disconnect(int seanceId, string userId)
+    {
+        if (!_seanceRooms.TryGetValue(seanceId, out var dictionary))
+        {
+            return;
+        }
+
+        dictionary.TryRemove(userId, out _);
+    }
+
     private void RemoveUserChanges(int seanceId, string userId)
     {
         if (!_seatsState.TryGetValue(seanceId, out var dictionary))

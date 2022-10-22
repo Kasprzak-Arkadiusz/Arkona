@@ -14,7 +14,7 @@ public static class TicketPriceCalculator
         }
 
         return (from ticket in tickets
-            let price = Price.Create(ticket.DiscountValue)
+            let price = Price.Create(ticket.Discount.DiscountValue)
             select ticket.Count * price.DiscountedPrice).Sum();
         ;
     }

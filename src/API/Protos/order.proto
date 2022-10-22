@@ -6,6 +6,7 @@ package order;
 
 service Order {
   rpc GetTotalPrice(GetTotalPriceRequest) returns (GetTotalPriceResponse);
+  rpc FinalizeOrder(FinalizeOrderRequest) returns (FinalizeOrderResponse);
 }
 
 // GetTotalPrice
@@ -15,10 +16,22 @@ message GetTotalPriceRequest {
 }
 
 message SelectedTicket {
-  float discountValue = 1;
-  int32 count         = 2;
+  int32 discountId = 1;
+  int32 count      = 2;
 }
 
 message GetTotalPriceResponse {
   float price = 1;
+}
+
+// FinalizeOrder
+message FinalizeOrderRequest {
+  repeated int32          seatIds         = 1;
+  repeated SelectedTicket selectedTickets = 2;
+  string                  userId          = 3;
+  int32                   offerId         = 4;
+}
+
+message FinalizeOrderResponse {
+
 }

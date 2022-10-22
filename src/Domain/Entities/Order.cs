@@ -14,12 +14,12 @@ public class Order
 
     private Order() { }
 
-    private Order(DateTime dateOfOrder, List<Ticket> tickets, string userId, Offer? offer = null)
+    private Order(List<Ticket> tickets, string userId, DateTime dateOfOrder, Offer? offer = null)
     {
         Offer = offer;
         DateTimeOfOrder = dateOfOrder;
         UserId = userId;
-        
+
         Tickets = tickets;
         offer?.ApplyOffer(tickets);
 
@@ -28,9 +28,9 @@ public class Order
             rand.Next(0, 10));
     }
 
-    public static Order Create(DateTime dateOfOrder, List<Ticket> tickets, string userId,
-        Offer? offer = null)
+    public static Order Create(List<Ticket> tickets, string userId,
+        Offer? offer = null, DateTime? dateOfOrder = null)
     {
-        return new Order(dateOfOrder, tickets, userId, offer);
+        return new Order(tickets, userId, dateOfOrder ?? DateTime.Now, offer);
     }
 }

@@ -37,7 +37,7 @@ public abstract class Offer
     public virtual decimal GetPriceAfterDiscount(IList<SelectedTicket> tickets)
     {
         var totalPrice = (from ticket in tickets
-            let price = Price.Create(ticket.DiscountValue)
+            let price = Price.Create(ticket.Discount.DiscountValue)
             select ticket.Count * price.DiscountedPrice).Sum();
         return totalPrice * DiscountValue;
     }

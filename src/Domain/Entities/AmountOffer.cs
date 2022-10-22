@@ -43,7 +43,7 @@ public class AmountOffer : Offer
         var totalPrice = 0m;
         foreach (var ticket in tickets)
         {
-            var price = Price.Create(ticket.DiscountValue);
+            var price = Price.Create(ticket.Discount.DiscountValue);
             totalPrice += ticket.Count * price.DiscountedPrice;
         }
 
@@ -56,7 +56,7 @@ public class AmountOffer : Offer
         var discounts = new List<decimal>();
         foreach (var ticket in tickets)
         {
-            discounts.AddRange(Enumerable.Repeat(ticket.DiscountValue, ticket.Count));
+            discounts.AddRange(Enumerable.Repeat(ticket.Discount.DiscountValue, ticket.Count));
         }
 
         var discountsStack = new Stack<decimal>(discounts.OrderByDescending(d => d));

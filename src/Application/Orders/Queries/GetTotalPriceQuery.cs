@@ -1,17 +1,18 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces.IApplicationDBContext;
+﻿using Application.Common.Interfaces.IApplicationDBContext;
+using Application.Orders.ViewModels;
 using Domain.Common;
 using Domain.Services;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Orders.Queries;
 
 public class GetTotalPriceQuery : IRequest<decimal>
 {
-    public List<SelectedTicket> SelectedTickets { get; }
+    public List<TicketDiscountVm> SelectedTickets { get; }
     public int OfferId { get; }
 
-    public GetTotalPriceQuery(List<SelectedTicket> selectedTickets, int offerId)
+    public GetTotalPriceQuery(List<TicketDiscountVm> selectedTickets, int offerId)
     {
         SelectedTickets = selectedTickets;
         OfferId = offerId;
@@ -29,10 +30,23 @@ public class GetTotalPriceQueryHandler : IRequestHandler<GetTotalPriceQuery, dec
 
     public async Task<decimal> Handle(GetTotalPriceQuery query, CancellationToken cancellationToken)
     {
-        var offer = await _dbContext.Offers.FindAsync(new object[] { (short) query.OfferId },
+        var offer = await _dbContext.Offers.FindAsync(new object[] { (short)query.OfferId },
             cancellationToken: cancellationToken);
 
-        var totalPrice = TicketPriceCalculator.CalculatePrice(query.SelectedTickets, offer);
+        var selectedTickets = await ToSelectedTicketListAsync(query.SelectedTickets, cancellationToken);
+
+        var totalPrice = TicketPriceCalculator.CalculatePrice(selectedTickets, offer);
         return totalPrice;
+    }
+
+    private async Task<List<SelectedTicket>> ToSelectedTicketListAsync(List<TicketDiscountVm> ticketDiscountVms,
+        CancellationToken cancellationToken)
+    {
+        var selectedTickets = await _dbContext.TicketDiscounts.Select(td => new SelectedTicket
+        (
+            td, (byte)ticketDiscountVms.Find(vm => vm.DiscountId == td.Id).Count
+        )).ToListAsync(cancellationToken);
+
+        return selectedTickets;
     }
 }
