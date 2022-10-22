@@ -134,10 +134,11 @@ public class SeanceService : Seance.SeanceBase
         }
     }
 
-    public override async Task<GetSeanceDetailsResponse> GetSeanceDetails(GetSeanceDetailsRequest request, ServerCallContext context)
+    public override async Task<GetSeanceDetailsResponse> GetSeanceDetails(GetSeanceDetailsRequest request,
+        ServerCallContext context)
     {
         var viewModel = await _mediator.Send(new GetSeanceDetailsQuery(request.SeanceId));
-        
+
         var response = new GetSeanceDetailsResponse
         {
             MovieTitle = viewModel.MovieTitle,
@@ -146,5 +147,11 @@ public class SeanceService : Seance.SeanceBase
             HallNumber = viewModel.HallNumber
         };
         return response;
+    }
+
+    public override Task<DisconnectResponse> Disconnect(DisconnectRequest request, ServerCallContext context)
+    {
+        _seanceRoomService.Disconnect(request.SeanceId, request.UserId);
+        return Task.FromResult(new DisconnectResponse());
     }
 }

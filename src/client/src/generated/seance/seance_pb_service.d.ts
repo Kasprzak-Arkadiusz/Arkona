@@ -31,6 +31,15 @@ type SeanceChooseSeat = {
   readonly responseType: typeof seance_pb.ChooseSeatResponse;
 };
 
+type SeanceDisconnect = {
+  readonly methodName: string;
+  readonly service: typeof Seance;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof seance_pb.DisconnectRequest;
+  readonly responseType: typeof seance_pb.DisconnectResponse;
+};
+
 type SeanceGetSeanceDetails = {
   readonly methodName: string;
   readonly service: typeof Seance;
@@ -45,6 +54,7 @@ export class Seance {
   static readonly GetClosestSeances: SeanceGetClosestSeances;
   static readonly GetSeatsBySeance: SeanceGetSeatsBySeance;
   static readonly ChooseSeat: SeanceChooseSeat;
+  static readonly Disconnect: SeanceDisconnect;
   static readonly GetSeanceDetails: SeanceGetSeanceDetails;
 }
 
@@ -99,6 +109,15 @@ export class SeanceClient {
     callback: (error: ServiceError|null, responseMessage: seance_pb.GetSeatsBySeanceResponse|null) => void
   ): UnaryResponse;
   chooseSeat(metadata?: grpc.Metadata): BidirectionalStream<seance_pb.ChooseSeatRequest, seance_pb.ChooseSeatResponse>;
+  disconnect(
+    requestMessage: seance_pb.DisconnectRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: seance_pb.DisconnectResponse|null) => void
+  ): UnaryResponse;
+  disconnect(
+    requestMessage: seance_pb.DisconnectRequest,
+    callback: (error: ServiceError|null, responseMessage: seance_pb.DisconnectResponse|null) => void
+  ): UnaryResponse;
   getSeanceDetails(
     requestMessage: seance_pb.GetSeanceDetailsRequest,
     metadata: grpc.Metadata,

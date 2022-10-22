@@ -25,8 +25,6 @@ function PurchaseSummary({seanceId, promotionId, discountedTickets, onPayClick}:
             setError(result)
             return;
         }
-
-        navigate("/")
     }
     
     return (

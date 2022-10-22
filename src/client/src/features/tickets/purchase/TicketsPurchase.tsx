@@ -5,7 +5,7 @@ import {useParams} from "react-router";
 import {Navigate, useNavigate} from "react-router-dom";
 import TicketDiscounts from "./discounts/TicketDiscounts";
 import {BidirectionalStream, SeanceClient} from "generated/seance/seance_pb_service";
-import {ChooseSeatRequest, ChooseSeatResponse} from "generated/seance/seance_pb";
+import {ChooseSeatRequest, ChooseSeatResponse, DisconnectRequest} from "generated/seance/seance_pb";
 import {clearUserId, useUserId} from "hooks/useUserId";
 import SeatChoice from "./seatChoice/SeatChoice";
 import PurchaseSummary from "./purchaseSummary/PurchaseSummary";
@@ -109,7 +109,12 @@ function TicketPurchase() {
         request.setOfferid(offerId);
         orderClient.finalizeOrder(request, (error, responseMessage) => {
             if (responseMessage !== null && responseMessage !== undefined) {
-                // disconnect
+                const disconnectRequest = new DisconnectRequest();
+                disconnectRequest.setUserid(userId);
+                disconnectRequest.setSeanceid(seanceIdNumber);
+                seanceClient.disconnect(disconnectRequest, () => {
+                    navigate("/")
+                })
             } else {
                 return error?.message;
             }
