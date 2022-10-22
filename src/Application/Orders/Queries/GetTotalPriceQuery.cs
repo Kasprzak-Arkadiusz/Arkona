@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces.IApplicationDBContext;
 using Application.Orders.ViewModels;
 using Domain.Common;
+using Domain.Entities;
 using Domain.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -39,14 +40,23 @@ public class GetTotalPriceQueryHandler : IRequestHandler<GetTotalPriceQuery, dec
         return totalPrice;
     }
 
-    private async Task<List<SelectedTicket>> ToSelectedTicketListAsync(List<TicketDiscountVm> ticketDiscountVms,
+    private async Task<List<SelectedTicket>> ToSelectedTicketListAsync(
+        IReadOnlyCollection<TicketDiscountVm> ticketDiscountVms,
         CancellationToken cancellationToken)
     {
-        var selectedTickets = await _dbContext.TicketDiscounts.Select(td => new SelectedTicket
-        (
-            td, (byte)ticketDiscountVms.Find(vm => vm.DiscountId == td.Id).Count
-        )).ToListAsync(cancellationToken);
+        var ticketDiscounts = await _dbContext.TicketDiscounts.ToListAsync(cancellationToken);
 
-        return selectedTickets;
+        return ticketDiscountVms.Select(ticketDiscountVm => new SelectedTicket
+            {
+                Discount = FindDiscountById(ticketDiscounts, ticketDiscountVm.DiscountId),
+                Count = (byte)ticketDiscountVm.Count
+            })
+            .ToList();
+    }
+
+    private static TicketDiscount FindDiscountById(IReadOnlyCollection<TicketDiscount> ticketDiscounts, int discountId)
+    {
+        var discount = ticketDiscounts.FirstOrDefault(td => td.Id == discountId);
+        return discount ?? ticketDiscounts.First(td => td.DiscountValue == 1);
     }
 }

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, {useState} from 'react';
 import NavigationButtons from "../NavigationButtons/NavigationButtons";
 import {useNavigate} from "react-router-dom";
 import * as style from "./styled";
@@ -12,12 +12,26 @@ interface Props {
     seanceId: number,
     promotionId: number,
     discountedTickets: Array<TicketDetails>
+    onPayClick: () => string | undefined ;
 }
 
-function PurchaseSummary({seanceId, promotionId, discountedTickets}: Props) {
+function PurchaseSummary({seanceId, promotionId, discountedTickets, onPayClick}: Props) {
+    const [error, setError] = useState<string>();
     const navigate = useNavigate();
+    
+    const innerOnPayClick = () => {
+        const result = onPayClick();
+        if (result !== undefined){
+            setError(result)
+            return;
+        }
+
+        navigate("/")
+    }
+    
     return (
         <style.ContentContainer>
+            {error && <style.ErrorMessage>{error}</style.ErrorMessage>} 
             <style.SummaryContainer>
                 <style.SummaryHeader>Podsumowanie</style.SummaryHeader>
                 <SeanceSection seanceId={seanceId}/>
@@ -26,7 +40,7 @@ function PurchaseSummary({seanceId, promotionId, discountedTickets}: Props) {
                 <PriceSection promotionId={promotionId} discountedTickets={discountedTickets}/>
             </style.SummaryContainer>
             <NavigationButtons onPrevClick={() => navigate(-1)}
-                               nextText={"Zapłać"} onNextClick={() => navigate("/")}/>
+                               nextText={"Zapłać"} onNextClick={innerOnPayClick}/>
         </style.ContentContainer>
     )
 }

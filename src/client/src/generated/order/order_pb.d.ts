@@ -30,8 +30,8 @@ export namespace GetTotalPriceRequest {
 }
 
 export class SelectedTicket extends jspb.Message {
-  getDiscountvalue(): number;
-  setDiscountvalue(value: number): void;
+  getDiscountid(): number;
+  setDiscountid(value: number): void;
 
   getCount(): number;
   setCount(value: number): void;
@@ -48,7 +48,7 @@ export class SelectedTicket extends jspb.Message {
 
 export namespace SelectedTicket {
   export type AsObject = {
-    discountvalue: number,
+    discountid: number,
     count: number,
   }
 }
@@ -70,6 +70,58 @@ export class GetTotalPriceResponse extends jspb.Message {
 export namespace GetTotalPriceResponse {
   export type AsObject = {
     price: number,
+  }
+}
+
+export class FinalizeOrderRequest extends jspb.Message {
+  clearSeatidsList(): void;
+  getSeatidsList(): Array<number>;
+  setSeatidsList(value: Array<number>): void;
+  addSeatids(value: number, index?: number): number;
+
+  clearSelectedticketsList(): void;
+  getSelectedticketsList(): Array<SelectedTicket>;
+  setSelectedticketsList(value: Array<SelectedTicket>): void;
+  addSelectedtickets(value?: SelectedTicket, index?: number): SelectedTicket;
+
+  getUserid(): string;
+  setUserid(value: string): void;
+
+  getOfferid(): number;
+  setOfferid(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): FinalizeOrderRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: FinalizeOrderRequest): FinalizeOrderRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: FinalizeOrderRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): FinalizeOrderRequest;
+  static deserializeBinaryFromReader(message: FinalizeOrderRequest, reader: jspb.BinaryReader): FinalizeOrderRequest;
+}
+
+export namespace FinalizeOrderRequest {
+  export type AsObject = {
+    seatidsList: Array<number>,
+    selectedticketsList: Array<SelectedTicket.AsObject>,
+    userid: string,
+    offerid: number,
+  }
+}
+
+export class FinalizeOrderResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): FinalizeOrderResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: FinalizeOrderResponse): FinalizeOrderResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: FinalizeOrderResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): FinalizeOrderResponse;
+  static deserializeBinaryFromReader(message: FinalizeOrderResponse, reader: jspb.BinaryReader): FinalizeOrderResponse;
+}
+
+export namespace FinalizeOrderResponse {
+  export type AsObject = {
   }
 }
 

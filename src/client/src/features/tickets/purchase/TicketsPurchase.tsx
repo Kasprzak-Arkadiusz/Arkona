@@ -11,6 +11,9 @@ import SeatChoice from "./seatChoice/SeatChoice";
 import PurchaseSummary from "./purchaseSummary/PurchaseSummary";
 import {TicketDetails} from "./models/TicketDetails";
 import {TicketDiscountsDetails} from "generated/ticketDiscount/ticketDiscount_pb";
+import {OrderClient} from "generated/order/order_pb_service";
+import {FinalizeOrderRequest, SelectedTicket} from "generated/order/order_pb";
+import useAuth from "hooks/useAuth/useAuth";
 
 function TicketPurchase() {
     const {id, seanceId, action} = useParams();
@@ -19,12 +22,14 @@ function TicketPurchase() {
     const [offerId, setOfferId] = useState<number>(0);
     const [tickets, setTickets] = useState<Array<TicketDetails>>(new Array<TicketDetails>());
     const [userId,] = useState<string>(useUserId());
+    const auth = useAuth();
 
     const [userSeatIds, setUserSeatIds] = useState<Array<number>>(new Array<number>());
 
     const [stage, setStage] = useState<number>(0);
     const [seanceClient,] = useState<SeanceClient>(new SeanceClient(process.env.REACT_APP_SERVER_URL!));
     const [stream, setStream] = useState<BidirectionalStream<ChooseSeatRequest, ChooseSeatResponse>>();
+    const [orderClient, ] = useState<OrderClient>(new OrderClient(process.env.REACT_APP_SERVER_URL!));
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -83,9 +88,34 @@ function TicketPurchase() {
             tickets.push(new TicketDetails(changedDiscount, ticketsCount))
         } else {
             ticket.numberOfTickets = ticketsCount;
+            if (ticket.numberOfTickets === 0){
+                tickets.splice(tickets.indexOf(ticket), 1);
+            }
         }
 
         setTickets([...tickets]);
+    }
+    
+    const onPayClick = () : string | undefined => {
+        const request = new FinalizeOrderRequest();
+        request.setSeatidsList(userSeatIds);
+        request.setSelectedticketsList(tickets.map(item => {
+            const selectedTicket = new SelectedTicket();
+            selectedTicket.setDiscountid(item.id);
+            selectedTicket.setCount(item.numberOfTickets);
+            return selectedTicket;
+        }));
+        request.setUserid(auth.authData?.id!);
+        request.setOfferid(offerId);
+        orderClient.finalizeOrder(request, (error, responseMessage) => {
+            if (responseMessage !== null && responseMessage !== undefined) {
+                // disconnect
+            } else {
+                return error?.message;
+            }
+        })
+        
+        return undefined;
     }
 
     const render = () => {
@@ -111,7 +141,7 @@ function TicketPurchase() {
                 if (tickets.length === 0) {
                     return <Navigate to={`/movie/${movieIdNumber}/tickets-purchase/${seanceId}/discounts`}/>
                 }
-                return <PurchaseSummary seanceId={seanceIdNumber} promotionId={offerId} discountedTickets={tickets}/>
+                return <PurchaseSummary seanceId={seanceIdNumber} promotionId={offerId} discountedTickets={tickets} onPayClick={onPayClick}/>
             }
             default:
                 navigate("/")

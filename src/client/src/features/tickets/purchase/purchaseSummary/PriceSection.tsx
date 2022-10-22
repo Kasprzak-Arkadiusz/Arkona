@@ -14,16 +14,16 @@ function PriceSection({promotionId, discountedTickets}: Props) {
     const [totalPriceResponse, setTotalPriceResponse] = useState<GetTotalPriceResponse>(new GetTotalPriceResponse());
 
     useEffect(() => {
-        if (promotionId !== 0) {
+        if (promotionId !== 0) {            
             const request = new GetTotalPriceRequest();
             request.setOfferid(promotionId);
             request.setSelectedticketsList(discountedTickets.map(item => {
                 const selectedTicket = new SelectedTicket();
                 selectedTicket.setCount(item.numberOfTickets);
-                selectedTicket.setDiscountvalue(parseInt(item.discount));
+                selectedTicket.setDiscountid(item.id);
                 return selectedTicket;
             }));
-
+            
             orderClient.getTotalPrice(request, (error, responseMessage) => {
                 if (responseMessage !== null && responseMessage !== undefined) {
                     setTotalPriceResponse(responseMessage);

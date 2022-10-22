@@ -64,6 +64,8 @@ export const DetailsLabel = styled.label`
     color: ${props => props.theme.Palette.textMain};
 `
 
-export const DetailsText = styled.span`
+export const DetailsText = styled.span``
 
+export const ErrorMessage = styled.span`
+    
 `

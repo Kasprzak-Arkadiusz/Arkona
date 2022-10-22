@@ -82,7 +82,7 @@ public class FinalizeOrderCommandHandler : IRequestHandler<FinalizeOrderCommand>
         return ticketDiscountVms.Select(ticketDiscountVm => new SelectedTicket
             {
                 Discount = FindDiscountById(ticketDiscounts, ticketDiscountVm.DiscountId),
-                Count = (byte)ticketDiscountVms.Count
+                Count = (byte)ticketDiscountVm.Count
             })
             .ToList();
     }
