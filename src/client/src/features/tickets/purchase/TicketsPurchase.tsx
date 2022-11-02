@@ -30,6 +30,7 @@ function TicketPurchase() {
     const [seanceClient,] = useState<SeanceClient>(new SeanceClient(process.env.REACT_APP_SERVER_URL!));
     const [stream, setStream] = useState<BidirectionalStream<ChooseSeatRequest, ChooseSeatResponse>>();
     const [orderClient, ] = useState<OrderClient>(new OrderClient(process.env.REACT_APP_SERVER_URL!));
+    const [error, setError] = useState<string | undefined>(undefined);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -45,7 +46,7 @@ function TicketPurchase() {
 
     useEffect(() => {
         if (stream !== undefined) {
-            const request = new ChooseSeatRequest();
+            const request = new ChooseSeatRequest();            
             request.setSeanceid(seanceIdNumber);
             request.setUserid(userId);
             stream!.write(request);
@@ -96,7 +97,7 @@ function TicketPurchase() {
         setTickets([...tickets]);
     }
     
-    const onPayClick = () : string | undefined => {
+    const onPayClick = () => {
         const request = new FinalizeOrderRequest();
         request.setSeatidsList(userSeatIds);
         request.setSelectedticketsList(tickets.map(item => {
@@ -116,11 +117,9 @@ function TicketPurchase() {
                     navigate("/")
                 })
             } else {
-                return error?.message;
+                setError(error?.message);
             }
         })
-        
-        return undefined;
     }
 
     const render = () => {
@@ -146,7 +145,7 @@ function TicketPurchase() {
                 if (tickets.length === 0) {
                     return <Navigate to={`/movie/${movieIdNumber}/tickets-purchase/${seanceId}/discounts`}/>
                 }
-                return <PurchaseSummary seanceId={seanceIdNumber} promotionId={offerId} discountedTickets={tickets} onPayClick={onPayClick}/>
+                return <PurchaseSummary seanceId={seanceIdNumber} promotionId={offerId} discountedTickets={tickets} onPayClick={onPayClick} errorMessage={error}/>
             }
             default:
                 navigate("/")

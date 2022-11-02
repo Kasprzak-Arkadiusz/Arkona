@@ -67,5 +67,6 @@ export const DetailsLabel = styled.label`
 export const DetailsText = styled.span``
 
 export const ErrorMessage = styled.span`
-    
+    margin-bottom: 20px;
+    color: ${props => props.theme.Palette.warning};
 `

@@ -12,24 +12,16 @@ interface Props {
     seanceId: number,
     promotionId: number,
     discountedTickets: Array<TicketDetails>
-    onPayClick: () => string | undefined ;
+    onPayClick: () => void;
+    errorMessage: string | undefined;
 }
 
-function PurchaseSummary({seanceId, promotionId, discountedTickets, onPayClick}: Props) {
-    const [error, setError] = useState<string>();
+function PurchaseSummary({seanceId, promotionId, discountedTickets, onPayClick, errorMessage}: Props) {
     const navigate = useNavigate();
-    
-    const innerOnPayClick = () => {
-        const result = onPayClick();
-        if (result !== undefined){
-            setError(result)
-            return;
-        }
-    }
     
     return (
         <style.ContentContainer>
-            {error && <style.ErrorMessage>{error}</style.ErrorMessage>} 
+            {errorMessage && <style.ErrorMessage>{errorMessage}</style.ErrorMessage>} 
             <style.SummaryContainer>
                 <style.SummaryHeader>Podsumowanie</style.SummaryHeader>
                 <SeanceSection seanceId={seanceId}/>
@@ -38,7 +30,7 @@ function PurchaseSummary({seanceId, promotionId, discountedTickets, onPayClick}:
                 <PriceSection promotionId={promotionId} discountedTickets={discountedTickets}/>
             </style.SummaryContainer>
             <NavigationButtons onPrevClick={() => navigate(-1)}
-                               nextText={"Zapłać"} onNextClick={innerOnPayClick}/>
+                               nextText={"Zapłać"} onNextClick={onPayClick}/>
         </style.ContentContainer>
     )
 }
