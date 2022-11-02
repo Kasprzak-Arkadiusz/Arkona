@@ -16,8 +16,10 @@ public interface IApplicationDbContext
     public DbSet<Order> Orders { get; set; }
     public DbSet<Seance> Seances { get; set; }
     public DbSet<Seat> Seats { get; set; }
+    public DbSet<SeanceSeat> SeanceSeats { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
     public DbSet<TicketDiscount> TicketDiscounts { get; set; }
     public DbSet<UsedTicket> UsedTickets  { get; set; }
+    
     Task<int> SaveChangesAsync();
 }

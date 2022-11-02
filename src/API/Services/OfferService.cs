@@ -14,7 +14,8 @@ public class OfferService : Offer.OfferBase
         _mediator = mediator;
     }
 
-    public override async Task<GetLatestOffersResponse> GetLatestOffers(GetLatestOffersRequest request, ServerCallContext context)
+    public override async Task<GetLatestOffersResponse> GetLatestOffers(GetLatestOffersRequest request,
+        ServerCallContext context)
     {
         var viewModel = await _mediator.Send(new GetLatestOffersQuery((short)request.Count));
         var response = new GetLatestOffersResponse();
@@ -24,6 +25,35 @@ public class OfferService : Offer.OfferBase
             Image = ByteString.CopyFrom(i.Image),
             Name = i.Name
         }));
+
+        return response;
+    }
+
+    public override async Task<GetAvailableOffersResponse> GetAvailableOffers(GetAvailableOffersRequest request,
+        ServerCallContext context)
+    {
+        var viewModel = await _mediator.Send(new GetAvailableOffersQuery(request.SeanceId));
+        var response = new GetAvailableOffersResponse();
+        response.Offers.AddRange(viewModel.Select(aoi => new AvailableOfferInfo
+        {
+            Id = aoi.Id,
+            Name = aoi.Name,
+            Description = aoi.Description,
+            MinTickets = aoi.MinTickets
+        }));
+
+        return response;
+    }
+
+    public override async Task<GetOfferByIdResponse> GetOfferById(GetOfferByIdRequest request,
+        ServerCallContext context)
+    {
+        var viewModel = await _mediator.Send(new GetOfferByIdQuery((short)request.OfferId));
+        var response = new GetOfferByIdResponse
+        {
+            Id = viewModel.Id,
+            Name = viewModel.Name
+        };
 
         return response;
     }

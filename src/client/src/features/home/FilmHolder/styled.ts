@@ -13,7 +13,7 @@ export const Container = styled.a<ContainerProps>`
     max-width: ${props => props.width};
     height: fit-content;
     line-height: 20px;
-    margin: auto;
+    margin: 20px auto;
     text-decoration: none;
     
     cursor: pointer;

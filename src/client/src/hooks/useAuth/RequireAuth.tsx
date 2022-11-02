@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import useAuth from "hooks/useAuth/useAuth";
-import {Navigate, useLocation} from "react-router-dom";
+import {Navigate, useLocation, Outlet} from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import {CustomJwtPayload} from "utils/CustomTypes/CustomJwtPayload";
 
@@ -44,7 +44,7 @@ const RequireAuth = ({role} : IProps) => {
         return <Navigate to="/" state={{from: location}} replace/>;
     }
 
-    return <></>;
+    return <Outlet/>;
 };
 
 export default RequireAuth;

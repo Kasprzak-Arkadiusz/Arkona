@@ -4,10 +4,13 @@ option csharp_namespace = "API";
 
 package offer;
 
-service Offer{
+service Offer {
   rpc GetLatestOffers(GetLatestOffersRequest) returns (GetLatestOffersResponse);
+  rpc GetAvailableOffers(GetAvailableOffersRequest) returns (GetAvailableOffersResponse);
+  rpc GetOfferById(GetOfferByIdRequest) returns (GetOfferByIdResponse);
 }
 
+// GetLatestOffer
 message GetLatestOffersRequest{
   int32 count = 1;
 }
@@ -18,6 +21,32 @@ message GetLatestOffersResponse{
 
 message GeneralOfferInfo {
   int32  id    = 1;
-  string name = 2;
+  string name  = 2;
   bytes  image = 3;
+}
+
+// GetAvailableOffers
+message GetAvailableOffersRequest {
+  int32 seanceId = 1;
+}
+
+message GetAvailableOffersResponse {
+  repeated AvailableOfferInfo offers = 1;
+}
+
+message AvailableOfferInfo {
+  int32  id          = 1;
+  string name        = 2;
+  string description = 3;
+  int32  minTickets  = 4;
+}
+
+// GetOfferById
+message GetOfferByIdRequest {
+  int32 offerId = 1;
+}
+
+message GetOfferByIdResponse {
+  int32  id   = 1;
+  string name = 2;
 }

@@ -43,8 +43,11 @@ export const SeanceButton = styled.button`
     height: 25px;
     margin: 0px 10px 20px 10px;
     border-radius: 10px;
-    color: ${props => props.theme.Palette.main};
+    color: ${props => props.theme.Palette.textMain};
     background-color: ${props => props.theme.Palette.gray};
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.85);
+    font-weight: 600;
+    border-style: unset;
 
     &:hover {
         -webkit-text-fill-color: ${props => props.theme.Palette.blueBorder};

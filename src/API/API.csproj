@@ -11,6 +11,8 @@
         <Protobuf Include="Protos\movie.proto" GrpcServices="Server" />
         <Protobuf Include="Protos\offer.proto" GrpcServices="Server" />
         <Protobuf Include="Protos\seance.proto" GrpcServices="Server" />
+        <Protobuf Include="Protos\ticketDiscount.proto" GrpcServices="Server" />
+        <Protobuf Include="Protos\order.proto" GrpcServices="Server" />
     </ItemGroup>
 
     <ItemGroup>
@@ -21,14 +23,14 @@
         <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.45.0" />
         <PackageReference Include="Grpc.AspNetCore.Web" Version="2.45.0" />
         <PackageReference Include="Grpc.Tools" Version="2.45.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
@@ -36,8 +38,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Application\Application.csproj" />
-      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+        <ProjectReference Include="..\Application\Application.csproj" />
+        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

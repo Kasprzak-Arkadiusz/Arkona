@@ -20,8 +20,8 @@ message RegisterRequest {
 message ExternalRegisterRequest {
   string   accessToken = 1;
   enum Provider {
-    Facebook  = 0;
-    Google    = 1;
+    Facebook = 0;
+    Google   = 1;
   }
   Provider provider    = 2;
 }

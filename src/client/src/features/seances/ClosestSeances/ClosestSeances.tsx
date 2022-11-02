@@ -31,7 +31,7 @@ function ClosestSeances({movieId}: Props) {
             <IconTitle title={"Najblizsze seanse"} Component={ProjectorIcon} height={"24px"} width={"24px"}/>
             {seances.getValuesList().length !== 0 ? <style.ContentContainer>
                     {seances.getValuesList().map((item) => {
-                        return <DayOfWeekItem dayOfWeek={item.getKey()} seanceDetails={item.getSeancesList()}/>
+                        return <DayOfWeekItem key={item.getKey()} dayOfWeek={item.getKey()} seanceDetails={item.getSeancesList()}/>
                     })}
                 </style.ContentContainer> :
                 <style.NoSeancesAvailableSpan>Brak seansów dla tego filmu</style.NoSeancesAvailableSpan>}

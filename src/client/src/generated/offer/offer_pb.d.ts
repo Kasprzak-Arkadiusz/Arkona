@@ -75,3 +75,121 @@ export namespace GeneralOfferInfo {
   }
 }
 
+export class GetAvailableOffersRequest extends jspb.Message {
+  getSeanceid(): number;
+  setSeanceid(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAvailableOffersRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAvailableOffersRequest): GetAvailableOffersRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetAvailableOffersRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAvailableOffersRequest;
+  static deserializeBinaryFromReader(message: GetAvailableOffersRequest, reader: jspb.BinaryReader): GetAvailableOffersRequest;
+}
+
+export namespace GetAvailableOffersRequest {
+  export type AsObject = {
+    seanceid: number,
+  }
+}
+
+export class GetAvailableOffersResponse extends jspb.Message {
+  clearOffersList(): void;
+  getOffersList(): Array<AvailableOfferInfo>;
+  setOffersList(value: Array<AvailableOfferInfo>): void;
+  addOffers(value?: AvailableOfferInfo, index?: number): AvailableOfferInfo;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAvailableOffersResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAvailableOffersResponse): GetAvailableOffersResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetAvailableOffersResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAvailableOffersResponse;
+  static deserializeBinaryFromReader(message: GetAvailableOffersResponse, reader: jspb.BinaryReader): GetAvailableOffersResponse;
+}
+
+export namespace GetAvailableOffersResponse {
+  export type AsObject = {
+    offersList: Array<AvailableOfferInfo.AsObject>,
+  }
+}
+
+export class AvailableOfferInfo extends jspb.Message {
+  getId(): number;
+  setId(value: number): void;
+
+  getName(): string;
+  setName(value: string): void;
+
+  getDescription(): string;
+  setDescription(value: string): void;
+
+  getMintickets(): number;
+  setMintickets(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): AvailableOfferInfo.AsObject;
+  static toObject(includeInstance: boolean, msg: AvailableOfferInfo): AvailableOfferInfo.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: AvailableOfferInfo, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): AvailableOfferInfo;
+  static deserializeBinaryFromReader(message: AvailableOfferInfo, reader: jspb.BinaryReader): AvailableOfferInfo;
+}
+
+export namespace AvailableOfferInfo {
+  export type AsObject = {
+    id: number,
+    name: string,
+    description: string,
+    mintickets: number,
+  }
+}
+
+export class GetOfferByIdRequest extends jspb.Message {
+  getOfferid(): number;
+  setOfferid(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetOfferByIdRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetOfferByIdRequest): GetOfferByIdRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetOfferByIdRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetOfferByIdRequest;
+  static deserializeBinaryFromReader(message: GetOfferByIdRequest, reader: jspb.BinaryReader): GetOfferByIdRequest;
+}
+
+export namespace GetOfferByIdRequest {
+  export type AsObject = {
+    offerid: number,
+  }
+}
+
+export class GetOfferByIdResponse extends jspb.Message {
+  getId(): number;
+  setId(value: number): void;
+
+  getName(): string;
+  setName(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetOfferByIdResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetOfferByIdResponse): GetOfferByIdResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetOfferByIdResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetOfferByIdResponse;
+  static deserializeBinaryFromReader(message: GetOfferByIdResponse, reader: jspb.BinaryReader): GetOfferByIdResponse;
+}
+
+export namespace GetOfferByIdResponse {
+  export type AsObject = {
+    id: number,
+    name: string,
+  }
+}
+

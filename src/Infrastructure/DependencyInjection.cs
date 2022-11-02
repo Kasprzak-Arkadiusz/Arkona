@@ -7,6 +7,7 @@ using Infrastructure.Services.AuthenticationService;
 using Infrastructure.Services.EmailService;
 using Infrastructure.Services.FacebookAuthService;
 using Infrastructure.Services.GoogleAuthService;
+using Infrastructure.Services.IdentityService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,6 +54,7 @@ public static class DependencyInjection
 
         services.AddTransient<IAuthenticationService, AuthenticationService>();
         services.AddTransient<IEmailService, EmailService>();
+        services.AddTransient<IIdentityService, IdentityService>();
 
         services.AddHttpClient();
         services.AddSingleton<IFacebookAuthService, FacebookAuthService>();

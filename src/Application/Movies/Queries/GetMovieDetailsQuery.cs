@@ -38,7 +38,7 @@ public class GetMovieDetailsQueryHandler : IRequestHandler<GetMovieDetailsQuery,
 
         if (movie is null)
         {
-            throw new NotFoundException("Movie with given id does not exist.");
+            throw new NotFoundException("Nie istnieje film z podanym id.");
         }
 
         var detailedMovieInfo = _mapper.Map<DetailedMovieInfo>(movie);

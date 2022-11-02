@@ -74,7 +74,8 @@ public class MovieService : Movie.MovieBase
         ServerCallContext context)
     {
         var paginatedList = await _mediator.Send(new GetFilteredMoviesQuery(request.Title, request.Genre,
-            request.AgeRestriction, request.Date.ToDateTime(), request.PageNumber, request.PageSize));
+            request.AgeRestriction, request.Date == null ? new DateTime(1970, 1, 1) : request.Date.ToDateTime(),
+            request.PageNumber, request.PageSize));
 
         var response = ToGetMoviesResponse(paginatedList);
         return response;

@@ -29,6 +29,11 @@ public record Period
         return new Period(validFrom, validTo);
     }
 
+    public bool IsInPeriod(DateOnly date)
+    {
+        return ValidFrom <= date && ValidTo >= date;
+    }
+
     public void ExtendPeriod(DateOnly validTo)
     {
         if (validTo <= ValidTo)

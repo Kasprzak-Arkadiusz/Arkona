@@ -42,14 +42,14 @@ public static class DatabaseSeeder
     {
         var cinemaHalls = new List<CinemaHall>
         {
-            CinemaHall.Create(1, 240, 20),
-            CinemaHall.Create(2, 240, 20),
-            CinemaHall.Create(3, 360, 20),
-            CinemaHall.Create(4, 360, 20),
-            CinemaHall.Create(5, 240, 20),
-            CinemaHall.Create(6, 240, 20),
-            CinemaHall.Create(7, 360, 20),
-            CinemaHall.Create(8, 360, 20),
+            CinemaHall.Create(1, 240, 24),
+            CinemaHall.Create(2, 240, 24),
+            CinemaHall.Create(3, 360, 24),
+            CinemaHall.Create(4, 360, 24),
+            CinemaHall.Create(5, 240, 24),
+            CinemaHall.Create(6, 240, 24),
+            CinemaHall.Create(7, 360, 24),
+            CinemaHall.Create(8, 360, 24),
         };
 
         foreach (var cinemaHall in cinemaHalls)
@@ -76,7 +76,10 @@ public static class DatabaseSeeder
                 (decimal)0.4),
             TicketDiscount.Create(4, "Zniżka dla seniorów",
                 "Zniżka przysługuje osobom z ukończonymi 65 latami.",
-                (decimal)0.8)
+                (decimal)0.8),
+            TicketDiscount.Create(5, "Brak zniżki",
+                "Cena normalna",
+                1)
         };
 
         await _context.TicketDiscounts.AddRangeAsync(discounts);
@@ -174,9 +177,9 @@ public static class DatabaseSeeder
                 Period.Create(new DateOnly(2022, 04, 02),
                     new DateOnly(2022, 04, 03),
                     new DateOnly(2022, 03, 03))),
-            AgeOffer.Create("Rodzinny tydzień - Dorośli płacą tyle co dzieci!",
+            AgeOffer.Create("Rodzinny tydzień - taniej z dziećmi!",
                 "Ciesz się oglądaniem filmów wraz z dziećmi! " +
-                "Zabierz dziecko na film oznaczony kategorią od lat 7 i zapłać tyle samo co dziecko.",
+                "Zabierz dziecko na film oznaczony kategorią od lat 7 i zapłać 15% mniej za całe zamówienie.",
                 (decimal)0.5, ageRestrictions[AgeRestrictionId.OdLat7],
                 Period.Create(new DateOnly(2022, 03, 28),
                     new DateOnly(2022, 04, 03),
@@ -219,27 +222,27 @@ public static class DatabaseSeeder
     {
         var orders = new List<Order>
         {
-            Order.Create(new DateTime(2022, 03, 27, 14, 34, 54),
+            Order.Create(
                 new List<Ticket>
                 {
                     tickets[0], tickets[1], tickets[2]
                 },
-                userIds[0], offers[0]),
-            Order.Create(new DateTime(2022, 03, 28, 13, 59, 13),
+                userIds[0], offers[0],new DateTime(2022, 03, 27, 14, 34, 54)),
+            Order.Create(
                 new List<Ticket>
                 {
                     tickets[3], tickets[4]
-                }, userIds[0], offers[1]),
-            Order.Create(new DateTime(2022, 03, 25, 07, 13, 20),
+                }, userIds[0], offers[1], new DateTime(2022, 03, 28, 13, 59, 13)),
+            Order.Create(
                 new List<Ticket>
                 {
                     tickets[5]
-                }, userIds[0]),
-            Order.Create(new DateTime(2022, 03, 26, 21, 18, 31),
+                }, userIds[0], null, new DateTime(2022, 03, 25, 07, 13, 20)),
+            Order.Create(
                 new List<Ticket>
                 {
                     tickets[6], tickets[7]
-                }, userIds[0])
+                }, userIds[0], null, new DateTime(2022, 03, 26, 21, 18, 31))
         };
 
         await _context.Orders.AddRangeAsync(orders);
