@@ -1,4 +1,5 @@
-﻿using Application.Orders.Commands;
+﻿using API.Validators.Orders;
+using Application.Orders.Commands;
 using Application.Orders.Queries;
 using Application.Orders.ViewModels;
 using Grpc.Core;
@@ -36,6 +37,8 @@ public class OrderService : Order.OrderBase
     public override async Task<FinalizeOrderResponse> FinalizeOrder(FinalizeOrderRequest request,
         ServerCallContext context)
     {
+        FinalizeOrderValidator.Validate(request);
+
         var ticketDiscountVm = request.SelectedTickets.Select(st =>
             new TicketDiscountVm
             {
