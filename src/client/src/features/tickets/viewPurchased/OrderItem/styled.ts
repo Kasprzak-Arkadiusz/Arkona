@@ -21,6 +21,7 @@ export const OrderDetailsContainer = styled.div`
 `
 
 export const OrderDetailsItemContainer = styled.div`
+    display: flex;
     margin: 10px;
 `
 
@@ -30,7 +31,9 @@ export const DetailsItemLabel = styled.label`
     font-weight: bold;
 `
 
-export const DetailsItemValue = styled.span``
+export const DetailsItemValue = styled.span`
+    margin: auto;
+`
 
 export const TicketsTable = styled.table`
     margin: 0px 25px;

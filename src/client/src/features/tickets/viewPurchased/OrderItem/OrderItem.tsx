@@ -2,19 +2,30 @@
 import * as style from './styled';
 import OrderDetailsItem from "./OrderDetailsItem";
 import TicketItem from "./TicketItem";
+import {TicketDetails} from "generated/order/order_pb";
 
-function OrderItem() {
-    return(
+interface Props {
+    orderNumber: string,
+    dateOfPurchase: string,
+    movieTitle: string,
+    dateOfSeance: string,
+    totalPrice: string,
+    hallNumber: number
+    tickets: Array<TicketDetails>
+}
+
+function OrderItem({orderNumber, dateOfPurchase, movieTitle, dateOfSeance, totalPrice, hallNumber, tickets}: Props) {
+    return (
         <style.Container>
             <style.OrderDetailsContainer>
-                <OrderDetailsItem label={"Nr. zamówienia:"} value={"123456"}/>
-                <OrderDetailsItem label={"Data zakupu:"} value={"05.11.2022"}/>
-                <OrderDetailsItem label={"Film:"} value={"Batman"}/>
-                <OrderDetailsItem label={"Data seansu:"} value={"2022-11-10 15:00"}/>
-                <OrderDetailsItem label={"Cena:"} value={"120 zł"}/>
-                <OrderDetailsItem label={"Nr sali:"} value={"1"}/>
+                <OrderDetailsItem label={"Nr. zamówienia:"} value={orderNumber}/>
+                <OrderDetailsItem label={"Data zakupu:"} value={dateOfPurchase}/>
+                <OrderDetailsItem label={"Film:"} value={movieTitle}/>
+                <OrderDetailsItem label={"Data seansu:"} value={dateOfSeance}/>
+                <OrderDetailsItem label={"Cena:"} value={totalPrice}/>
+                <OrderDetailsItem label={"Nr sali:"} value={hallNumber}/>
             </style.OrderDetailsContainer>
-            <TicketItem></TicketItem>
+            <TicketItem tickets={tickets}/>
         </style.Container>
     )
 }

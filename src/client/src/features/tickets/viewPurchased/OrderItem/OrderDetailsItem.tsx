@@ -3,7 +3,7 @@ import * as style from './styled';
 
 interface Props {
     label: string,
-    value: string
+    value: string | number
 }
 
 function OrderDetailsItem({label, value}: Props) {

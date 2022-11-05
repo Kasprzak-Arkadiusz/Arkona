@@ -125,3 +125,119 @@ export namespace FinalizeOrderResponse {
   }
 }
 
+export class GetUserOrdersRequest extends jspb.Message {
+  getUserid(): string;
+  setUserid(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetUserOrdersRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetUserOrdersRequest): GetUserOrdersRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetUserOrdersRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetUserOrdersRequest;
+  static deserializeBinaryFromReader(message: GetUserOrdersRequest, reader: jspb.BinaryReader): GetUserOrdersRequest;
+}
+
+export namespace GetUserOrdersRequest {
+  export type AsObject = {
+    userid: string,
+  }
+}
+
+export class GetUserOrdersResponse extends jspb.Message {
+  clearOrdersList(): void;
+  getOrdersList(): Array<UserOrderDetails>;
+  setOrdersList(value: Array<UserOrderDetails>): void;
+  addOrders(value?: UserOrderDetails, index?: number): UserOrderDetails;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetUserOrdersResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetUserOrdersResponse): GetUserOrdersResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetUserOrdersResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetUserOrdersResponse;
+  static deserializeBinaryFromReader(message: GetUserOrdersResponse, reader: jspb.BinaryReader): GetUserOrdersResponse;
+}
+
+export namespace GetUserOrdersResponse {
+  export type AsObject = {
+    ordersList: Array<UserOrderDetails.AsObject>,
+  }
+}
+
+export class UserOrderDetails extends jspb.Message {
+  getOrdernumber(): string;
+  setOrdernumber(value: string): void;
+
+  getDateofpurchase(): string;
+  setDateofpurchase(value: string): void;
+
+  getMovietitle(): string;
+  setMovietitle(value: string): void;
+
+  getDateofseance(): string;
+  setDateofseance(value: string): void;
+
+  getTotalprice(): string;
+  setTotalprice(value: string): void;
+
+  getHallnumber(): number;
+  setHallnumber(value: number): void;
+
+  clearTicketsList(): void;
+  getTicketsList(): Array<TicketDetails>;
+  setTicketsList(value: Array<TicketDetails>): void;
+  addTickets(value?: TicketDetails, index?: number): TicketDetails;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UserOrderDetails.AsObject;
+  static toObject(includeInstance: boolean, msg: UserOrderDetails): UserOrderDetails.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: UserOrderDetails, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UserOrderDetails;
+  static deserializeBinaryFromReader(message: UserOrderDetails, reader: jspb.BinaryReader): UserOrderDetails;
+}
+
+export namespace UserOrderDetails {
+  export type AsObject = {
+    ordernumber: string,
+    dateofpurchase: string,
+    movietitle: string,
+    dateofseance: string,
+    totalprice: string,
+    hallnumber: number,
+    ticketsList: Array<TicketDetails.AsObject>,
+  }
+}
+
+export class TicketDetails extends jspb.Message {
+  getSeatnumber(): number;
+  setSeatnumber(value: number): void;
+
+  getPrice(): string;
+  setPrice(value: string): void;
+
+  getDiscountname(): string;
+  setDiscountname(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): TicketDetails.AsObject;
+  static toObject(includeInstance: boolean, msg: TicketDetails): TicketDetails.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: TicketDetails, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): TicketDetails;
+  static deserializeBinaryFromReader(message: TicketDetails, reader: jspb.BinaryReader): TicketDetails;
+}
+
+export namespace TicketDetails {
+  export type AsObject = {
+    seatnumber: number,
+    price: string,
+    discountname: string,
+  }
+}
+
