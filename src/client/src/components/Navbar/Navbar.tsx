@@ -28,18 +28,6 @@ const Navbar = () => {
         )
     }
 
-    const getWorkerNavLinks = (): JSX.Element => {
-        return (
-            <navbar.NavLinks>
-                <navbar.Li id="first-link">
-                    <navbar.NavLink to="/worker/tickets" onClick={OnNavClick}>
-                        Bilety
-                    </navbar.NavLink>
-                </navbar.Li>
-            </navbar.NavLinks>
-        )
-    }
-
     const getAuthenticationNavLinks = (): JSX.Element => {
         if (role === undefined) {
             return (
@@ -98,7 +86,7 @@ const Navbar = () => {
                     {
                         <RequireAuth role={role ?? ""}/> && (
                             role === Role.client && getClientNavLinks() ||
-                            role === Role.worker && getWorkerNavLinks())}
+                            role === Role.worker)}
                     {getAuthenticationNavLinks()}
                 </navbar.NavLinksContainer>
                 <navbar.NavIcon onClick={() => setOpen(!open)}>

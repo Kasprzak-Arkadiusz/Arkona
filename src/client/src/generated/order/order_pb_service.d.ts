@@ -22,10 +22,20 @@ type OrderFinalizeOrder = {
   readonly responseType: typeof order_pb.FinalizeOrderResponse;
 };
 
+type OrderGetUserOrders = {
+  readonly methodName: string;
+  readonly service: typeof Order;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof order_pb.GetUserOrdersRequest;
+  readonly responseType: typeof order_pb.GetUserOrdersResponse;
+};
+
 export class Order {
   static readonly serviceName: string;
   static readonly GetTotalPrice: OrderGetTotalPrice;
   static readonly FinalizeOrder: OrderFinalizeOrder;
+  static readonly GetUserOrders: OrderGetUserOrders;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -77,6 +87,15 @@ export class OrderClient {
   finalizeOrder(
     requestMessage: order_pb.FinalizeOrderRequest,
     callback: (error: ServiceError|null, responseMessage: order_pb.FinalizeOrderResponse|null) => void
+  ): UnaryResponse;
+  getUserOrders(
+    requestMessage: order_pb.GetUserOrdersRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: order_pb.GetUserOrdersResponse|null) => void
+  ): UnaryResponse;
+  getUserOrders(
+    requestMessage: order_pb.GetUserOrdersRequest,
+    callback: (error: ServiceError|null, responseMessage: order_pb.GetUserOrdersResponse|null) => void
   ): UnaryResponse;
 }
 
