@@ -1,4 +1,6 @@
-﻿namespace Domain.ValueObjects;
+﻿using System.Globalization;
+
+namespace Domain.ValueObjects;
 
 public record Price
 {
@@ -26,6 +28,11 @@ public record Price
         }
 
         DiscountedPrice = BasePrice;
+    }
+
+    public static string PriceToString(decimal price)
+    {
+        return $"{price.ToString(CultureInfo.CurrentCulture)} zł";
     }
 
     public static decimal ApplyDiscount(decimal discountValue, decimal price)

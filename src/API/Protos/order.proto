@@ -7,6 +7,7 @@ package order;
 service Order {
   rpc GetTotalPrice(GetTotalPriceRequest) returns (GetTotalPriceResponse);
   rpc FinalizeOrder(FinalizeOrderRequest) returns (FinalizeOrderResponse);
+  rpc GetUserOrders(GetUserOrdersRequest) returns (GetUserOrdersResponse);
 }
 
 // GetTotalPrice
@@ -32,6 +33,29 @@ message FinalizeOrderRequest {
   int32                   offerId         = 4;
 }
 
-message FinalizeOrderResponse {
+message FinalizeOrderResponse {}
 
+// GetUserOrders
+message GetUserOrdersRequest {
+  string userId = 1;
+}
+
+message GetUserOrdersResponse {
+  repeated UserOrderDetails orders = 1;
+}
+
+message UserOrderDetails {
+  string                 orderNumber    = 1;
+  string                 dateOfPurchase = 2;
+  string                 movieTitle     = 3;
+  string                 dateOfSeance   = 4;
+  string                 totalPrice     = 5;
+  int32                  hallNumber     = 6;
+  repeated TicketDetails tickets        = 7;
+}
+
+message TicketDetails {
+  int32  seatNumber   = 1;
+  string price        = 2;
+  string discountName = 3;
 }

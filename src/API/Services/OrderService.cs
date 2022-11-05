@@ -1,7 +1,9 @@
-﻿using API.Validators.Orders;
+﻿using System.Globalization;
+using API.Validators.Orders;
 using Application.Orders.Commands;
 using Application.Orders.Queries;
 using Application.Orders.ViewModels;
+using Domain.ValueObjects;
 using Grpc.Core;
 using MediatR;
 
@@ -50,5 +52,35 @@ public class OrderService : Order.OrderBase
             request.OfferId));
 
         return new FinalizeOrderResponse();
+    }
+
+    public override async Task<GetUserOrdersResponse> GetUserOrders(GetUserOrdersRequest request,
+        ServerCallContext context)
+    {
+        var orderDetailsVms = await _mediator.Send(new GetUserOrdersQuery(request.UserId));
+
+        var response = new GetUserOrdersResponse();
+        response.Orders.AddRange(orderDetailsVms.Select(vm => new UserOrderDetails
+        {
+            OrderNumber = vm.OrderNumber,
+            DateOfPurchase = vm.DateOfPurchase.ToString(CultureInfo.CurrentCulture),
+            MovieTitle = vm.MovieTitle,
+            DateOfSeance = vm.DateOfSeance.ToString(CultureInfo.CurrentCulture),
+            TotalPrice = Price.PriceToString(vm.TotalPrice),
+            HallNumber = vm.HallNumber
+        }));
+
+        foreach (var order in response.Orders)
+        {
+            var tickets = orderDetailsVms.First(vm => vm.OrderNumber == order.OrderNumber).Tickets;
+            order.Tickets.AddRange(tickets.Select(t => new TicketDetails
+            {
+                SeatNumber = t.SeatNumber,
+                Price = t.Price,
+                DiscountName = t.DiscountName
+            }));
+        }
+
+        return response;
     }
 }
