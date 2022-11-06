@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Serilog;
 
 namespace API.Interceptors.Authorization;
 
@@ -17,9 +16,6 @@ public class GrpcAuthorizationHandler : AuthorizationHandler<GrpcRequirement>
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, GrpcRequirement requirement)
     {
         var userClaims = context.User;
-        Log.Information("{@UserClaims}",userClaims.ToString());
-        var test = _httpContextAccessor.HttpContext?.User;
-        
         if (userClaims.Identity is not null && userClaims.Identity.IsAuthenticated)
         {
             context.Succeed(requirement);

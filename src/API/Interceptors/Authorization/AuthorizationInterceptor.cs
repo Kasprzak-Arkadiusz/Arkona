@@ -6,7 +6,6 @@ using Application;
 using Application.Common.Interfaces;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
-using Serilog;
 
 namespace API.Interceptors.Authorization;
 
@@ -26,9 +25,6 @@ public class AuthorizationInterceptor : Interceptor
         UnaryServerMethod<TRequest, TResponse> continuation)
     {
         var token = context.RequestHeaders.Get("authorization")?.Value.Split(" ").Last();
-
-        Log.Information("{@Token}", token);
-
         if (token != null)
         {
             await AttachUserToContext(context, token);
@@ -47,9 +43,6 @@ public class AuthorizationInterceptor : Interceptor
         var userId = jwtToken.Claims.First(x => x.Type == "nameid").Value;
 
         var user = await _identityService.GetUserByIdAsync(userId);
-        
-        Log.Information("{@User}", user);
-        
         if (user is not null)
         {
             var identity = new ClaimsIdentity(new[]
