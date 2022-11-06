@@ -27,6 +27,11 @@ public class User
         Role = role;
     }
 
+    public void SetId(string id)
+    {
+        Id = id;
+    }
+
     public string GetFullName()
     {
         return $"{FirstName} {LastName}";

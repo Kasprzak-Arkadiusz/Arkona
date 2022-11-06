@@ -3,6 +3,7 @@ import * as style from "./styled";
 import {TicketDetails} from "../models/TicketDetails";
 import {OrderClient} from "generated/order/order_pb_service";
 import {GetTotalPriceRequest, GetTotalPriceResponse, SelectedTicket} from "generated/order/order_pb";
+import {useJwtMetadata} from "hooks/useJwtMetadata";
 
 interface Props {
     promotionId: number,
@@ -12,9 +13,10 @@ interface Props {
 function PriceSection({promotionId, discountedTickets}: Props) {
     const [orderClient, _] = useState<OrderClient>(new OrderClient(process.env.REACT_APP_SERVER_URL!));
     const [totalPriceResponse, setTotalPriceResponse] = useState<GetTotalPriceResponse>(new GetTotalPriceResponse());
+    const metadata = useJwtMetadata();
 
     useEffect(() => {
-        if (promotionId !== 0) {            
+        if (promotionId !== 0) {
             const request = new GetTotalPriceRequest();
             request.setOfferid(promotionId);
             request.setSelectedticketsList(discountedTickets.map(item => {
@@ -23,15 +25,15 @@ function PriceSection({promotionId, discountedTickets}: Props) {
                 selectedTicket.setDiscountid(item.id);
                 return selectedTicket;
             }));
-            
-            orderClient.getTotalPrice(request, (error, responseMessage) => {
+
+            orderClient.getTotalPrice(request, metadata, (error, responseMessage) => {
                 if (responseMessage !== null && responseMessage !== undefined) {
                     setTotalPriceResponse(responseMessage);
                 }
             });
         }
     }, [promotionId]);
-    
+
     return (
         <style.SectionContainer>
             <style.SectionTitle>Cena:</style.SectionTitle>

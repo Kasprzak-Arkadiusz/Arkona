@@ -126,9 +126,6 @@ export namespace FinalizeOrderResponse {
 }
 
 export class GetUserOrdersRequest extends jspb.Message {
-  getUserid(): string;
-  setUserid(value: string): void;
-
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetUserOrdersRequest.AsObject;
   static toObject(includeInstance: boolean, msg: GetUserOrdersRequest): GetUserOrdersRequest.AsObject;
@@ -141,7 +138,6 @@ export class GetUserOrdersRequest extends jspb.Message {
 
 export namespace GetUserOrdersRequest {
   export type AsObject = {
-    userid: string,
   }
 }
 

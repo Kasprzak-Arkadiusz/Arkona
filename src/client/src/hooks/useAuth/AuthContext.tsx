@@ -3,9 +3,10 @@ import {Inputs} from "features/register/RegisterForm/RegisterForm";
 import {ServiceError} from "generated/user/user_pb_service";
 import { AuthenticationResponse} from "generated/user/user_pb";
 import {Provider} from "./AuthProvider";
+import {CustomJwtPayload} from "utils/CustomTypes/Jwt";
 
 export interface IAuth {
-    authData: AuthenticationResponse.AsObject | null,
+    authData: CustomJwtPayload | null,
     signUp: (formData: Inputs, callback: (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => void) => void,
     signIn: (formData: Inputs, callback: (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => void) => void,
     externalSignUp: (accessToken: string, provider: Provider,

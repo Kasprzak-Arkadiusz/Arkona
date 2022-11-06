@@ -4,19 +4,17 @@ import OrderItem from "./OrderItem/OrderItem";
 import * as style from './styled';
 import {GetUserOrdersRequest, UserOrderDetails} from "generated/order/order_pb";
 import {OrderClient} from "generated/order/order_pb_service";
-import useAuth from "hooks/useAuth/useAuth";
+import {useJwtMetadata} from "hooks/useJwtMetadata";
 
 function OwnTickets() {
     const [orderClient,] = useState<OrderClient>(new OrderClient(process.env.REACT_APP_SERVER_URL!));
     const [orders, setOrders] = useState<Array<UserOrderDetails>>(new Array<UserOrderDetails>());
-    const auth = useAuth();
-
-
+    const metadata = useJwtMetadata();
+    
     useEffect(() => {
         const request = new GetUserOrdersRequest();
-        request.setUserid(auth.authData!.id);
-
-        orderClient.getUserOrders(request, (error, responseMessage) => {
+        
+        orderClient.getUserOrders(request, metadata, (error, responseMessage) => {
             if (responseMessage !== null && responseMessage !== undefined) {
                 setOrders(responseMessage.getOrdersList());
             }

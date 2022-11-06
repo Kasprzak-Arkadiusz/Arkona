@@ -1,8 +1,8 @@
 ﻿export type CustomJwtPayload = {
-    nameid: string,
+    id: string,
     email: string,
-    FirstName: string,
-    LastName: string,
+    firstName: string,
+    lastName: string,
     role: string,
     nbf: number,
     exp: number,

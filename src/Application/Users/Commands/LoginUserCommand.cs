@@ -1,7 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.ViewModels;
-using Domain.Enums;
 using MediatR;
 using Serilog;
 

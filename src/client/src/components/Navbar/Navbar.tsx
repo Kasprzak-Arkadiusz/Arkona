@@ -5,12 +5,14 @@ import './navbar.css';
 import * as navbar from "./styled"
 import {Role} from "utils/CustomTypes/Role";
 import useAuth from "hooks/useAuth/useAuth";
-import RequireAuth from "../../hooks/useAuth/RequireAuth";
+import RequireAuth from "hooks/useAuth/RequireAuth";
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
     const auth = useAuth();
     const role = auth.authData?.role;
+
+    console.log(auth.authData);
     
     const OnNavClick = () => {
         setOpen(false);

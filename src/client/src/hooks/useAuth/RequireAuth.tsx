@@ -1,14 +1,13 @@
 ﻿import React from "react";
 import useAuth from "hooks/useAuth/useAuth";
 import {Navigate, useLocation, Outlet} from "react-router-dom";
-import jwtDecode from "jwt-decode";
-import {CustomJwtPayload} from "utils/CustomTypes/CustomJwtPayload";
 
 interface IProps {
-    role:string
+    children?: React.ReactNode;
+    role?: string | undefined
 }
 
-const RequireAuth = ({role} : IProps) => {
+const RequireAuth = ({role, children}: IProps): JSX.Element => {
     const auth = useAuth();
     const location = useLocation();
 
@@ -17,8 +16,7 @@ const RequireAuth = ({role} : IProps) => {
             return true;
         }
 
-        const accessToken = auth.authData.accesstoken;
-        const decodedToken = jwtDecode<CustomJwtPayload>(accessToken);
+        const decodedToken = auth.authData;
 
         if (decodedToken.exp === undefined) {
             return true;
@@ -28,6 +26,10 @@ const RequireAuth = ({role} : IProps) => {
     };
 
     const isWrongRole = () => {
+        if (role === undefined) {
+            return false;
+        }
+
         return auth.authData?.role.toLowerCase() !== role;
     };
 
@@ -44,7 +46,7 @@ const RequireAuth = ({role} : IProps) => {
         return <Navigate to="/" state={{from: location}} replace/>;
     }
 
-    return <Outlet/>;
+    return children === undefined ? <Outlet/> : <div>{children}</div>
 };
 
 export default RequireAuth;

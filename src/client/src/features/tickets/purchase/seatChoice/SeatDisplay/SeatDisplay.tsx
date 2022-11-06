@@ -13,6 +13,7 @@ import {deepCopy, Dictionary, toDictionary} from "utils/dictionaryUtils";
 import {SeatInfo} from "utils/CustomTypes/SeatInfo";
 import {BidirectionalStream, SeanceClient} from 'generated/seance/seance_pb_service';
 import {useUserId} from "hooks/useUserId";
+import {useJwtMetadata} from "hooks/useJwtMetadata";
 
 interface Props {
     seanceId: number
@@ -55,6 +56,7 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selecte
     const [numberOfRows, setNumberOfRows] = useState<number>(0);
     const [streamRegistered, setStreamRegistered] = useState<boolean>(false);
     const [databaseStateLoaded, setDatabaseStateLoaded] = useState<boolean>(false);
+    const metadata = useJwtMetadata();
 
     useEffect(() => {
         return () => {
@@ -67,7 +69,7 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selecte
             const request = new GetSeatsBySeanceRequest();
             request.setSeanceid(seanceId);
 
-            seanceClient.getSeatsBySeance(request, (error, responseMessage) => {
+            seanceClient.getSeatsBySeance(request, metadata, (error, responseMessage) => {
                 if (responseMessage !== null && responseMessage !== undefined) {
                     setSections(responseMessage.getSectionsList());
                     setNumberOfRows(responseMessage.getNumberofrows());

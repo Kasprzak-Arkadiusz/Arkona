@@ -4,6 +4,7 @@ using Application.Seats.Queries;
 using Domain.Services;
 using Grpc.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Services;
 
@@ -43,6 +44,7 @@ public class SeanceService : Seance.SeanceBase
         return response;
     }
 
+    [Authorize]
     public override async Task<GetSeatsBySeanceResponse> GetSeatsBySeance(GetSeatsBySeanceRequest request,
         ServerCallContext context)
     {
@@ -99,6 +101,7 @@ public class SeanceService : Seance.SeanceBase
         return response;
     }
 
+    [Authorize]
     public override async Task ChooseSeat(IAsyncStreamReader<ChooseSeatRequest> requestStream,
         IServerStreamWriter<ChooseSeatResponse> responseStream, ServerCallContext context)
     {
@@ -149,6 +152,7 @@ public class SeanceService : Seance.SeanceBase
         return response;
     }
 
+    [Authorize]
     public override Task<DisconnectResponse> Disconnect(DisconnectRequest request, ServerCallContext context)
     {
         _seanceRoomService.Disconnect(request.SeanceId, request.UserId);
