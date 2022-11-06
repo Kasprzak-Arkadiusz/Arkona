@@ -10,6 +10,8 @@ import {
 import {getStorageItem, setStorageItem} from "utils/storage";
 import {Inputs} from "features/register/RegisterForm/RegisterForm"
 import {facebookLogOut} from "components/ExternalLogin/FacebookExternalLogin"
+import {CustomJwtPayload} from "utils/CustomTypes/Jwt";
+import jwtDecode from "jwt-decode";
 
 export enum Provider {
     FACEBOOK = 0,
@@ -17,7 +19,7 @@ export enum Provider {
 }
 
 export const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
-    const [authData, setAuthData] = useState(getStorageItem("authData"));
+    const [authData, setAuthData] = useState<string | null>(getStorageItem("authData"));
     const userClient = new UserClient(process.env.REACT_APP_SERVER_URL!);
 
     function MapToRegisterRequest(formData: Inputs): RegisterRequest {
@@ -32,8 +34,7 @@ export const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
     }
 
     const handleSignUpResponse = (response: AuthenticationResponse) => {
-        response.setRole(response.getRole().toLowerCase());
-        setStorageItem("authData", response.toObject());
+        setStorageItem("authData", response.getAccesstoken());
         setAuthData(getStorageItem("authData"));
     };
 
@@ -60,8 +61,7 @@ export const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
     }
 
     const handleSignInResponse = (response: AuthenticationResponse) => {
-        response.setRole(response.getRole().toLowerCase());
-        setStorageItem("authData", response.toObject());
+        setStorageItem("authData", response.getAccesstoken());
         setAuthData(getStorageItem("authData"));
     };
 
@@ -99,7 +99,18 @@ export const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
         setAuthData(null);
         setStorageItem("authData", null);
     };
+    
+    const decodeJwt = (encodedJwt: string | null): CustomJwtPayload | null=> {
+        if (encodedJwt === null){
+            return null;
+        }
+        
+        const decodedJwt = jwtDecode<CustomJwtPayload>(encodedJwt);
+        decodedJwt.role = decodedJwt.role.toLowerCase();
+        
+        return decodedJwt;
+    }
 
     return <AuthContext.Provider
-        value={{authData, signUp, signIn, externalSignUp, signOut}}>{children}</AuthContext.Provider>;
+        value={{authData: decodeJwt(authData), signUp, signIn, externalSignUp, signOut}}>{children}</AuthContext.Provider>;
 }

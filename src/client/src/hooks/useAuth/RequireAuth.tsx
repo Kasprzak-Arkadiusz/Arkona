@@ -1,8 +1,6 @@
 ﻿import React from "react";
 import useAuth from "hooks/useAuth/useAuth";
 import {Navigate, useLocation, Outlet} from "react-router-dom";
-import jwtDecode from "jwt-decode";
-import {CustomJwtPayload} from "utils/CustomTypes/CustomJwtPayload";
 
 interface IProps {
     children?: React.ReactNode;
@@ -18,8 +16,7 @@ const RequireAuth = ({role, children}: IProps): JSX.Element => {
             return true;
         }
 
-        const accessToken = auth.authData.accesstoken;
-        const decodedToken = jwtDecode<CustomJwtPayload>(accessToken);
+        const decodedToken = auth.authData;
 
         if (decodedToken.exp === undefined) {
             return true;
