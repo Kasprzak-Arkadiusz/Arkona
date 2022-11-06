@@ -14,6 +14,7 @@ import {TicketDiscountsDetails} from "generated/ticketDiscount/ticketDiscount_pb
 import {OrderClient} from "generated/order/order_pb_service";
 import {FinalizeOrderRequest, SelectedTicket} from "generated/order/order_pb";
 import useAuth from "hooks/useAuth/useAuth";
+import {useJwtMetadata} from "hooks/useJwtMetadata";
 
 function TicketPurchase() {
     const {id, seanceId, action} = useParams();
@@ -29,9 +30,10 @@ function TicketPurchase() {
     const [stage, setStage] = useState<number>(0);
     const [seanceClient,] = useState<SeanceClient>(new SeanceClient(process.env.REACT_APP_SERVER_URL!));
     const [stream, setStream] = useState<BidirectionalStream<ChooseSeatRequest, ChooseSeatResponse>>();
-    const [orderClient, ] = useState<OrderClient>(new OrderClient(process.env.REACT_APP_SERVER_URL!));
+    const [orderClient,] = useState<OrderClient>(new OrderClient(process.env.REACT_APP_SERVER_URL!));
     const [error, setError] = useState<string | undefined>(undefined);
     const navigate = useNavigate();
+    const metadata = useJwtMetadata();
 
     useEffect(() => {
         if (seanceId === undefined || id === undefined) {
@@ -41,12 +43,12 @@ function TicketPurchase() {
         setMovieIdNumber(parseInt(id!));
         setSeanceIdNumber(parseInt(seanceId!));
 
-        setStream(seanceClient.chooseSeat());
+        setStream(seanceClient.chooseSeat(metadata));
     }, [seanceId]);
 
     useEffect(() => {
         if (stream !== undefined) {
-            const request = new ChooseSeatRequest();            
+            const request = new ChooseSeatRequest();
             request.setSeanceid(seanceIdNumber);
             request.setUserid(userId);
             stream!.write(request);
@@ -89,14 +91,14 @@ function TicketPurchase() {
             tickets.push(new TicketDetails(changedDiscount, ticketsCount))
         } else {
             ticket.numberOfTickets = ticketsCount;
-            if (ticket.numberOfTickets === 0){
+            if (ticket.numberOfTickets === 0) {
                 tickets.splice(tickets.indexOf(ticket), 1);
             }
         }
 
         setTickets([...tickets]);
     }
-    
+
     const onPayClick = () => {
         const request = new FinalizeOrderRequest();
         request.setSeatidsList(userSeatIds);
@@ -108,12 +110,12 @@ function TicketPurchase() {
         }));
         request.setUserid(auth.authData?.id!);
         request.setOfferid(offerId);
-        orderClient.finalizeOrder(request, (error, responseMessage) => {
+        orderClient.finalizeOrder(request, metadata,(error, responseMessage) => {
             if (responseMessage !== null && responseMessage !== undefined) {
                 const disconnectRequest = new DisconnectRequest();
                 disconnectRequest.setUserid(userId);
                 disconnectRequest.setSeanceid(seanceIdNumber);
-                seanceClient.disconnect(disconnectRequest, () => {
+                seanceClient.disconnect(disconnectRequest, metadata, () => {
                     navigate("/")
                 })
             } else {
@@ -145,7 +147,8 @@ function TicketPurchase() {
                 if (tickets.length === 0) {
                     return <Navigate to={`/movie/${movieIdNumber}/tickets-purchase/${seanceId}/discounts`}/>
                 }
-                return <PurchaseSummary seanceId={seanceIdNumber} promotionId={offerId} discountedTickets={tickets} onPayClick={onPayClick} errorMessage={error}/>
+                return <PurchaseSummary seanceId={seanceIdNumber} promotionId={offerId} discountedTickets={tickets}
+                                        onPayClick={onPayClick} errorMessage={error}/>
             }
             default:
                 navigate("/")

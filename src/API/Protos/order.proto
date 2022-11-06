@@ -36,9 +36,7 @@ message FinalizeOrderRequest {
 message FinalizeOrderResponse {}
 
 // GetUserOrders
-message GetUserOrdersRequest {
-  string userId = 1;
-}
+message GetUserOrdersRequest {}
 
 message GetUserOrdersResponse {
   repeated UserOrderDetails orders = 1;

@@ -36,7 +36,11 @@ function App() {
                         <Route path="repertoire" element={<Repertoire/>}/>
                         <Route path="offers" element={<Offers/>}/>
                         <Route path="movie/:id/" element={<MovieDetails/>}/>
-                        <Route path="movie/:id/tickets-purchase/:seanceId/:action" element={<TicketsPurchase/>}/>
+                        <Route path="movie/:id/tickets-purchase/:seanceId/:action" element={
+                            <RequireAuth>
+                                <TicketsPurchase/>
+                            </RequireAuth>
+                        }/>
 
                         <Route path={`/${Role.client}/`}
                                element={<RequireAuth role={Role.client}/>}>

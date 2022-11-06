@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace API.Services;
 
+[Authorize]
 public class OrderService : Order.OrderBase
 {
     private readonly IMediator _mediator;
@@ -56,7 +57,6 @@ public class OrderService : Order.OrderBase
         return new FinalizeOrderResponse();
     }
 
-    [Authorize]
     public override async Task<GetUserOrdersResponse> GetUserOrders(GetUserOrdersRequest request,
         ServerCallContext context)
     {

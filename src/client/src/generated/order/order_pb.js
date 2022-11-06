@@ -1097,7 +1097,7 @@ proto.order.GetUserOrdersRequest.prototype.toObject = function(opt_includeInstan
  */
 proto.order.GetUserOrdersRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, "")
+
   };
 
   if (includeInstance) {
@@ -1134,10 +1134,6 @@ proto.order.GetUserOrdersRequest.deserializeBinaryFromReader = function(msg, rea
     }
     var field = reader.getFieldNumber();
     switch (field) {
-    case 1:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setUserid(value);
-      break;
     default:
       reader.skipField();
       break;
@@ -1167,31 +1163,6 @@ proto.order.GetUserOrdersRequest.prototype.serializeBinary = function() {
  */
 proto.order.GetUserOrdersRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getUserid();
-  if (f.length > 0) {
-    writer.writeString(
-      1,
-      f
-    );
-  }
-};
-
-
-/**
- * optional string userId = 1;
- * @return {string}
- */
-proto.order.GetUserOrdersRequest.prototype.getUserid = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.order.GetUserOrdersRequest} returns this
- */
-proto.order.GetUserOrdersRequest.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
