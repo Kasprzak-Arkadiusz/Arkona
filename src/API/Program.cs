@@ -1,6 +1,7 @@
-using System.Text;
+using API.Common.Utils;
 using API.Extensions;
 using API.Interceptors;
+using API.Interceptors.Authorization;
 using API.Services;
 using API.Services.CustomServices;
 using Application;
@@ -11,13 +12,11 @@ using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Additional configuration is required to successfully run gRPC on macOS.
-// For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
 builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
     loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
 
@@ -32,23 +31,25 @@ configuration.Bind(nameof(ApplicationSettings), applicationSettings);
 builder.Services.AddApplication(applicationSettings);
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddTransient<IAuthorizationHandler, GrpcAuthorizationHandler>();
+builder.Services.AddSingleton<SeanceRoomService>();
 
 builder.Services.AddGrpc(options =>
 {
     options.EnableMessageValidation();
+    options.Interceptors.Add<AuthorizationInterceptor>();
     options.Interceptors.Add<ErrorHandlingInterceptor>();
 });
 builder.Services.AddGrpcReflection();
 builder.Services.AddGrpcFluentValidation();
-
-builder.Services.AddSingleton<SeanceRoomService>();
 
 const string policyName = "MyPolicy";
 builder.Services.AddCors(o =>
 {
     o.AddPolicy(policyName, config =>
     {
-        config.WithOrigins("https://localhost:7146", "http://localhost:5146", "https://localhost:7147", "http://localhost:7147");
+        config.WithOrigins("https://localhost:7146", "http://localhost:5146", "https://localhost:7147",
+            "http://localhost:7147");
         config.AllowAnyMethod();
         config.AllowAnyHeader();
         config.WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
@@ -65,20 +66,14 @@ builder.Services.AddAuthentication(options =>
 }).AddJwtBearer(options =>
 {
     options.SaveToken = true;
-    options.RequireHttpsMetadata = false;
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        IssuerSigningKey =
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(applicationSettings.AccessTokenSettings.Key)),
-        ValidateIssuerSigningKey = true,
-        ValidateIssuer = true,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero
-    };
+    options.RequireHttpsMetadata = true;
+    options.TokenValidationParameters = TokenValidationParametersCreator.Create(applicationSettings);
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("TokenAuthorize", policy => { policy.AddRequirements(new GrpcRequirement()); });
+});
 
 var app = builder.Build();
 

@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using API.Common.Utils;
 using API.Validators.Orders;
 using Application.Orders.Commands;
 using Application.Orders.Queries;
@@ -6,6 +7,7 @@ using Application.Orders.ViewModels;
 using Domain.ValueObjects;
 using Grpc.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Services;
 
@@ -54,10 +56,11 @@ public class OrderService : Order.OrderBase
         return new FinalizeOrderResponse();
     }
 
+    [Authorize]
     public override async Task<GetUserOrdersResponse> GetUserOrders(GetUserOrdersRequest request,
         ServerCallContext context)
     {
-        var orderDetailsVms = await _mediator.Send(new GetUserOrdersQuery(request.UserId));
+        var orderDetailsVms = await _mediator.Send(new GetUserOrdersQuery(CurrentUserManager.GetUserId(context)));
 
         var response = new GetUserOrdersResponse();
         response.Orders.AddRange(orderDetailsVms.Select(vm => new UserOrderDetails
