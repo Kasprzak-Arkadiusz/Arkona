@@ -22,7 +22,7 @@ function MovieItem({image, title, id, genre, ageRestriction, duration, releaseDa
                 <FilmHolder image={image} id={id} title={title} displayTitle={false}/>
                 <MovieInformation title={title} genre={genre} ageRestriction={ageRestriction} 
                                   duration={duration} releaseDate={releaseDate}>
-                    <style.ViewDetailsLink to={`/movie/${id}`}>
+                    <style.ViewDetailsLink to={`movie/${id}`}>
                         Zobacz szczegóły
                     </style.ViewDetailsLink>
                 </MovieInformation>

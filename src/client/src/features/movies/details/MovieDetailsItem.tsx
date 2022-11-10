@@ -19,7 +19,8 @@ function MovieDetailsItem({movieInfo, onButtonClickHandler}: Props) {
                             title={movieInfo.getTitle()}
                             displayTitle={false}
                             height={"480px"}
-                            width={"320px"}/>
+                            width={"320px"}
+                            href={`${movieInfo.getId()}`}/>
                 <style.InfoAndButtonContainer>
                     <MovieDetailedInformation title={movieInfo.getTitle()}
                                               genre={movieInfo.getGenresList().join(", ")}
@@ -28,7 +29,7 @@ function MovieDetailsItem({movieInfo, onButtonClickHandler}: Props) {
                                               releaseDate={movieInfo.getReleasedate()}
                                               description={movieInfo.getDescription()}/>
                     <style.ViewSeancesButton onClick={onButtonClickHandler}>Zobacz seanse</style.ViewSeancesButton>
-                </style.InfoAndButtonContainer >
+                </style.InfoAndButtonContainer>
             </style.ContentContainer>
         </SectionContainer>
     )
