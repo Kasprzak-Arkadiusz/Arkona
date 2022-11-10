@@ -7,12 +7,13 @@ interface IProps {
     image: string,
     title: string,
     id: number,
-    displayTitle?: boolean
+    displayTitle?: boolean,
+    href?: string
 }
 
-function FilmHolder({width = "220px", height = "320px", image, title, id, displayTitle = true}: IProps) {
+function FilmHolder({width = "220px", height = "320px", image, title, id, displayTitle = true, href}: IProps) {
     return (
-        <holder.Container width={width} height={height} href={`movie/${id}`}>
+        <holder.Container width={width} height={height} href={href == undefined ? `movie/${id}` : href}>
             <holder.Image src={`data:image/jpeg;base64,${image}`} alt={`Movie: ${title}`}/>
             {displayTitle && (
                 <holder.TitleContainer>
