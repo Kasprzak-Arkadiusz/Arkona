@@ -27,11 +27,11 @@ function PromotionSection({promotionId}: Props) {
     return (
         <style.SectionContainer>
             <style.SectionTitle>Promocja:</style.SectionTitle>
-            <style.SectionDetailsContainer textAlign={"center"}>
+            {offer.getName() !== "" && <style.SectionDetailsContainer textAlign={"center"}>
                 <style.DetailContainer>
                     <style.DetailsText>{offer.getName()}</style.DetailsText>
                 </style.DetailContainer>
-            </style.SectionDetailsContainer>
+            </style.SectionDetailsContainer>}
         </style.SectionContainer>
     )
 }

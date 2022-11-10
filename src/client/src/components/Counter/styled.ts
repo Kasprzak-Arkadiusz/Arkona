@@ -9,6 +9,7 @@ export const CounterContainer = styled.div<CounterContainerProps>`
     ${props => props.margin === undefined ? "" : `margin: ${props.margin}` };
     width: fit-content;
     flex-direction: column;
+    user-select: none;
 `
 
 export const CounterNumberSpan = styled.span`

@@ -9,25 +9,27 @@ interface Props {
 }
 
 function CustomDatePicker({selectedDate, onChangeHandler, onClearOutput}: Props) {
-    return <style.DateInputContainer>
-        <style.CalendarIconContainer>
-            <CalendarIcon/>
-        </style.CalendarIconContainer>
-        <style.SearchLabel>Data:</style.SearchLabel>
-        <style.DatePickerWrapper selected={selectedDate}
-                                 onChange={onChangeHandler}
-                                 wrapperClassName={"custom-datepicker-input-container"}
-                                 dateFormat={"dd.MM.yyyy"}
-                                 minDate={new Date()}
-                                 closeOnScroll={true}
-                                 weekLabel={"Pon"}>
-        </style.DatePickerWrapper>
-        <style.ClearOutputButton onClick={(e) => {
-            e.preventDefault();
-            onClearOutput(null)
-        }}>X
-        </style.ClearOutputButton>
-    </style.DateInputContainer>
+    return (
+        <style.DateInputContainer>
+            <style.CalendarIconContainer>
+                <CalendarIcon/>
+            </style.CalendarIconContainer>
+            <style.SearchLabel>Data:</style.SearchLabel>
+            <style.DatePickerWrapper selected={selectedDate}
+                                     onChange={onChangeHandler}
+                                     wrapperClassName={"custom-datepicker-input-container"}
+                                     dateFormat={"dd.MM.yyyy"}
+                                     minDate={new Date()}
+                                     closeOnScroll={true}
+                                     weekLabel={"Pon"}>
+            </style.DatePickerWrapper>
+            <style.ClearOutputButton onClick={(e) => {
+                e.preventDefault();
+                onClearOutput(null)
+            }}>X
+            </style.ClearOutputButton>
+        </style.DateInputContainer>
+    )
 }
 
 export default CustomDatePicker;

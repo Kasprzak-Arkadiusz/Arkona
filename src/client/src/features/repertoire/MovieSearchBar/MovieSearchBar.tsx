@@ -1,4 +1,4 @@
-﻿import React, {FormEvent, useState} from 'react';
+﻿import React, {useState} from 'react';
 import SectionContainer from 'components/SectionContainer/SectionContainer'
 import IconTitle from "components/IconTitle/IconTitle";
 import Dropdown from "components/Dropdown/DropDown";
@@ -59,9 +59,9 @@ function MovieSearchBar({onSubmitHandler}: Props) {
                 </style.SearchColumn>
                 <style.SearchColumn>
                     <Dropdown label={"Gatunek"} values={MovieGenres}
-                              onChangeHandler={setMovieGenre}></Dropdown>
+                              onChangeHandler={setMovieGenre}/>
                     <CustomDatePicker selectedDate={startDate} onChangeHandler={setStartDate}
-                                      onClearOutput={setStartDate}></CustomDatePicker>
+                                      onClearOutput={setStartDate}/>
                 </style.SearchColumn>
             </style.SearchFieldsContainer>
             <style.SearchButton>Szukaj</style.SearchButton>
