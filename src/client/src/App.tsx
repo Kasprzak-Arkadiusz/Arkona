@@ -18,6 +18,7 @@ import Privacy from "./features/privacy/Privacy";
 import MovieDetails from "./features/movies/details/MovieDetails";
 import TicketsPurchase from "./features/tickets/purchase/TicketsPurchase";
 import OwnTickets from "./features/tickets/viewPurchased/OwnTickets";
+import UnauthorizedPage from "./features/common/UnauthorizedPage";
 
 function App() {
     return (
@@ -32,6 +33,7 @@ function App() {
                         <Route path="/register" element={<Register/>}/>
                         <Route path="/privacy" element={<Privacy/>}/>
                         <Route path="/*" element={<Navigate to="/"/>}/>
+                        <Route path="/access-denied" element={<UnauthorizedPage/>}/>
 
                         <Route path="repertoire" element={<Repertoire/>}/>
                         <Route path="offers" element={<Offers/>}/>
@@ -44,7 +46,7 @@ function App() {
 
                         <Route path={`/${Role.client}/`}
                                element={<RequireAuth role={Role.client}/>}>
-                            <Route path={"tickets"} element={<OwnTickets/>}/>
+                            <Route path={`/${Role.client}/tickets`} element={<OwnTickets/>}/>
                         </Route>)
 
                         <Route path={`/${Role.worker}/`}

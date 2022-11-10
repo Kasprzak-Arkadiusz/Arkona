@@ -34,16 +34,16 @@ const RequireAuth = ({role, children}: IProps): JSX.Element => {
     };
 
     if (!auth.authData) {
-        return <Navigate to="/signIn" state={{from: location}} replace/>;
+        return <Navigate to="/access-denied" state={{from: location}} replace/>;
     }
 
     if (isTokenExpired()) {
         auth.signOut();
-        return <Navigate to="/signIn" state={{from: location}} replace/>;
+        return <Navigate to="/login" state={{from: location}} replace/>;
     }
 
     if (isWrongRole()) {
-        return <Navigate to="/" state={{from: location}} replace/>;
+        return <Navigate to="/access-denied" state={{from: location}} replace/>;
     }
 
     return children === undefined ? <Outlet/> : <div>{children}</div>
