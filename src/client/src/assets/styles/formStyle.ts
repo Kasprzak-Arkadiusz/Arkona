@@ -21,6 +21,7 @@ export const ValidationText = styled.span`
     display: block;
     margin: auto;
     padding: 5px 10px 5px 10px;
+    user-select: none;
 
     font-size: 13px;
     line-height: 14px;

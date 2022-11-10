@@ -22,6 +22,7 @@ export const RadioInput = styled.input`
     position: absolute;
     opacity: 0;
     cursor: pointer;
+    user-select: none;
 `
 
 interface SubCheckMarkProps {

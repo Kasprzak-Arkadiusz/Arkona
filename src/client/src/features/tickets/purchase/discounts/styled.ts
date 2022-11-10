@@ -29,6 +29,7 @@ export const InformationContainer = styled.div`
     width: fit-content;
     display: flex;
     flex-direction: column;
+    cursor: default;
 `
 
 export const Title = styled.span`

@@ -26,13 +26,13 @@ export const DateInputContainer = styled.div`
 
 export const CalendarIconContainer = styled.div`
     margin: 7.5px 5px auto auto;
+    user-select: none;
 `
 
 export const DatePickerWrapper = styled(DatePicker)`
     height: 25px;
     width: 165px;
     margin: 5px;
-    display: inherit;
     border: 0;
     border-radius: 15px;
     padding: 0 10px;
@@ -44,6 +44,7 @@ export const DatePickerWrapper = styled(DatePicker)`
     font-size: 14px;
     line-height: 16px;
     letter-spacing: 1px;
+    user-select: none;
 
     color: ${props => props.theme.Palette.textMain};
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.75);
