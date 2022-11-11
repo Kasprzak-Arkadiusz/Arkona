@@ -18,7 +18,11 @@ export enum Provider {
     GOOGLE = 1
 }
 
-export const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
+interface Props {
+    children: React.ReactNode;
+}
+
+export const AuthProvider = ({children}: Props): JSX.Element => {
     const [authData, setAuthData] = useState<string | null>(getStorageItem("authData"));
     const userClient = new UserClient(process.env.REACT_APP_SERVER_URL!);
 
@@ -99,18 +103,24 @@ export const AuthProvider: React.FC<React.ReactNode> = ({children}) => {
         setAuthData(null);
         setStorageItem("authData", null);
     };
-    
-    const decodeJwt = (encodedJwt: string | null): CustomJwtPayload | null=> {
-        if (encodedJwt === null){
+
+    const decodeJwt = (encodedJwt: string | null): CustomJwtPayload | null => {
+        if (encodedJwt === null) {
             return null;
         }
-        
+
         const decodedJwt = jwtDecode<CustomJwtPayload>(encodedJwt);
         decodedJwt.role = decodedJwt.role.toLowerCase();
-        
+
         return decodedJwt;
     }
 
     return <AuthContext.Provider
-        value={{authData: decodeJwt(authData), signUp, signIn, externalSignUp, signOut}}>{children}</AuthContext.Provider>;
+        value={{
+            authData: decodeJwt(authData),
+            signUp,
+            signIn,
+            externalSignUp,
+            signOut
+        }}>{children}</AuthContext.Provider>;
 }

@@ -13,7 +13,6 @@ import {TicketDetails} from "./models/TicketDetails";
 import {TicketDiscountsDetails} from "generated/ticketDiscount/ticketDiscount_pb";
 import {OrderClient} from "generated/order/order_pb_service";
 import {FinalizeOrderRequest, SelectedTicket} from "generated/order/order_pb";
-import useAuth from "hooks/useAuth/useAuth";
 import {useJwtMetadata} from "hooks/useJwtMetadata";
 
 function TicketPurchase() {
@@ -23,7 +22,7 @@ function TicketPurchase() {
     const [offerId, setOfferId] = useState<number>(0);
     const [tickets, setTickets] = useState<Array<TicketDetails>>(new Array<TicketDetails>());
     const [userId,] = useState<string>(useUserId());
-    const auth = useAuth();
+    const [isHandlerSet, setIsHandlerSet] = useState<boolean>(false);
 
     const [userSeatIds, setUserSeatIds] = useState<Array<number>>(new Array<number>());
 
@@ -48,21 +47,27 @@ function TicketPurchase() {
 
     useEffect(() => {
         if (stream !== undefined) {
+            console.log("Stream set")
             const request = new ChooseSeatRequest();
             request.setSeanceid(seanceIdNumber);
             request.setUserid(userId);
+            request.setMakeupchanges(false);
+            console.log("Writting initial request")
             stream!.write(request);
-
+            
             return () => {
+                console.log("Cancelling stream")
                 stream?.cancel();
                 setStream(undefined);
                 setUserSeatIds(new Array<number>());
+                console.log("clearing user id")
                 clearUserId();
             }
         }
     }, [stream])
 
     useEffect(() => {
+        console.log("Action changes");
         if (action === "discounts") {
             setStage(0);
         } else if (action === "seatChoice") {
@@ -73,6 +78,7 @@ function TicketPurchase() {
     }, [action]);
 
     const handleSeatClick = (seatId: number) => {
+        console.log("Handling seat click")
         const userSeatIdIndex = userSeatIds.findIndex(item => {
             return item === seatId;
         });
@@ -108,7 +114,6 @@ function TicketPurchase() {
             selectedTicket.setCount(item.numberOfTickets);
             return selectedTicket;
         }));
-        request.setUserid(auth.authData?.id!);
         request.setOfferid(offerId);
         orderClient.finalizeOrder(request, metadata,(error, responseMessage) => {
             if (responseMessage !== null && responseMessage !== undefined) {
@@ -122,6 +127,12 @@ function TicketPurchase() {
                 setError(error?.message);
             }
         })
+    }
+    
+    const onHandledSet = () => {
+        console.log("isHandlerSet", isHandlerSet)
+        setIsHandlerSet(true);
+        return isHandlerSet;
     }
 
     const render = () => {
@@ -141,7 +152,7 @@ function TicketPurchase() {
                                    ticketsCount={tickets.reduce((prev, curr) => prev + curr.numberOfTickets, 0)}
                                    onSeatClick={handleSeatClick} selectedSeats={userSeatIds}
                                    seanceClient={seanceClient}
-                                   stream={stream}/>
+                                   stream={stream} onHandledSet={onHandledSet}/>
             }
             case "purchaseSummary": {
                 if (tickets.length === 0) {

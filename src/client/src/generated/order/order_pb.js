@@ -735,8 +735,7 @@ proto.order.FinalizeOrderRequest.toObject = function(includeInstance, msg) {
     seatidsList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f,
     selectedticketsList: jspb.Message.toObjectList(msg.getSelectedticketsList(),
     proto.order.SelectedTicket.toObject, includeInstance),
-    userid: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    offerid: jspb.Message.getFieldWithDefault(msg, 4, 0)
+    offerid: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -785,10 +784,6 @@ proto.order.FinalizeOrderRequest.deserializeBinaryFromReader = function(msg, rea
       msg.addSelectedtickets(value);
       break;
     case 3:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setUserid(value);
-      break;
-    case 4:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setOfferid(value);
       break;
@@ -836,17 +831,10 @@ proto.order.FinalizeOrderRequest.serializeBinaryToWriter = function(message, wri
       proto.order.SelectedTicket.serializeBinaryToWriter
     );
   }
-  f = message.getUserid();
-  if (f.length > 0) {
-    writer.writeString(
-      3,
-      f
-    );
-  }
   f = message.getOfferid();
   if (f !== 0) {
     writer.writeInt32(
-      4,
+      3,
       f
     );
   }
@@ -929,29 +917,11 @@ proto.order.FinalizeOrderRequest.prototype.clearSelectedticketsList = function()
 
 
 /**
- * optional string userId = 3;
- * @return {string}
- */
-proto.order.FinalizeOrderRequest.prototype.getUserid = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.order.FinalizeOrderRequest} returns this
- */
-proto.order.FinalizeOrderRequest.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3StringField(this, 3, value);
-};
-
-
-/**
- * optional int32 offerId = 4;
+ * optional int32 offerId = 3;
  * @return {number}
  */
 proto.order.FinalizeOrderRequest.prototype.getOfferid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
@@ -960,7 +930,7 @@ proto.order.FinalizeOrderRequest.prototype.getOfferid = function() {
  * @return {!proto.order.FinalizeOrderRequest} returns this
  */
 proto.order.FinalizeOrderRequest.prototype.setOfferid = function(value) {
-  return jspb.Message.setProto3IntField(this, 4, value);
+  return jspb.Message.setProto3IntField(this, 3, value);
 };
 
 

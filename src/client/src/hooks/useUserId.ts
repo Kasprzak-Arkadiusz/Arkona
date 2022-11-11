@@ -14,5 +14,9 @@ export function useUserId(): string {
 }
 
 export function clearUserId() {
+    console.log("Before cleaning userId: ", getSessionStorageItem(userIdKey))
+    
     setSessionStorageItem(userIdKey, null);
+
+    console.log("After cleaning userId: ", getSessionStorageItem(userIdKey))
 }

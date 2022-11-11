@@ -84,9 +84,6 @@ export class FinalizeOrderRequest extends jspb.Message {
   setSelectedticketsList(value: Array<SelectedTicket>): void;
   addSelectedtickets(value?: SelectedTicket, index?: number): SelectedTicket;
 
-  getUserid(): string;
-  setUserid(value: string): void;
-
   getOfferid(): number;
   setOfferid(value: number): void;
 
@@ -104,7 +101,6 @@ export namespace FinalizeOrderRequest {
   export type AsObject = {
     seatidsList: Array<number>,
     selectedticketsList: Array<SelectedTicket.AsObject>,
-    userid: string,
     offerid: number,
   }
 }

@@ -114,7 +114,7 @@ public class SeanceService : Seance.SeanceBase
         {
             if (makeUpChanges)
             {
-                _seanceRoomService.MakeUpChanges(seanceId, userId, responseStream);
+                await _seanceRoomService.MakeUpChanges(seanceId, userId, responseStream);
             }
 
             _seanceRoomService.Join(seanceId, userId, responseStream);

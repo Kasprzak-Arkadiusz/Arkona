@@ -51,8 +51,8 @@ public class OrderService : Order.OrderBase
                 Count = st.Count
             }).ToList();
 
-        await _mediator.Send(new FinalizeOrderCommand(ticketDiscountVm, request.SeatIds.ToList(), request.UserId,
-            request.OfferId));
+        await _mediator.Send(new FinalizeOrderCommand(ticketDiscountVm, request.SeatIds.ToList(),
+            CurrentUserManager.GetUserId(context), request.OfferId));
 
         return new FinalizeOrderResponse();
     }

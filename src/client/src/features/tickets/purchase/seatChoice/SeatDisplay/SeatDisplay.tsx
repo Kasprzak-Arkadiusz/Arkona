@@ -16,13 +16,14 @@ import {useUserId} from "hooks/useUserId";
 import {useJwtMetadata} from "hooks/useJwtMetadata";
 
 interface Props {
-    seanceId: number
+    seanceId: number,
     ticketsCount: number,
     onSeatClick: (seatId: number) => void,
     seanceClient: SeanceClient,
     selectedSeats: Array<number>,
     stream: BidirectionalStream<ChooseSeatRequest, ChooseSeatResponse> | undefined,
-    errorMessage: string | undefined
+    errorMessage: string | undefined,
+    onHandledSet: () => boolean
 }
 
 const getRowLabels = (n: number): Array<JSX.Element> => {
@@ -37,7 +38,16 @@ const getRowLabels = (n: number): Array<JSX.Element> => {
     return array;
 }
 
-function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selectedSeats, stream, errorMessage}: Props) {
+function SeatDisplay({
+                         seanceId,
+                         ticketsCount,
+                         onSeatClick,
+                         seanceClient,
+                         selectedSeats,
+                         stream,
+                         errorMessage,
+                         onHandledSet
+                     }: Props) {
     const [sections, _setSections] = useState<SeanceSeatSection[]>(new Array<SeanceSeatSection>());
     const sectionsRef = useRef(sections);
     const [userId,] = useState<string>(useUserId());
@@ -69,8 +79,11 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selecte
             const request = new GetSeatsBySeanceRequest();
             request.setSeanceid(seanceId);
 
+            console.log("Getting seat state from database");
+
             seanceClient.getSeatsBySeance(request, metadata, (error, responseMessage) => {
                 if (responseMessage !== null && responseMessage !== undefined) {
+                    console.log("Received seat state from database")
                     setSections(responseMessage.getSectionsList());
                     setNumberOfRows(responseMessage.getNumberofrows());
                 }
@@ -80,22 +93,24 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selecte
 
     useEffect(() => {
         if (stream !== undefined && databaseStateLoaded) {
-            stream.on("data", handleDataStream)
+            console.log("Stream on data registered")
+            if (!onHandledSet()) {
+                stream.on("data", handleDataStream)
+            }
             setStreamRegistered(true);
         }
     }, [stream, databaseStateLoaded]);
 
     useEffect(() => {
-    }, [stream])
-
-    useEffect(() => {
-        if (sections.length !== 0){
+        if (sections.length !== 0) {
+            console.log("Database state loaded");
             setDatabaseStateLoaded(true);
         }
     }, [sections])
 
     useEffect(() => {
         if (streamRegistered) {
+            console.log("Requesting to make up changes")
             const request = new ChooseSeatRequest();
             request.setSeanceid(seanceId);
             request.setUserid(userId);
@@ -163,10 +178,11 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selecte
     }
 
     const handleDataStream = (message?: ChooseSeatResponse) => {
+        console.log("Handling data stream: ", message);
         if (message === undefined) {
             return;
         }
-        
+
         const seatId = message.getSeatid();
 
         let seat = leftSeatsRef.current.values[seatId];
@@ -216,11 +232,14 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selecte
             request.setUserid(userId);
             request.setSeatid(seatId);
             request.setIschosen(seatState);
+            request.setMakeupchanges(false);
+            console.log("Sending request for choosing seat: ", request.toObject());
 
             stream.write(request);
 
             onSeatClick(seatId);
             setNumberOfSelectedSeats(currentNumberOfSelectedSeats);
+
             return true;
         }
 
@@ -267,6 +286,7 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selecte
                 break;
             }
         }
+        console.log("Seat section re-rendered");
         return array
     }
 
@@ -280,15 +300,15 @@ function SeatDisplay({seanceId, ticketsCount, onSeatClick, seanceClient, selecte
                     {getRowLabels(numberOfRows)}
                 </style.RowLabelsContainer>
                 <style.LeftSection key={CinemaHallSection.LEFT}
-                                   width={sectionWidthState.values[CinemaHallSection.LEFT]}>
+                                                      width={sectionWidthState.values[CinemaHallSection.LEFT]}>
                     {renderSeatSections(CinemaHallSection.LEFT)}
                 </style.LeftSection>
                 <style.MiddleSection key={CinemaHallSection.MIDDLE}
-                                     width={sectionWidthState.values[CinemaHallSection.MIDDLE]}>
+                                                          width={sectionWidthState.values[CinemaHallSection.MIDDLE]}>
                     {renderSeatSections(CinemaHallSection.MIDDLE)}
                 </style.MiddleSection>
                 <style.RightSection key={CinemaHallSection.RIGHT}
-                                    width={sectionWidthState.values[CinemaHallSection.RIGHT]}>
+                                                        width={sectionWidthState.values[CinemaHallSection.RIGHT]}>
                     {renderSeatSections(CinemaHallSection.RIGHT)}
                 </style.RightSection>
             </style.SeatDisplayContainer>

@@ -29,8 +29,7 @@ message GetTotalPriceResponse {
 message FinalizeOrderRequest {
   repeated int32          seatIds         = 1;
   repeated SelectedTicket selectedTickets = 2;
-  string                  userId          = 3;
-  int32                   offerId         = 4;
+  int32                   offerId         = 3;
 }
 
 message FinalizeOrderResponse {}
