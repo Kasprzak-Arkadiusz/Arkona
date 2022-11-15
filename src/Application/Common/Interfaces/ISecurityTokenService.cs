@@ -4,5 +4,7 @@ namespace Application.Common.Interfaces;
 
 public interface ISecurityTokenService
 {
-    string GenerateAccessTokenForUser(string userId, string email, string firstName, string lastName, Role role);
+    string GenerateIdToken(string userId, string email, string firstName, string lastName, Role role);
+    string GenerateAccessToken(string userId, Role role);
+    string GenerateRefreshToken();
 }

@@ -17,22 +17,20 @@ message RegisterRequest {
   string password  = 4;
 }
 
+enum Provider {
+  Facebook = 0;
+  Google   = 1;
+}
+
 message ExternalRegisterRequest {
   string   accessToken = 1;
-  enum Provider {
-    Facebook = 0;
-    Google   = 1;
-  }
   Provider provider    = 2;
 }
 
 message AuthenticationResponse {
-  string accessToken = 1;
-  string id          = 2;
-  string email       = 3;
-  string role        = 4;
-  string firstName   = 5;
-  string lastName    = 6;
+  string accessToken  = 1;
+  string refreshToken = 2;
+  string idToken      = 3;
 }
 
 message LoginRequest {

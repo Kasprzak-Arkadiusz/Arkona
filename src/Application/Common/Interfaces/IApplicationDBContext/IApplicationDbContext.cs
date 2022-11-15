@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Common.Models;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Common.Interfaces.IApplicationDBContext;
@@ -19,7 +20,8 @@ public interface IApplicationDbContext
     public DbSet<SeanceSeat> SeanceSeats { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
     public DbSet<TicketDiscount> TicketDiscounts { get; set; }
-    public DbSet<UsedTicket> UsedTickets  { get; set; }
-    
+    public DbSet<UsedTicket> UsedTickets { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
     Task<int> SaveChangesAsync();
 }

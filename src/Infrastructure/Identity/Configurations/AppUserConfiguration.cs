@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Common.Models;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -27,6 +28,10 @@ public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
         builder.HasMany<UsedTicket>()
             .WithOne()
             .HasForeignKey(ut => ut.UserId);
+
+        builder.HasOne(u => u.RefreshToken)
+            .WithOne()
+            .HasForeignKey<RefreshToken>(rf => rf.UserId);
 
         builder.ToTable("Users");
     }

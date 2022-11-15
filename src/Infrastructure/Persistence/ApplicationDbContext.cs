@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Application.Common.Interfaces.IApplicationDBContext;
+using Application.Common.Models;
 using Domain.Entities;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -29,6 +30,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>, IApplicationDbCo
     public DbSet<Ticket> Tickets { get; set; }
     public DbSet<TicketDiscount> TicketDiscounts { get; set; }
     public DbSet<UsedTicket> UsedTickets { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<AppUser> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Interfaces.IApplicationDBContext;
 using Application.Common.Models;
 using Application.ViewModels;
 using Domain.Enums;
@@ -26,12 +27,14 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
 {
     private readonly IAuthenticationService _authenticationService;
     private readonly ISecurityTokenService _securityTokenService;
+    private readonly IApplicationDbContext _dbContext;
 
     public RegisterUserCommandHandler(IAuthenticationService authenticationService,
-        ISecurityTokenService securityTokenService)
+        ISecurityTokenService securityTokenService, IApplicationDbContext dbContext)
     {
         _authenticationService = authenticationService;
         _securityTokenService = securityTokenService;
+        _dbContext = dbContext;
     }
 
     public async Task<AuthViewModel> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
@@ -39,17 +42,15 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
         var user = await _authenticationService.RegisterUserAsync(
             new RegisterParams(command.FirstName, command.LastName, command.Email, Role.Client, command.Password));
 
-        var accessToken = _securityTokenService
-            .GenerateAccessTokenForUser(user.Id, user.Email, user.FirstName, user.LastName, user.Role);
+        var accessToken = _securityTokenService.GenerateAccessToken(user.Id, user.Role);
+        var idToken =
+            _securityTokenService.GenerateIdToken(user.Id, user.Email, user.FirstName, user.LastName, user.Role);
+        var refreshTokenString = _securityTokenService.GenerateRefreshToken();
+        
+        var refreshToken = RefreshToken.Create(refreshTokenString, user.Id);
+        _dbContext.RefreshTokens.Add(refreshToken);
+        await _dbContext.SaveChangesAsync();
 
-        return new AuthViewModel
-        {
-            AccessToken = accessToken,
-            Email = user.Email,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Id = user.Id,
-            Role = user.Role.ToString()
-        };
+        return new AuthViewModel(accessToken, refreshTokenString, idToken);
     }
 }
