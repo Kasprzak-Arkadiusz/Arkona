@@ -12,6 +12,10 @@ import {Inputs} from "features/register/RegisterForm/RegisterForm"
 import {facebookLogOut} from "components/ExternalLogin/FacebookExternalLogin"
 import {CustomJwtPayload} from "utils/CustomTypes/Jwt";
 import jwtDecode from "jwt-decode";
+import {accessTokenKey, idTokenKey} from "utils/storageItemKeys";
+import {useNavigate} from "react-router-dom";
+import {useCookies} from "react-cookie";
+import {addDays} from "../../utils/dateUtils";
 
 export enum Provider {
     FACEBOOK = 0,
@@ -23,8 +27,11 @@ interface Props {
 }
 
 export const AuthProvider = ({children}: Props): JSX.Element => {
-    const [authData, setAuthData] = useState<string | null>(getStorageItem("authData"));
+    const [idToken, setIdToken] = useState<string | null>(getStorageItem(idTokenKey));
+    const [accessToken, setAccessToken] = useState<string | null>(getStorageItem(accessTokenKey));
+    const [_, setCookie, removeCookie] = useCookies(["refresh-token"]);
     const userClient = new UserClient(process.env.REACT_APP_SERVER_URL!);
+    const navigate = useNavigate();
 
     function MapToRegisterRequest(formData: Inputs): RegisterRequest {
         const request = new RegisterRequest();
@@ -37,18 +44,13 @@ export const AuthProvider = ({children}: Props): JSX.Element => {
         return request;
     }
 
-    const handleSignUpResponse = (response: AuthenticationResponse) => {
-        setStorageItem("authData", response.getAccesstoken());
-        setAuthData(getStorageItem("authData"));
-    };
-
     const signUp = (formData: Inputs, callback: (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => void) => {
         const request = MapToRegisterRequest(formData);
 
         const secondCallback = (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => {
             callback(error, responseMessage);
             if (responseMessage !== null) {
-                handleSignUpResponse(responseMessage);
+                handleAuthResponse(responseMessage);
             }
         }
 
@@ -64,9 +66,18 @@ export const AuthProvider = ({children}: Props): JSX.Element => {
         return request;
     }
 
-    const handleSignInResponse = (response: AuthenticationResponse) => {
-        setStorageItem("authData", response.getAccesstoken());
-        setAuthData(getStorageItem("authData"));
+    const handleAuthResponse = (response: AuthenticationResponse) => {
+        console.log(response.toObject())
+        setStorageItem(idTokenKey, response.getIdtoken());
+        setIdToken(getStorageItem(idTokenKey));
+        setStorageItem(accessTokenKey, response.getAccesstoken());
+        setAccessToken(response.getAccesstoken());
+        setCookie("refresh-token", response.getRefreshtoken(), {
+            path: "/",
+            expires: addDays(new Date(), 30), 
+            sameSite: "strict",
+            secure: true
+        });
     };
 
     const signIn = (formData: Inputs, callback: (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => void) => {
@@ -75,7 +86,7 @@ export const AuthProvider = ({children}: Props): JSX.Element => {
         const secondCallback = (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => {
             callback(error, responseMessage);
             if (responseMessage !== null) {
-                handleSignInResponse(responseMessage);
+                handleAuthResponse(responseMessage);
             }
         }
 
@@ -91,7 +102,7 @@ export const AuthProvider = ({children}: Props): JSX.Element => {
         const secondCallback = (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => {
             callback(error, responseMessage);
             if (responseMessage !== null) {
-                handleSignUpResponse(responseMessage);
+                handleAuthResponse(responseMessage);
             }
         }
 
@@ -100,8 +111,12 @@ export const AuthProvider = ({children}: Props): JSX.Element => {
 
     const signOut = () => {
         facebookLogOut();
-        setAuthData(null);
-        setStorageItem("authData", null);
+        setIdToken(null);
+        setStorageItem(idTokenKey, null);
+        setAccessToken(null);
+        setStorageItem(accessTokenKey, null)
+        removeCookie("refresh-token");
+        navigate("/")
     };
 
     const decodeJwt = (encodedJwt: string | null): CustomJwtPayload | null => {
@@ -117,7 +132,8 @@ export const AuthProvider = ({children}: Props): JSX.Element => {
 
     return <AuthContext.Provider
         value={{
-            authData: decodeJwt(authData),
+            authData: decodeJwt(idToken),
+            accessToken: accessToken,
             signUp,
             signIn,
             externalSignUp,

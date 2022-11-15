@@ -19,42 +19,45 @@ import MovieDetails from "./features/movies/details/MovieDetails";
 import TicketsPurchase from "./features/tickets/purchase/TicketsPurchase";
 import OwnTickets from "./features/tickets/viewPurchased/OwnTickets";
 import UnauthorizedPage from "./features/common/UnauthorizedPage";
+import {CookiesProvider} from 'react-cookie';
 
 function App() {
     return (
         <Router>
-            <AuthProvider>
-                <ThemeProvider theme={Theme}>
-                    <GlobalStyle/>
-                    <Navbar/>
-                    <Routes>
-                        <Route path="/" element={<Home/>}/>
-                        <Route path="/login" element={<Login/>}/>
-                        <Route path="/register" element={<Register/>}/>
-                        <Route path="/privacy" element={<Privacy/>}/>
-                        <Route path="/*" element={<Navigate to="/"/>}/>
-                        <Route path="/access-denied" element={<UnauthorizedPage/>}/>
+            <CookiesProvider>
+                <AuthProvider>
+                    <ThemeProvider theme={Theme}>
+                        <GlobalStyle/>
+                        <Navbar/>
+                        <Routes>
+                            <Route path="/" element={<Home/>}/>
+                            <Route path="/login" element={<Login/>}/>
+                            <Route path="/register" element={<Register/>}/>
+                            <Route path="/privacy" element={<Privacy/>}/>
+                            <Route path="/*" element={<Navigate to="/"/>}/>
+                            <Route path="/access-denied" element={<UnauthorizedPage/>}/>
 
-                        <Route path="repertoire" element={<Repertoire/>}/>
-                        <Route path="offers" element={<Offers/>}/>
-                        <Route path="movie/:id/" element={<MovieDetails/>}/>
-                        <Route path="movie/:id/tickets-purchase/:seanceId/:action" element={
-                            <RequireAuth>
-                                <TicketsPurchase/>
-                            </RequireAuth>
-                        }/>
+                            <Route path="repertoire" element={<Repertoire/>}/>
+                            <Route path="offers" element={<Offers/>}/>
+                            <Route path="movie/:id/" element={<MovieDetails/>}/>
+                            <Route path="movie/:id/tickets-purchase/:seanceId/:action" element={
+                                <RequireAuth>
+                                    <TicketsPurchase/>
+                                </RequireAuth>
+                            }/>
 
-                        <Route path={`/${Role.client}/`}
-                               element={<RequireAuth role={Role.client}/>}>
-                            <Route path={`/${Role.client}/tickets`} element={<OwnTickets/>}/>
-                        </Route>)
+                            <Route path={`/${Role.client}/`}
+                                   element={<RequireAuth role={Role.client}/>}>
+                                <Route path={`/${Role.client}/tickets`} element={<OwnTickets/>}/>
+                            </Route>)
 
-                        <Route path={`/${Role.worker}/`}
-                               element={<RequireAuth role={Role.worker}/>}>
-                        </Route>
-                    </Routes>
-                </ThemeProvider>
-            </AuthProvider>
+                            <Route path={`/${Role.worker}/`}
+                                   element={<RequireAuth role={Role.worker}/>}>
+                            </Route>
+                        </Routes>
+                    </ThemeProvider>
+                </AuthProvider>
+            </CookiesProvider>
         </Router>
     );
 }

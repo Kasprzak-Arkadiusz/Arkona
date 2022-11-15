@@ -7,6 +7,7 @@ import {CustomJwtPayload} from "utils/CustomTypes/Jwt";
 
 export interface IAuth {
     authData: CustomJwtPayload | null,
+    accessToken: string | null,
     signUp: (formData: Inputs, callback: (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => void) => void,
     signIn: (formData: Inputs, callback: (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => void) => void,
     externalSignUp: (accessToken: string, provider: Provider,
@@ -16,6 +17,7 @@ export interface IAuth {
 
 const AuthContext = React.createContext <IAuth>({
     authData: null,
+    accessToken: null,
     signUp: (formData: Inputs, callback: (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => void) => {
     },
     signIn: (formData: Inputs, callback: (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => void) => {
