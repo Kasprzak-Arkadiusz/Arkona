@@ -1,12 +1,11 @@
 ﻿using System.Text;
-using Application;
 using Microsoft.IdentityModel.Tokens;
 
-namespace API.Common.Utils;
+namespace Application.Services;
 
 public static class TokenValidationParametersCreator
 {
-    public static TokenValidationParameters Create(ApplicationSettings applicationSettings)
+    public static TokenValidationParameters Create(ApplicationSettings applicationSettings, TimeSpan? clockSkew = null)
     {
         var stringKey = applicationSettings.AccessTokenSettings.Key;
         var key = Encoding.ASCII.GetBytes(stringKey);
@@ -16,7 +15,7 @@ public static class TokenValidationParametersCreator
             IssuerSigningKey = new SymmetricSecurityKey(key),
             ValidateIssuer = false,
             ValidateAudience = false,
-            ClockSkew = TimeSpan.Zero
+            ClockSkew = clockSkew ?? TimeSpan.Zero
         };
 
         return tokenValidationParameters;

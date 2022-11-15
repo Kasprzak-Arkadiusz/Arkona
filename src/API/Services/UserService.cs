@@ -29,7 +29,7 @@ public class UserService : User.UserBase
     {
         var viewModel =
             await _mediator.Send(new ExternalLoginUserCommand(request.AccessToken, request.Provider.ToString()));
-        
+
         return _mapper.Map<AuthenticationResponse>(viewModel);
     }
 
@@ -38,5 +38,16 @@ public class UserService : User.UserBase
         var viewModel = await _mediator.Send(new LoginUserCommand(request.Email, request.Password));
 
         return _mapper.Map<AuthenticationResponse>(viewModel);
+    }
+
+    public override async Task<RefreshJwtResponse> RefreshJwt(RefreshJwtRequest request, ServerCallContext context)
+    {
+        var viewModel = await _mediator.Send(new RefreshJwtCommand(request.UserId, request.RefreshToken));
+
+        return new RefreshJwtResponse
+        {
+            AccessToken = viewModel.AccessToken,
+            RefreshToken = viewModel.RefreshToken
+        };
     }
 }

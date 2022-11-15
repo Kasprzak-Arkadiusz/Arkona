@@ -65,4 +65,17 @@ public class SecurityTokenService : ISecurityTokenService
         var refreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
         return refreshToken;
     }
+
+    public string ValidateAccessToken(string accessToken)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        tokenHandler.ValidateToken(accessToken,
+            TokenValidationParametersCreator.Create(_applicationSettings, TimeSpan.FromMinutes(5)),
+            out var validatedToken);
+
+        var jwtToken = (JwtSecurityToken)validatedToken;
+        var userId = jwtToken.Claims.First(x => x.Type == "nameid").Value;
+
+        return userId;
+    }
 }
