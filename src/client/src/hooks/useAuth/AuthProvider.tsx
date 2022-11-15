@@ -67,7 +67,6 @@ export const AuthProvider = ({children}: Props): JSX.Element => {
     }
 
     const handleAuthResponse = (response: AuthenticationResponse) => {
-        console.log(response.toObject())
         setStorageItem(idTokenKey, response.getIdtoken());
         setIdToken(getStorageItem(idTokenKey));
         setStorageItem(accessTokenKey, response.getAccesstoken());
@@ -110,13 +109,13 @@ export const AuthProvider = ({children}: Props): JSX.Element => {
     }
 
     const signOut = () => {
+        console.log("Sign out requested")
         facebookLogOut();
         setIdToken(null);
         setStorageItem(idTokenKey, null);
         setAccessToken(null);
         setStorageItem(accessTokenKey, null)
         removeCookie("refresh-token");
-        navigate("/")
     };
 
     const decodeJwt = (encodedJwt: string | null): CustomJwtPayload | null => {

@@ -35,30 +35,6 @@ export namespace RegisterRequest {
   }
 }
 
-export class ExternalRegisterRequest extends jspb.Message {
-  getAccesstoken(): string;
-  setAccesstoken(value: string): void;
-
-  getProvider(): ProviderMap[keyof ProviderMap];
-  setProvider(value: ProviderMap[keyof ProviderMap]): void;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): ExternalRegisterRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: ExternalRegisterRequest): ExternalRegisterRequest.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: ExternalRegisterRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): ExternalRegisterRequest;
-  static deserializeBinaryFromReader(message: ExternalRegisterRequest, reader: jspb.BinaryReader): ExternalRegisterRequest;
-}
-
-export namespace ExternalRegisterRequest {
-  export type AsObject = {
-    accesstoken: string,
-    provider: ProviderMap[keyof ProviderMap],
-  }
-}
-
 export class AuthenticationResponse extends jspb.Message {
   getAccesstoken(): string;
   setAccesstoken(value: string): void;
@@ -87,6 +63,30 @@ export namespace AuthenticationResponse {
   }
 }
 
+export class ExternalRegisterRequest extends jspb.Message {
+  getAccesstoken(): string;
+  setAccesstoken(value: string): void;
+
+  getProvider(): ProviderMap[keyof ProviderMap];
+  setProvider(value: ProviderMap[keyof ProviderMap]): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ExternalRegisterRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ExternalRegisterRequest): ExternalRegisterRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ExternalRegisterRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ExternalRegisterRequest;
+  static deserializeBinaryFromReader(message: ExternalRegisterRequest, reader: jspb.BinaryReader): ExternalRegisterRequest;
+}
+
+export namespace ExternalRegisterRequest {
+  export type AsObject = {
+    accesstoken: string,
+    provider: ProviderMap[keyof ProviderMap],
+  }
+}
+
 export class LoginRequest extends jspb.Message {
   getEmail(): string;
   setEmail(value: string): void;
@@ -108,6 +108,54 @@ export namespace LoginRequest {
   export type AsObject = {
     email: string,
     password: string,
+  }
+}
+
+export class RefreshJwtRequest extends jspb.Message {
+  getUserid(): string;
+  setUserid(value: string): void;
+
+  getRefreshtoken(): string;
+  setRefreshtoken(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RefreshJwtRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: RefreshJwtRequest): RefreshJwtRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RefreshJwtRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RefreshJwtRequest;
+  static deserializeBinaryFromReader(message: RefreshJwtRequest, reader: jspb.BinaryReader): RefreshJwtRequest;
+}
+
+export namespace RefreshJwtRequest {
+  export type AsObject = {
+    userid: string,
+    refreshtoken: string,
+  }
+}
+
+export class RefreshJwtResponse extends jspb.Message {
+  getAccesstoken(): string;
+  setAccesstoken(value: string): void;
+
+  getRefreshtoken(): string;
+  setRefreshtoken(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RefreshJwtResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: RefreshJwtResponse): RefreshJwtResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RefreshJwtResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RefreshJwtResponse;
+  static deserializeBinaryFromReader(message: RefreshJwtResponse, reader: jspb.BinaryReader): RefreshJwtResponse;
+}
+
+export namespace RefreshJwtResponse {
+  export type AsObject = {
+    accesstoken: string,
+    refreshtoken: string,
   }
 }
 
