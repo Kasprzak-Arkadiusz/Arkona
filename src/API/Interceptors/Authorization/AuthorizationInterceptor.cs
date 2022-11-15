@@ -4,6 +4,7 @@ using System.Security.Principal;
 using API.Common.Utils;
 using Application;
 using Application.Common.Interfaces;
+using Application.Services;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 

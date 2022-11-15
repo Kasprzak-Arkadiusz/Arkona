@@ -1,6 +1,7 @@
 ﻿import React from "react";
 import useAuth from "hooks/useAuth/useAuth";
 import {Navigate, useLocation, Outlet} from "react-router-dom";
+import {useCookies} from "react-cookie";
 
 interface IProps {
     children?: React.ReactNode;
@@ -8,6 +9,7 @@ interface IProps {
 }
 
 const RequireAuth = ({role, children}: IProps): JSX.Element => {
+    const [cookies, setCookie, removeCookie] = useCookies(["refresh-token"]);
     const auth = useAuth();
     const location = useLocation();
 
@@ -38,6 +40,9 @@ const RequireAuth = ({role, children}: IProps): JSX.Element => {
     }
 
     if (isTokenExpired()) {
+        console.log(cookies);
+        // Send refresh token to backend to refresh jwt
+        
         auth.signOut();
         return <Navigate to="/login" state={{from: location}} replace/>;
     }
