@@ -26,6 +26,10 @@ function PriceSection({promotionId, discountedTickets}: Props) {
                 return selectedTicket;
             }));
 
+            if (metadata === null){
+                return;
+            }
+
             orderClient.getTotalPrice(request, metadata, (error, responseMessage) => {
                 if (responseMessage !== null && responseMessage !== undefined) {
                     setTotalPriceResponse(responseMessage);

@@ -46,10 +46,13 @@ function App() {
                                 </RequireAuth>
                             }/>
 
-                            <Route path={`/${Role.client}/`}
-                                   element={<RequireAuth role={Role.client}/>}>
-                                <Route path={`/${Role.client}/tickets`} element={<OwnTickets/>}/>
-                            </Route>)
+                            {/*<Route path={`/${Role.client}/tickets`}*/}
+                            {/*       element={<RequireAuth role={Role.client}/>}>*/}
+                                <Route path={`/${Role.client}/tickets`} element={
+                                    <RequireAuth role={Role.client}>
+                                        <OwnTickets/>
+                                    </RequireAuth>}/>
+                            {/*</Route>)*/}
 
                             <Route path={`/${Role.worker}/`}
                                    element={<RequireAuth role={Role.worker}/>}>

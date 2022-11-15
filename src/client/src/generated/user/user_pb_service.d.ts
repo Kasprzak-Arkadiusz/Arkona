@@ -31,11 +31,21 @@ type UserLogin = {
   readonly responseType: typeof user_pb.AuthenticationResponse;
 };
 
+type UserRefreshJwt = {
+  readonly methodName: string;
+  readonly service: typeof User;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof user_pb.RefreshJwtRequest;
+  readonly responseType: typeof user_pb.RefreshJwtResponse;
+};
+
 export class User {
   static readonly serviceName: string;
   static readonly Register: UserRegister;
   static readonly ExternalRegister: UserExternalRegister;
   static readonly Login: UserLogin;
+  static readonly RefreshJwt: UserRefreshJwt;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -96,6 +106,15 @@ export class UserClient {
   login(
     requestMessage: user_pb.LoginRequest,
     callback: (error: ServiceError|null, responseMessage: user_pb.AuthenticationResponse|null) => void
+  ): UnaryResponse;
+  refreshJwt(
+    requestMessage: user_pb.RefreshJwtRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: user_pb.RefreshJwtResponse|null) => void
+  ): UnaryResponse;
+  refreshJwt(
+    requestMessage: user_pb.RefreshJwtRequest,
+    callback: (error: ServiceError|null, responseMessage: user_pb.RefreshJwtResponse|null) => void
   ): UnaryResponse;
 }
 
