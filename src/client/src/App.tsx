@@ -46,13 +46,11 @@ function App() {
                                 </RequireAuth>
                             }/>
 
-                            {/*<Route path={`/${Role.client}/tickets`}*/}
-                            {/*       element={<RequireAuth role={Role.client}/>}>*/}
-                                <Route path={`/${Role.client}/tickets`} element={
-                                    <RequireAuth role={Role.client}>
-                                        <OwnTickets/>
-                                    </RequireAuth>}/>
-                            {/*</Route>)*/}
+                            <Route path={`/${Role.client}/tickets`} element={
+                                <RequireAuth role={Role.client}>
+                                    <OwnTickets/>
+                                </RequireAuth>}
+                            />
 
                             <Route path={`/${Role.worker}/`}
                                    element={<RequireAuth role={Role.worker}/>}>
@@ -62,7 +60,8 @@ function App() {
                 </AuthProvider>
             </CookiesProvider>
         </Router>
-    );
+    )
+        ;
 }
 
 export default App;
