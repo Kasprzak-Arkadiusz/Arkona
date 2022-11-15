@@ -39,8 +39,8 @@ export class ExternalRegisterRequest extends jspb.Message {
   getAccesstoken(): string;
   setAccesstoken(value: string): void;
 
-  getProvider(): ExternalRegisterRequest.ProviderMap[keyof ExternalRegisterRequest.ProviderMap];
-  setProvider(value: ExternalRegisterRequest.ProviderMap[keyof ExternalRegisterRequest.ProviderMap]): void;
+  getProvider(): ProviderMap[keyof ProviderMap];
+  setProvider(value: ProviderMap[keyof ProviderMap]): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ExternalRegisterRequest.AsObject;
@@ -55,35 +55,19 @@ export class ExternalRegisterRequest extends jspb.Message {
 export namespace ExternalRegisterRequest {
   export type AsObject = {
     accesstoken: string,
-    provider: ExternalRegisterRequest.ProviderMap[keyof ExternalRegisterRequest.ProviderMap],
+    provider: ProviderMap[keyof ProviderMap],
   }
-
-  export interface ProviderMap {
-    FACEBOOK: 0;
-    GOOGLE: 1;
-  }
-
-  export const Provider: ProviderMap;
 }
 
 export class AuthenticationResponse extends jspb.Message {
   getAccesstoken(): string;
   setAccesstoken(value: string): void;
 
-  getId(): string;
-  setId(value: string): void;
+  getRefreshtoken(): string;
+  setRefreshtoken(value: string): void;
 
-  getEmail(): string;
-  setEmail(value: string): void;
-
-  getRole(): string;
-  setRole(value: string): void;
-
-  getFirstname(): string;
-  setFirstname(value: string): void;
-
-  getLastname(): string;
-  setLastname(value: string): void;
+  getIdtoken(): string;
+  setIdtoken(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AuthenticationResponse.AsObject;
@@ -98,11 +82,8 @@ export class AuthenticationResponse extends jspb.Message {
 export namespace AuthenticationResponse {
   export type AsObject = {
     accesstoken: string,
-    id: string,
-    email: string,
-    role: string,
-    firstname: string,
-    lastname: string,
+    refreshtoken: string,
+    idtoken: string,
   }
 }
 
@@ -129,4 +110,11 @@ export namespace LoginRequest {
     password: string,
   }
 }
+
+export interface ProviderMap {
+  FACEBOOK: 0;
+  GOOGLE: 1;
+}
+
+export const Provider: ProviderMap;
 

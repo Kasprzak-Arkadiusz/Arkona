@@ -153,7 +153,6 @@ SeanceClient.prototype.chooseSeat = function chooseSeat(metadata) {
   return {
     on: function (type, handler) {
       listeners[type].push(handler);
-      console.log(listeners.data)
       return this;
     },
     write: function (requestMessage) {

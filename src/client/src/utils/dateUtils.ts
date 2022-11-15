@@ -19,3 +19,9 @@ export const toDateString = (timestamp: Timestamp | undefined): string => {
 
     return `${date.getFullYear()}-${month}-${day}`;
 }
+
+export function addDays(date: Date, days: number) {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}

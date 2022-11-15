@@ -1,14 +1,12 @@
 ﻿import {grpc} from "@improbable-eng/grpc-web";
-import useAuth from "./useAuth/useAuth";
 import {getStorageItem} from "../utils/storage";
+import {accessTokenKey} from "../utils/storageItemKeys";
 
 const key = "authorization";
 
 export function useJwtMetadata(): grpc.Metadata {
-    const auth = useAuth();
-
     const metadata = new grpc.Metadata();
-    metadata.set(key, "Bearer " + getStorageItem("authData"));
+    metadata.set(key, "Bearer " + getStorageItem(accessTokenKey));
     
     return metadata;
 }

@@ -12,8 +12,6 @@ const Navbar = () => {
     const auth = useAuth();
     const role = auth.authData?.role;
 
-    console.log(auth.authData);
-    
     const OnNavClick = () => {
         setOpen(false);
     }
