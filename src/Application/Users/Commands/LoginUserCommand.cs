@@ -1,5 +1,7 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Interfaces.IApplicationDBContext;
+using Application.Common.Models;
 using Application.ViewModels;
 using MediatR;
 using Serilog;
@@ -22,12 +24,14 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthVie
 {
     private readonly IAuthenticationService _authenticationService;
     private readonly ISecurityTokenService _securityTokenService;
+    private readonly IApplicationDbContext _dbContext;
 
     public LoginUserCommandHandler(IAuthenticationService authenticationService,
-        ISecurityTokenService securityTokenService)
+        ISecurityTokenService securityTokenService, IApplicationDbContext dbContext)
     {
         _authenticationService = authenticationService;
         _securityTokenService = securityTokenService;
+        _dbContext = dbContext;
     }
 
     public async Task<AuthViewModel> Handle(LoginUserCommand command, CancellationToken cancellationToken)
@@ -36,18 +40,25 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthVie
         {
             var user = await _authenticationService.LoginUserAsync(command.Email, command.Password);
 
-            var accessToken = _securityTokenService.GenerateAccessTokenForUser(user.Id, user.Email, user.FirstName,
-                user.LastName, user.Role);
+            var accessToken = _securityTokenService.GenerateAccessToken(user.Id, user.Role);
+            var idToken =
+                _securityTokenService.GenerateIdToken(user.Id, user.Email, user.FirstName, user.LastName, user.Role);
+            var refreshTokenString = _securityTokenService.GenerateRefreshToken();
 
-            return new AuthViewModel
+            var userRefreshToken = _dbContext.RefreshTokens.FirstOrDefault(rf => rf.UserId == user.Id);
+            if (userRefreshToken is null)
             {
-                AccessToken = accessToken,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Id = user.Id,
-                Role = user.Role.ToString()
-            };
+                var refreshToken = RefreshToken.Create(refreshTokenString, user.Id);
+                _dbContext.RefreshTokens.Add(refreshToken);
+            }
+            else
+            {
+                userRefreshToken.TokenValue = refreshTokenString;
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            return new AuthViewModel(accessToken, refreshTokenString, idToken);
         }
         catch (NotFoundException e)
         {
