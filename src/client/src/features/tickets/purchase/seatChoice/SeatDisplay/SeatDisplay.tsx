@@ -121,7 +121,6 @@ function SeatDisplay({
 
     function setSections(sectionsUpdated: Array<SeanceSeatSection>) {
         sectionsRef.current = sectionsUpdated;
-        const defaultUserId = "0";
         const sectionWidthDictionary = new Dictionary<number>();
 
         sectionsUpdated.forEach(section => {
@@ -130,7 +129,7 @@ function SeatDisplay({
                     setLeftSeatsState(toDictionary<SeatInfo>(section.getSeatsList().map(item => {
                         return {
                             key: item.getId(),
-                            value: new SeatInfo(item.getNumber(), item.getIsfree(), defaultUserId)
+                            value: new SeatInfo(item.getNumber(), item.getIsfree(), !item.getIsfree())
                         };
                     })));
                     sectionWidthDictionary.values[CinemaHallSection.LEFT] = section.getWidth();
@@ -140,7 +139,7 @@ function SeatDisplay({
                     setMiddleSeatsState(toDictionary<SeatInfo>(section.getSeatsList().map(item => {
                         return {
                             key: item.getId(),
-                            value: new SeatInfo(item.getNumber(), item.getIsfree(), defaultUserId)
+                            value: new SeatInfo(item.getNumber(), item.getIsfree(), !item.getIsfree())
                         };
                     })));
                     sectionWidthDictionary.values[CinemaHallSection.MIDDLE] = section.getWidth();
@@ -150,7 +149,7 @@ function SeatDisplay({
                     setRightSeatsState(toDictionary<SeatInfo>(section.getSeatsList().map(item => {
                         return {
                             key: item.getId(),
-                            value: new SeatInfo(item.getNumber(), item.getIsfree(), defaultUserId)
+                            value: new SeatInfo(item.getNumber(), item.getIsfree(), !item.getIsfree())
                         };
                     })));
                     sectionWidthDictionary.values[CinemaHallSection.RIGHT] = section.getWidth();
@@ -253,11 +252,12 @@ function SeatDisplay({
                 for (let key in leftSeatsRef.current.values) {
                     const seatId = parseInt(key);
                     const seat = leftSeatsRef.current.values[key];
-                    array.push(seat.isFree || seat.userId === userId ?
+                    array.push(seat.isTakenInDatabase ?
+                        <DisabledSeatItem key={seatId}/> :
                         <SeatItem key={seatId} seatId={seatId} isFree={seat.isFree}
                                   occupiedByUserId={seat.userId}
-                                  onClickHandler={handleSeatClick}/> :
-                        <DisabledSeatItem key={seatId}/>)
+                                  onClickHandler={handleSeatClick}/>
+                    )
                 }
                 break;
             }
@@ -265,11 +265,12 @@ function SeatDisplay({
                 for (let key in middleSeatsRef.current.values) {
                     const seatId = parseInt(key);
                     const seat = middleSeatsRef.current.values[key];
-                    array.push(seat.isFree || seat.userId === userId ?
+                    array.push(seat.isTakenInDatabase ?
+                        <DisabledSeatItem key={seatId}/> :
                         <SeatItem key={seatId} seatId={seatId} isFree={seat.isFree}
                                   occupiedByUserId={seat.userId}
-                                  onClickHandler={handleSeatClick}/> :
-                        <DisabledSeatItem key={seatId}/>)
+                                  onClickHandler={handleSeatClick}/>
+                    )
                 }
                 break;
             }
@@ -277,11 +278,12 @@ function SeatDisplay({
                 for (let key in rightSeatsRef.current.values) {
                     const seatId = parseInt(key);
                     const seat = rightSeatsRef.current.values[key];
-                    array.push(seat.isFree || seat.userId === userId ?
+                    array.push(seat.isTakenInDatabase ?
+                        <DisabledSeatItem key={seatId}/> :
                         <SeatItem key={seatId} seatId={seatId} isFree={seat.isFree}
                                   occupiedByUserId={seat.userId}
-                                  onClickHandler={handleSeatClick}/> :
-                        <DisabledSeatItem key={seatId}/>)
+                                  onClickHandler={handleSeatClick}/>
+                    )
                 }
                 break;
             }
@@ -300,15 +302,15 @@ function SeatDisplay({
                     {getRowLabels(numberOfRows)}
                 </style.RowLabelsContainer>
                 <style.LeftSection key={CinemaHallSection.LEFT}
-                                                      width={sectionWidthState.values[CinemaHallSection.LEFT]}>
+                                   width={sectionWidthState.values[CinemaHallSection.LEFT]}>
                     {renderSeatSections(CinemaHallSection.LEFT)}
                 </style.LeftSection>
                 <style.MiddleSection key={CinemaHallSection.MIDDLE}
-                                                          width={sectionWidthState.values[CinemaHallSection.MIDDLE]}>
+                                     width={sectionWidthState.values[CinemaHallSection.MIDDLE]}>
                     {renderSeatSections(CinemaHallSection.MIDDLE)}
                 </style.MiddleSection>
                 <style.RightSection key={CinemaHallSection.RIGHT}
-                                                        width={sectionWidthState.values[CinemaHallSection.RIGHT]}>
+                                    width={sectionWidthState.values[CinemaHallSection.RIGHT]}>
                     {renderSeatSections(CinemaHallSection.RIGHT)}
                 </style.RightSection>
             </style.SeatDisplayContainer>

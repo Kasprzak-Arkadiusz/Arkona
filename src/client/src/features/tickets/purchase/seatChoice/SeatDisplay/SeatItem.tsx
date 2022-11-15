@@ -14,7 +14,7 @@ function SeatItem({seatId, isFree, occupiedByUserId, onClickHandler}: Props) {
     const defaultUserId = "0";
     const [isFreeState, setIsFreeState] = useState<boolean>(true);
     const [userIdState, setUserIdState] = useState<string>(defaultUserId);
-    
+
     useEffect(() => {
         setIsFreeState(isFree);
         setUserIdState(occupiedByUserId);
@@ -25,7 +25,7 @@ function SeatItem({seatId, isFree, occupiedByUserId, onClickHandler}: Props) {
         if (!result) {
             return;
         }
-        
+
         if (isFreeState) {
             setIsFreeState(false);
             setUserIdState(currentUserId);
@@ -38,9 +38,12 @@ function SeatItem({seatId, isFree, occupiedByUserId, onClickHandler}: Props) {
             return;
         }
     }
-    
+
     return (
-        <style.SeatItemContainer isFree={isFreeState} isCurrentUser={currentUserId === userIdState} onClick={handleClick}/>
+        <style.SeatItemContainer isFree={isFreeState}
+                                 isCurrentUser={currentUserId === userIdState && userIdState !== "0"}
+                                 onClick={handleClick}
+                                 onMouseEnter={() => console.log("currentUserId: ", currentUserId, "userIdState: ", userIdState, "isFree:", isFreeState)}/>
     )
 }
 

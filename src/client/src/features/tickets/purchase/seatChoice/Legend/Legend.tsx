@@ -1,25 +1,30 @@
 ﻿import React from 'react';
 import * as style from './styled';
-import {DisabledSeatItemContainer} from '../SeatDisplay/styled'
+import {DisabledSeatItemContainer, SeatType} from '../SeatDisplay/styled'
 
 function Legend() {
     return (
         <style.LegendContainer>
             <style.Title>Legenda</style.Title>
             <style.LegendItemContainer>
-                <DisabledSeatItemContainer isFree={true} isCurrentUser={false}/>
+                <DisabledSeatItemContainer seatType={SeatType.Free}/>
                 <style.Dash>-</style.Dash>
                 <style.Label>Miejsce wolne</style.Label>
             </style.LegendItemContainer>
             <style.LegendItemContainer>
-                <DisabledSeatItemContainer isFree={false} isCurrentUser={false}/>
+                <DisabledSeatItemContainer seatType={SeatType.TakenInDatabase}/>
                 <style.Dash>-</style.Dash>
                 <style.Label>Miejsce zajęte</style.Label>
             </style.LegendItemContainer>
             <style.LegendItemContainer>
-                <DisabledSeatItemContainer isFree={false} isCurrentUser={true}/>
+                <DisabledSeatItemContainer seatType={SeatType.TakenByUser}/>
                 <style.Dash>-</style.Dash>
                 <style.Label>Miejsce wybrane przez Ciebie</style.Label>
+            </style.LegendItemContainer>
+            <style.LegendItemContainer>
+                <DisabledSeatItemContainer seatType={SeatType.TakenByOtherUser}/>
+                <style.Dash>-</style.Dash>
+                <style.Label>Miejsce zajęte przez innego użytkownika</style.Label>
             </style.LegendItemContainer>
         </style.LegendContainer>
     )

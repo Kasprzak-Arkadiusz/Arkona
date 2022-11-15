@@ -1,9 +1,10 @@
 ﻿import React from 'react';
 import * as style from './styled';
+import {SeatType} from './styled';
 
 function DisabledSeatItem() {
         return (
-        <style.DisabledSeatItemContainer isFree={false} isCurrentUser={false}/>
+        <style.DisabledSeatItemContainer seatType={SeatType.TakenInDatabase}/>
     )
 }
 

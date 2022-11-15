@@ -74,14 +74,33 @@ interface SeatItemProps {
     isCurrentUser: boolean;
 }
 
-export const DisabledSeatItemContainer = styled.div<SeatItemProps>`
+export enum SeatType {
+    Free,
+    TakenInDatabase,
+    TakenByUser,
+    TakenByOtherUser
+}
+
+interface DisabledItemProps {
+    seatType: SeatType
+}
+
+export const DisabledSeatItemContainer = styled.div<DisabledItemProps>`
     width: 15px;
     min-width: 15px;
     height: 15px;
     min-height: 15px;
     margin: 5px;
-    background: ${props => props.isFree ? props.theme.Palette.free :
-                           props.isCurrentUser ? props.theme.Palette.takenByUser : props.theme.Palette.taken};
+    background: ${(props) =>
+        props.seatType === SeatType.Free
+        ? props.theme.Palette.free
+        : props.seatType === SeatType.TakenByOtherUser 
+        ? props.theme.Palette.takenByOtherUser
+        : props.seatType === SeatType.TakenInDatabase
+        ? props.theme.Palette.taken
+        : props.seatType === SeatType.TakenByUser
+        ? props.theme.Palette.takenByUser
+        : props.theme.Palette.Free };
     user-select: none;
 `
 
@@ -89,8 +108,8 @@ export const SeatItemContainer = styled.div<SeatItemProps>`
     width: 15px;
     height: 15px;
     margin: 5px;
-    background: ${props => props.isFree ? props.theme.Palette.free :
-                           props.isCurrentUser ? props.theme.Palette.takenByUser : props.theme.Palette.taken};
+    background: ${props => props.isCurrentUser ? props.theme.Palette.takenByUser
+    : props.isFree ? props.theme.Palette.free : props.theme.Palette.takenByOtherUser};
        
     cursor: ${props => props.isFree ? "pointer" : props.isCurrentUser ? "pointer" : "auto"};
     user-select: none;

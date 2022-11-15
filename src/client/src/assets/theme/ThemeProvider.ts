@@ -11,7 +11,8 @@
         textMain: "#fafafa",
         blueBorder: "#3a6df1",
         takenByUser: "#3a6df1",
-        rootBackground: "#121212"
+        rootBackground: "#121212",
+        takenByOtherUser: "#00ff00"
     },
     Fonts: {
         smart: "'Gugi', serif",

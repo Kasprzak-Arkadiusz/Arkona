@@ -5,6 +5,7 @@ using Domain.Services;
 using Grpc.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Serilog;
 
 namespace API.Services;
 
@@ -112,13 +113,14 @@ public class SeanceService : Seance.SeanceBase
 
         try
         {
+            _seanceRoomService.Join(seanceId, userId, responseStream);
+            
             if (makeUpChanges)
             {
+                Log.Information("Making up changes userId: {UserId}", userId);
                 await _seanceRoomService.MakeUpChanges(seanceId, userId, responseStream);
             }
-
-            _seanceRoomService.Join(seanceId, userId, responseStream);
-
+            
             while (!context.CancellationToken.IsCancellationRequested)
             {
                 while (result)
@@ -128,7 +130,7 @@ public class SeanceService : Seance.SeanceBase
                     result = await requestStream.MoveNext(context.CancellationToken);
                 }
 
-                await Task.Delay(100);
+                await Task.Delay(1000);
             }
         }
         finally

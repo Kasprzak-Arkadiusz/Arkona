@@ -3,12 +3,13 @@
 
     public seatNumber: number;
     public isFree: boolean;
-    public userId: string;
+    public userId: string = this.defaultUserId;
+    public isTakenInDatabase: boolean = false;
 
-    public constructor(seatNumber: number, isFree: boolean, userId: string) {
+    public constructor(seatNumber: number, isFree: boolean, isTakenInDatabase: boolean) {
         this.seatNumber = seatNumber;
         this.isFree = isFree;
-        this.userId = userId;
+        this.isTakenInDatabase = isTakenInDatabase;
     }
 
     setUserId(userId: string) {
