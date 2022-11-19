@@ -21,8 +21,7 @@ message RegisterRequest {
 
 message AuthenticationResponse {
   string accessToken  = 1;
-  string refreshToken = 2;
-  string idToken      = 3;
+  string idToken      = 2;
 }
 
 // ExternalRegister
@@ -45,10 +44,8 @@ message LoginRequest {
 // RefreshJwt
 message RefreshJwtRequest {
   string userId       = 1;
-  string refreshToken = 2;
 }
 
 message RefreshJwtResponse {
   string accessToken  = 1;
-  string refreshToken = 2;
 }

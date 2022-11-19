@@ -13,10 +13,6 @@ export function useUserId(): string {
     return userId;
 }
 
-export function clearUserId() {
-    console.log("Before cleaning userId: ", getSessionStorageItem(userIdKey))
-    
+export function clearUserId() {    
     setSessionStorageItem(userIdKey, null);
-
-    console.log("After cleaning userId: ", getSessionStorageItem(userIdKey))
 }

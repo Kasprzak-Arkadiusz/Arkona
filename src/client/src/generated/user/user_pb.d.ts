@@ -39,9 +39,6 @@ export class AuthenticationResponse extends jspb.Message {
   getAccesstoken(): string;
   setAccesstoken(value: string): void;
 
-  getRefreshtoken(): string;
-  setRefreshtoken(value: string): void;
-
   getIdtoken(): string;
   setIdtoken(value: string): void;
 
@@ -58,7 +55,6 @@ export class AuthenticationResponse extends jspb.Message {
 export namespace AuthenticationResponse {
   export type AsObject = {
     accesstoken: string,
-    refreshtoken: string,
     idtoken: string,
   }
 }
@@ -115,9 +111,6 @@ export class RefreshJwtRequest extends jspb.Message {
   getUserid(): string;
   setUserid(value: string): void;
 
-  getRefreshtoken(): string;
-  setRefreshtoken(value: string): void;
-
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): RefreshJwtRequest.AsObject;
   static toObject(includeInstance: boolean, msg: RefreshJwtRequest): RefreshJwtRequest.AsObject;
@@ -131,16 +124,12 @@ export class RefreshJwtRequest extends jspb.Message {
 export namespace RefreshJwtRequest {
   export type AsObject = {
     userid: string,
-    refreshtoken: string,
   }
 }
 
 export class RefreshJwtResponse extends jspb.Message {
   getAccesstoken(): string;
   setAccesstoken(value: string): void;
-
-  getRefreshtoken(): string;
-  setRefreshtoken(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): RefreshJwtResponse.AsObject;
@@ -155,7 +144,6 @@ export class RefreshJwtResponse extends jspb.Message {
 export namespace RefreshJwtResponse {
   export type AsObject = {
     accesstoken: string,
-    refreshtoken: string,
   }
 }
 

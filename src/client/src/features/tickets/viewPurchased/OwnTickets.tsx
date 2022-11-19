@@ -7,7 +7,6 @@ import {OrderClient} from "generated/order/order_pb_service";
 import {useJwtMetadata} from "hooks/useJwtMetadata";
 
 function OwnTickets() {
-    console.log("OwnTickets rendering")
     const [orderClient,] = useState<OrderClient>(new OrderClient(process.env.REACT_APP_SERVER_URL!));
     const [orders, setOrders] = useState<Array<UserOrderDetails>>(new Array<UserOrderDetails>());
     const metadata = useJwtMetadata();

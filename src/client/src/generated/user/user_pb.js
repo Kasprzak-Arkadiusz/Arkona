@@ -401,8 +401,7 @@ proto.user.AuthenticationResponse.prototype.toObject = function(opt_includeInsta
 proto.user.AuthenticationResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     accesstoken: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    refreshtoken: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    idtoken: jspb.Message.getFieldWithDefault(msg, 3, "")
+    idtoken: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -445,10 +444,6 @@ proto.user.AuthenticationResponse.deserializeBinaryFromReader = function(msg, re
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setRefreshtoken(value);
-      break;
-    case 3:
-      var value = /** @type {string} */ (reader.readString());
       msg.setIdtoken(value);
       break;
     default:
@@ -487,17 +482,10 @@ proto.user.AuthenticationResponse.serializeBinaryToWriter = function(message, wr
       f
     );
   }
-  f = message.getRefreshtoken();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
   f = message.getIdtoken();
   if (f.length > 0) {
     writer.writeString(
-      3,
+      2,
       f
     );
   }
@@ -523,10 +511,10 @@ proto.user.AuthenticationResponse.prototype.setAccesstoken = function(value) {
 
 
 /**
- * optional string refreshToken = 2;
+ * optional string idToken = 2;
  * @return {string}
  */
-proto.user.AuthenticationResponse.prototype.getRefreshtoken = function() {
+proto.user.AuthenticationResponse.prototype.getIdtoken = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
@@ -535,26 +523,8 @@ proto.user.AuthenticationResponse.prototype.getRefreshtoken = function() {
  * @param {string} value
  * @return {!proto.user.AuthenticationResponse} returns this
  */
-proto.user.AuthenticationResponse.prototype.setRefreshtoken = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-/**
- * optional string idToken = 3;
- * @return {string}
- */
-proto.user.AuthenticationResponse.prototype.getIdtoken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.user.AuthenticationResponse} returns this
- */
 proto.user.AuthenticationResponse.prototype.setIdtoken = function(value) {
-  return jspb.Message.setProto3StringField(this, 3, value);
+  return jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
@@ -910,8 +880,7 @@ proto.user.RefreshJwtRequest.prototype.toObject = function(opt_includeInstance) 
  */
 proto.user.RefreshJwtRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    refreshtoken: jspb.Message.getFieldWithDefault(msg, 2, "")
+    userid: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -952,10 +921,6 @@ proto.user.RefreshJwtRequest.deserializeBinaryFromReader = function(msg, reader)
       var value = /** @type {string} */ (reader.readString());
       msg.setUserid(value);
       break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setRefreshtoken(value);
-      break;
     default:
       reader.skipField();
       break;
@@ -992,13 +957,6 @@ proto.user.RefreshJwtRequest.serializeBinaryToWriter = function(message, writer)
       f
     );
   }
-  f = message.getRefreshtoken();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
 };
 
 
@@ -1017,24 +975,6 @@ proto.user.RefreshJwtRequest.prototype.getUserid = function() {
  */
 proto.user.RefreshJwtRequest.prototype.setUserid = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
-};
-
-
-/**
- * optional string refreshToken = 2;
- * @return {string}
- */
-proto.user.RefreshJwtRequest.prototype.getRefreshtoken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.user.RefreshJwtRequest} returns this
- */
-proto.user.RefreshJwtRequest.prototype.setRefreshtoken = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
@@ -1070,8 +1010,7 @@ proto.user.RefreshJwtResponse.prototype.toObject = function(opt_includeInstance)
  */
 proto.user.RefreshJwtResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accesstoken: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    refreshtoken: jspb.Message.getFieldWithDefault(msg, 2, "")
+    accesstoken: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -1112,10 +1051,6 @@ proto.user.RefreshJwtResponse.deserializeBinaryFromReader = function(msg, reader
       var value = /** @type {string} */ (reader.readString());
       msg.setAccesstoken(value);
       break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setRefreshtoken(value);
-      break;
     default:
       reader.skipField();
       break;
@@ -1152,13 +1087,6 @@ proto.user.RefreshJwtResponse.serializeBinaryToWriter = function(message, writer
       f
     );
   }
-  f = message.getRefreshtoken();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
 };
 
 
@@ -1177,24 +1105,6 @@ proto.user.RefreshJwtResponse.prototype.getAccesstoken = function() {
  */
 proto.user.RefreshJwtResponse.prototype.setAccesstoken = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
-};
-
-
-/**
- * optional string refreshToken = 2;
- * @return {string}
- */
-proto.user.RefreshJwtResponse.prototype.getRefreshtoken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.user.RefreshJwtResponse} returns this
- */
-proto.user.RefreshJwtResponse.prototype.setRefreshtoken = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
