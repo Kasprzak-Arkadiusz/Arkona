@@ -3,6 +3,7 @@ import * as style from "./styled";
 import AddSeances from "./AddSeances";
 import AddImage from "./components/AddImage/AddImage";
 import SectionContainer from "components/SectionContainer/SectionContainer";
+import MovieDetailsForm from "./components/MovieDetailsForm/MovieDetailsForm";
 
 function AddMovie() {
     const [image, setImage] = useState<string>("");
@@ -10,7 +11,11 @@ function AddMovie() {
     return (
         <style.DisplayContainer>
             <SectionContainer>
-                <AddImage width={"360px"} height={"480px"} image={image} onImageChange={setImage}/>
+                <style.Title>Dodawanie nowego filmu</style.Title>
+                <style.ContentContainer>
+                    <AddImage width={"360px"} height={"480px"} image={image} onImageChange={setImage}/>
+                    <MovieDetailsForm/>
+                </style.ContentContainer>
             </SectionContainer>
             <AddSeances/>
         </style.DisplayContainer>

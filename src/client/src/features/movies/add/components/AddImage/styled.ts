@@ -17,7 +17,7 @@ export const Container = styled.div<ContainerProps>`
     text-decoration: none;
     justify-content: center;
     
-    background: ${props => props.theme.Palette.textMain};
+    background: ${props => props.theme.Palette.gray};
     cursor: pointer;
 `
 
