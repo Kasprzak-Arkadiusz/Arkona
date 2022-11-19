@@ -20,7 +20,7 @@ export const Input = styled.input`
     box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.5);
 `
 
-export const FormContainer = styled.div`
+export const FormContainer = styled.form`
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -83,4 +83,35 @@ export const Select = styled.select`
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.75);
     background: ${props => props.theme.Palette.gray};
     box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.5);
+`
+export const SearchButton = styled.button`
+    width: 90px;
+    height: 24px;
+    border-radius: 15px;
+    border: 0;
+    margin: 20px auto;
+
+    font-family: ${props => props.theme.Fonts.casual};
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    text-decoration: none;
+
+    color: ${props => props.theme.Palette.textMain};
+    background-color: ${props => props.theme.Palette.gray};
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.85);
+`
+
+export const ValidationText = styled.span`
+    display: block;
+    margin: auto;
+    padding: 5px 10px 5px 10px;
+    user-select: none;
+
+    font-size: 13px;
+    line-height: 14px;
+
+    color: ${props => props.theme.Palette.warning};
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 `

@@ -1,6 +1,5 @@
 ﻿import React, {useState} from 'react';
 import * as style from "./styled";
-import AddSeances from "./AddSeances";
 import AddImage from "./components/AddImage/AddImage";
 import SectionContainer from "components/SectionContainer/SectionContainer";
 import MovieDetailsForm from "./components/MovieDetailsForm/MovieDetailsForm";
@@ -17,7 +16,6 @@ function AddMovie() {
                     <MovieDetailsForm/>
                 </style.ContentContainer>
             </SectionContainer>
-            <AddSeances/>
         </style.DisplayContainer>
     )
 }

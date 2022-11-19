@@ -1,6 +1,8 @@
 ﻿import React from 'react';
-import {SubmitHandler, useForm} from "react-hook-form";
+import {SubmitHandler, useForm, Validate} from "react-hook-form";
 import * as style from "./styled";
+import {ValidateResult} from "react-hook-form/dist/types/validator";
+import {toISODateString} from "../../../../../utils/dateUtils";
 
 export type Inputs = {
     title: string,
@@ -28,25 +30,67 @@ function MovieDetailsForm() {
         console.log(data);
     };
 
+    const validateReleaseDate: Validate<Date> = (providedDate: Date): ValidateResult => {
+        if (providedDate.setHours(0,0,0,0) >= (new Date).setHours(0, 0, 0, 0)) {
+            const errorMessage = "Wybrana data musi być z przeszłości";
+            setError("releaseDate", {type: "validate", message: errorMessage});
+            return errorMessage;
+        }
+    }
+    
     return (
-        <style.FormContainer>
+        <style.FormContainer onSubmit={handleSubmit((data) => console.log(JSON.stringify(data)))}>
             <style.InputContainer>
+                {errors.title && <style.ValidationText>{errors.title.message}</style.ValidationText>}
                 <style.Label>Tytuł:</style.Label>
-                <style.Input {...register("title", {required: true, maxLength: 100})} type="text"/>
+                <style.Input {...register("title", {
+                    required: {value: true, message: "Pole tytuł jest wymagane"},
+                    maxLength: {value: 100, message: "Tytuł nie może być dłuższy niż 100 znaków"}
+                })} type="text"/>
+                {errors.releaseDate && <style.ValidationText>{errors.releaseDate.message}</style.ValidationText>}
                 <style.Label>Data premiery:</style.Label>
-                <style.Input {...register("releaseDate", {required: true, valueAsDate: true})} type="date"/>
+                <style.Input value={toISODateString(new Date())} {...register("releaseDate", {
+                    required: {
+                        value: true,
+                        message: "Pole data premiery jest wymagane"
+                    }, valueAsDate: true,
+                    validate: validateReleaseDate
+                })}
+                             type="date"/>
+                {errors.duration && <style.ValidationText>{errors.duration.message}</style.ValidationText>}
                 <style.Label>Czas trwania [min]:</style.Label>
-                <style.Input {...register("duration", {required: true, max:300, min: 1})} type="number"/>
+                <style.Input {...register("duration", {
+                    required: {
+                        value: true,
+                        message: "Pole czas trwania jest wymagane"
+                    },
+                    max: {value: 300, message: "Maksymalna dozwolona wartość to 300"},
+                    min: {value: 1, message: "Minimalna dozwolona wartość to 1"}
+                })} type="number"/>
+                {errors.description && <style.ValidationText>{errors.description.message}</style.ValidationText>}
                 <style.Label>Opis:</style.Label>
-                <style.DescriptionArea {...register("description", {required: true})}/>
+                <style.DescriptionArea {...register("description", {
+                    required: {
+                        value: true,
+                        message: "Pole opis jest wymagane"
+                    }
+                })}/>
+                {errors.ageRestrictionId &&
+                    <style.ValidationText>{errors.ageRestrictionId.message}</style.ValidationText>}
                 <style.Label>Ograniczenie wiekowe:</style.Label>
-                <style.Select {...register("ageRestrictionId", {required: true})}>
+                <style.Select {...register("ageRestrictionId", {
+                    required: {
+                        value: true,
+                        message: "Pole ograniczenie wiekowe jest wymagane"
+                    }
+                })}>
                     <option value="0">Bez ograniczeń</option>
                     <option value="3">3 lata</option>
                     <option value="7">7 lat</option>
                     <option value="12">12 lat</option>
                     <option value="15">15 lat</option>
                 </style.Select>
+                <style.SearchButton>Utwórz</style.SearchButton>
             </style.InputContainer>
         </style.FormContainer>
     )
