@@ -20,6 +20,7 @@ import TicketsPurchase from "./features/tickets/purchase/TicketsPurchase";
 import OwnTickets from "./features/tickets/viewPurchased/OwnTickets";
 import UnauthorizedPage from "./features/common/UnauthorizedPage";
 import {CookiesProvider} from 'react-cookie';
+import AddMovie from "./features/movies/add/AddMovie";
 
 function App() {
     return (
@@ -39,6 +40,7 @@ function App() {
 
                             <Route path="repertoire" element={<Repertoire/>}/>
                             <Route path="offers" element={<Offers/>}/>
+                            <Route path="movie/add" element={<AddMovie/>}/>
                             <Route path="movie/:id/" element={<MovieDetails/>}/>
                             <Route path="movie/:id/tickets-purchase/:seanceId/:action" element={
                                 <RequireAuth>

@@ -10,7 +10,6 @@ namespace Infrastructure.Services.IdentityService;
 public class IdentityService : IIdentityService
 {
     private readonly UserManager<AppUser> _userManager;
-
     public IdentityService(UserManager<AppUser> userManager)
     {
         _userManager = userManager;
@@ -33,5 +32,17 @@ public class IdentityService : IIdentityService
         user.SetRole(Role.Client);
         user.SetId(appUser.Id);
         return user;
+    }
+
+    public async Task<Role> GetUserRoleAsync(string userId)
+    {
+        var appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        if (appUser is null)
+        {
+            return Role.Client;
+        }
+
+        var roles = await _userManager.GetRolesAsync(appUser);
+        return roles.Any(r => r == Role.Worker.ToString()) ? Role.Worker : Role.Client;
     }
 }
