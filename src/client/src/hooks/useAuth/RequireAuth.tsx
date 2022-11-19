@@ -1,10 +1,8 @@
 ﻿import React, {useEffect, useState} from "react";
 import useAuth from "hooks/useAuth/useAuth";
 import {Navigate, useLocation, Outlet, useNavigate} from "react-router-dom";
-import {useCookies} from "react-cookie";
 import {UserClient} from "generated/user/user_pb_service";
 import {RefreshJwtRequest} from "generated/user/user_pb";
-import {addDays} from "utils/dateUtils";
 import {setStorageItem} from "utils/storage";
 import {accessTokenKey} from "utils/storageItemKeys";
 
@@ -14,7 +12,6 @@ interface IProps {
 }
 
 const RequireAuth = ({role, children}: IProps): JSX.Element => {
-    const [cookies, setCookie, _] = useCookies(["refresh-token"]);
     const userClient = new UserClient(process.env.REACT_APP_SERVER_URL!);
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
     const auth = useAuth();
@@ -22,7 +19,6 @@ const RequireAuth = ({role, children}: IProps): JSX.Element => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("USE EFFECT")
         if (!auth.authData) {
             navigate("/access-denied", {state: location, replace: true})
             return;
@@ -31,21 +27,12 @@ const RequireAuth = ({role, children}: IProps): JSX.Element => {
         if (isTokenExpired()) {
             const request = new RefreshJwtRequest();
             request.setUserid(auth.authData.nameid);
-            request.setRefreshtoken(decodeURIComponent(cookies["refresh-token"]));
-            console.log(request.toObject());
 
             userClient.refreshJwt(request, (error, responseMessage) => {
-                console.log(responseMessage);
                 if (responseMessage === null || responseMessage === undefined) {
                     auth.signOut();
                     return <Navigate to="/login" state={{from: location}} replace/>;
                 } else {
-                    setCookie("refresh-token", responseMessage.getRefreshtoken(), {
-                        path: "/",
-                        expires: addDays(new Date(), 30),
-                        sameSite: "strict",
-                        secure: true
-                    });
                     setStorageItem(accessTokenKey, responseMessage.getAccesstoken());
                     setIsLoaded(true);
                 }

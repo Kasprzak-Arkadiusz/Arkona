@@ -79,11 +79,8 @@ function SeatDisplay({
             const request = new GetSeatsBySeanceRequest();
             request.setSeanceid(seanceId);
 
-            console.log("Getting seat state from database");
-
             seanceClient.getSeatsBySeance(request, metadata, (error, responseMessage) => {
                 if (responseMessage !== null && responseMessage !== undefined) {
-                    console.log("Received seat state from database")
                     setSections(responseMessage.getSectionsList());
                     setNumberOfRows(responseMessage.getNumberofrows());
                 }
@@ -93,7 +90,6 @@ function SeatDisplay({
 
     useEffect(() => {
         if (stream !== undefined && databaseStateLoaded) {
-            console.log("Stream on data registered")
             if (!onHandledSet()) {
                 stream.on("data", handleDataStream)
             }
@@ -103,14 +99,12 @@ function SeatDisplay({
 
     useEffect(() => {
         if (sections.length !== 0) {
-            console.log("Database state loaded");
             setDatabaseStateLoaded(true);
         }
     }, [sections])
 
     useEffect(() => {
         if (streamRegistered) {
-            console.log("Requesting to make up changes")
             const request = new ChooseSeatRequest();
             request.setSeanceid(seanceId);
             request.setUserid(userId);
@@ -177,7 +171,6 @@ function SeatDisplay({
     }
 
     const handleDataStream = (message?: ChooseSeatResponse) => {
-        console.log("Handling data stream: ", message);
         if (message === undefined) {
             return;
         }
@@ -232,7 +225,6 @@ function SeatDisplay({
             request.setSeatid(seatId);
             request.setIschosen(seatState);
             request.setMakeupchanges(false);
-            console.log("Sending request for choosing seat: ", request.toObject());
 
             stream.write(request);
 
@@ -288,7 +280,6 @@ function SeatDisplay({
                 break;
             }
         }
-        console.log("Seat section re-rendered");
         return array
     }
 

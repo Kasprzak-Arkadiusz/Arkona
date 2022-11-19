@@ -1,4 +1,3 @@
-using API.Common.Utils;
 using API.Extensions;
 using API.Interceptors;
 using API.Interceptors.Authorization;
@@ -35,6 +34,20 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddTransient<IAuthorizationHandler, GrpcAuthorizationHandler>();
 builder.Services.AddSingleton<SeanceRoomService>();
 
+const string policyName = "MyPolicy";
+builder.Services.AddCors(o =>
+{
+    o.AddPolicy(policyName, config =>
+    {
+        config.AllowCredentials();
+        config.WithOrigins("https://localhost:7146", "http://localhost:5146", "https://localhost:7147",
+            "http://localhost:7147");
+        config.AllowAnyMethod();
+        config.AllowAnyHeader();
+        config.WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
+    });
+});
+
 builder.Services.AddGrpc(options =>
 {
     options.EnableMessageValidation();
@@ -43,19 +56,6 @@ builder.Services.AddGrpc(options =>
 });
 builder.Services.AddGrpcReflection();
 builder.Services.AddGrpcFluentValidation();
-
-const string policyName = "MyPolicy";
-builder.Services.AddCors(o =>
-{
-    o.AddPolicy(policyName, config =>
-    {
-        config.WithOrigins("https://localhost:7146", "http://localhost:5146", "https://localhost:7147",
-            "http://localhost:7147");
-        config.AllowAnyMethod();
-        config.AllowAnyHeader();
-        config.WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
-    });
-});
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 

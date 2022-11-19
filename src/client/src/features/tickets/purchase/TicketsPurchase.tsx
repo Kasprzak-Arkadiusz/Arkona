@@ -47,27 +47,22 @@ function TicketPurchase() {
 
     useEffect(() => {
         if (stream !== undefined) {
-            console.log("Stream set")
             const request = new ChooseSeatRequest();
             request.setSeanceid(seanceIdNumber);
             request.setUserid(userId);
             request.setMakeupchanges(false);
-            console.log("Writting initial request")
             stream!.write(request);
             
             return () => {
-                console.log("Cancelling stream")
                 stream?.cancel();
                 setStream(undefined);
                 setUserSeatIds(new Array<number>());
-                console.log("clearing user id")
                 clearUserId();
             }
         }
     }, [stream])
 
     useEffect(() => {
-        console.log("Action changes");
         if (action === "discounts") {
             setStage(0);
         } else if (action === "seatChoice") {
@@ -78,7 +73,6 @@ function TicketPurchase() {
     }, [action]);
 
     const handleSeatClick = (seatId: number) => {
-        console.log("Handling seat click")
         const userSeatIdIndex = userSeatIds.findIndex(item => {
             return item === seatId;
         });
@@ -130,7 +124,6 @@ function TicketPurchase() {
     }
     
     const onHandledSet = () => {
-        console.log("isHandlerSet", isHandlerSet)
         setIsHandlerSet(true);
         return isHandlerSet;
     }

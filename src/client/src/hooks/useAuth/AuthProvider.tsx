@@ -13,9 +13,7 @@ import {facebookLogOut} from "components/ExternalLogin/FacebookExternalLogin"
 import {CustomJwtPayload} from "utils/CustomTypes/Jwt";
 import jwtDecode from "jwt-decode";
 import {accessTokenKey, idTokenKey} from "utils/storageItemKeys";
-import {useNavigate} from "react-router-dom";
-import {useCookies} from "react-cookie";
-import {addDays} from "../../utils/dateUtils";
+import {grpc} from "@improbable-eng/grpc-web";
 
 export enum Provider {
     FACEBOOK = 0,
@@ -29,9 +27,11 @@ interface Props {
 export const AuthProvider = ({children}: Props): JSX.Element => {
     const [idToken, setIdToken] = useState<string | null>(getStorageItem(idTokenKey));
     const [accessToken, setAccessToken] = useState<string | null>(getStorageItem(accessTokenKey));
-    const [_, setCookie, removeCookie] = useCookies(["refresh-token"]);
-    const userClient = new UserClient(process.env.REACT_APP_SERVER_URL!);
-    const navigate = useNavigate();
+    const userClient = new UserClient(process.env.REACT_APP_SERVER_URL!, {
+        transport: grpc.CrossBrowserHttpTransport(new class implements grpc.CrossBrowserHttpTransportInit {
+            withCredentials = true;
+        })
+    });
 
     function MapToRegisterRequest(formData: Inputs): RegisterRequest {
         const request = new RegisterRequest();
@@ -71,12 +71,6 @@ export const AuthProvider = ({children}: Props): JSX.Element => {
         setIdToken(getStorageItem(idTokenKey));
         setStorageItem(accessTokenKey, response.getAccesstoken());
         setAccessToken(response.getAccesstoken());
-        setCookie("refresh-token", response.getRefreshtoken(), {
-            path: "/",
-            expires: addDays(new Date(), 30), 
-            sameSite: "strict",
-            secure: true
-        });
     };
 
     const signIn = (formData: Inputs, callback: (error: ServiceError | null, responseMessage: AuthenticationResponse | null) => void) => {
@@ -109,13 +103,11 @@ export const AuthProvider = ({children}: Props): JSX.Element => {
     }
 
     const signOut = () => {
-        console.log("Sign out requested")
         facebookLogOut();
         setIdToken(null);
         setStorageItem(idTokenKey, null);
         setAccessToken(null);
         setStorageItem(accessTokenKey, null)
-        removeCookie("refresh-token");
     };
 
     const decodeJwt = (encodedJwt: string | null): CustomJwtPayload | null => {
