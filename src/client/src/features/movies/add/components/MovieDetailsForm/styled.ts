@@ -115,3 +115,17 @@ export const ValidationText = styled.span`
     color: ${props => props.theme.Palette.warning};
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 `
+
+export const MovieGenreContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+`
+
+export const MovieGenreTitle = styled.span`
+    margin: 10px;
+`
+
+export const MovieGenreSelect = styled(Select)`
+    margin: auto;
+`

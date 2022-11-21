@@ -2,7 +2,9 @@
 import {SubmitHandler, useForm, Validate} from "react-hook-form";
 import * as style from "./styled";
 import {ValidateResult} from "react-hook-form/dist/types/validator";
-import {toISODateString} from "../../../../../utils/dateUtils";
+import {toISODateString} from "utils/dateUtils";
+import {AgeRestrictions} from "utils/CustomTypes/AgeRestrictions";
+import GenreArrayFields from "../GenreArrayFields/GenreArrayFields";
 
 export type Inputs = {
     title: string,
@@ -20,8 +22,7 @@ function MovieDetailsForm() {
     const {
         register,
         setError,
-        clearErrors,
-        getValues,
+        control,
         handleSubmit,
         formState: {errors}
     } = useForm<Inputs>({mode: "all", criteriaMode: "all"});
@@ -84,12 +85,11 @@ function MovieDetailsForm() {
                         message: "Pole ograniczenie wiekowe jest wymagane"
                     }
                 })}>
-                    <option value="0">Bez ograniczeń</option>
-                    <option value="3">3 lata</option>
-                    <option value="7">7 lat</option>
-                    <option value="12">12 lat</option>
-                    <option value="15">15 lat</option>
+                    {Array.from(AgeRestrictions).map(([key, value]) => {
+                        return <option value={value} label={key} key={key}></option>
+                    })}
                 </style.Select>
+                <GenreArrayFields/>
                 <style.SearchButton>Utwórz</style.SearchButton>
             </style.InputContainer>
         </style.FormContainer>
