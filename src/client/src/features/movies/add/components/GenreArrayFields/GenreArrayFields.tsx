@@ -4,7 +4,8 @@ import * as style from "../MovieDetailsForm/styled";
 import GenreField, {MovieGenre} from "./GenreField";
 
 interface Props {
-    onSelectChange: (selectedMovieGenreIds :Array<number>) => void
+    onSelectChange: (selectedMovieGenreIds :Array<number>) => void,
+    errorMessage: string | null
 }
 
 type DropdownObject = {
@@ -17,7 +18,7 @@ type SelectedGenre = {
     selectedGenreId: number
 }
 
-function GenreArrayFields({onSelectChange}: Props) {
+function GenreArrayFields({onSelectChange, errorMessage}: Props) {
     const [selectedMovieGenres, setSelectedMovieGenres] = useState<Array<SelectedGenre>>(new Array<SelectedGenre>());
     const [movieGenresArray,] = useState<Array<MovieGenre>>(Array.from(MovieGenres).map(([key, value]) => {
         return {name: key, id: value}
@@ -69,9 +70,6 @@ function GenreArrayFields({onSelectChange}: Props) {
     }, [selectedMovieGenres])
 
     function handleSelectChange(previousValue: number, selectedValue: number, dropdownId: number) {
-        console.log("PreviousValue = ", previousValue);
-        console.log("SelectedValue = ", selectedValue);
-
         if (selectedValue === -1) {
             setSelectedMovieGenres(selectedMovieGenres.filter(genre => genre.selectedGenreId !== previousValue));
             setAvailableGenres([...availableGenres.map(genre => {
@@ -109,7 +107,7 @@ function GenreArrayFields({onSelectChange}: Props) {
 
     return (<style.MovieGenreContainer>
         <style.MovieGenreTitle>Gatunki:</style.MovieGenreTitle>
-        {error && <style.ValidationText>{error}</style.ValidationText>}
+        {(error && <style.ValidationText>{error}</style.ValidationText>) || errorMessage && <style.ValidationText>{errorMessage}</style.ValidationText>}
         <style.ButtonsContainer>
             {elements.length > 1 && <style.IncrDecrButton onClick={(e) => onRemoveClick(e)} key={`remove-button`}>-</style.IncrDecrButton>}
             {elements.length < movieGenresArray.length &&

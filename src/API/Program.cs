@@ -48,6 +48,7 @@ builder.Services.AddCors(o =>
     });
 });
 
+builder.Services.AddGrpcFluentValidation();
 builder.Services.AddGrpc(options =>
 {
     options.EnableMessageValidation();
@@ -55,7 +56,6 @@ builder.Services.AddGrpc(options =>
     options.Interceptors.Add<ErrorHandlingInterceptor>();
 });
 builder.Services.AddGrpcReflection();
-builder.Services.AddGrpcFluentValidation();
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 

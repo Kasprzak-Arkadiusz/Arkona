@@ -1,4 +1,5 @@
 ﻿using Application.Common.Models;
+using Application.Movies.Commands;
 using Application.Movies.Queries;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
@@ -100,5 +101,23 @@ public class MovieService : Movie.MovieBase
 
         response.Genres.AddRange(detailedMovieInfo.Genres);
         return response;
+    }
+
+    public override async Task<AddMovieResponse> AddMovie(AddMovieRequest request, ServerCallContext context)
+    {
+        var command = new AddMovieCommand
+        {
+            Title = request.Title,
+            Image = request.Image.ToByteArray(),
+            ReleaseDate = DateOnly.FromDateTime(request.ReleaseDate.ToDateTime()),
+            Duration = (short)request.Duration,
+            Description = request.Description,
+            AgeRestrictionId = request.AgeRestrictionId,
+            GenreIds = request.GenreIds.ToList()
+        };
+
+        await _mediator.Send(command);
+
+        return new AddMovieResponse();
     }
 }

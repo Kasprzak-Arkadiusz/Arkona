@@ -2,7 +2,6 @@
 import {SubmitHandler, useForm, Validate} from "react-hook-form";
 import * as style from "./styled";
 import {ValidateResult} from "react-hook-form/dist/types/validator";
-import {toISODateString} from "utils/dateUtils";
 import {AgeRestrictions} from "utils/CustomTypes/AgeRestrictions";
 import GenreArrayFields from "../GenreArrayFields/GenreArrayFields";
 
@@ -15,21 +14,26 @@ export type Inputs = {
 };
 
 interface Props {
-
+    handleFormSubmit: (data: Inputs, selectedMovieGenreIds: Array<number>) => void
 }
 
-function MovieDetailsForm() {
+function MovieDetailsForm({handleFormSubmit}: Props) {
     const [selectedMovieGenreIds, setSelectedMovieGenreIds] = useState<Array<number>>(new Array<number>());
+    const [genreError, setGenreError] = useState<string | null>(null);
     const {
         register,
         setError,
-        control,
         handleSubmit,
         formState: {errors}
     } = useForm<Inputs>({mode: "all", criteriaMode: "all"});
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log(data);
+        console.log(selectedMovieGenreIds);
+        if (genreError !== null) {
+            return
+        }
+
+        handleFormSubmit(data, selectedMovieGenreIds);
     };
 
     const validateReleaseDate: Validate<Date> = (providedDate: Date): ValidateResult => {
@@ -39,13 +43,22 @@ function MovieDetailsForm() {
             return errorMessage;
         }
     }
+
+    useEffect(() => {        
+        if (selectedMovieGenreIds.length === 0) {
+            setGenreError("Pole gatunki jest wymagane")
+            return
+        }
+        
+        setGenreError(null);
+    }, [selectedMovieGenreIds]);
     
     useEffect(() => {
-        console.log(selectedMovieGenreIds)
-    }, [selectedMovieGenreIds]);
+        console.log(genreError);
+    }, [genreError])
 
     return (
-        <style.FormContainer onSubmit={handleSubmit((data) => console.log(JSON.stringify(data)))}>
+        <style.FormContainer onSubmit={handleSubmit((data) => onSubmit(data))}>
             <style.InputContainer>
                 {errors.title && <style.ValidationText>{errors.title.message}</style.ValidationText>}
                 <style.Label>Tytuł:</style.Label>
@@ -55,14 +68,14 @@ function MovieDetailsForm() {
                 })} type="text"/>
                 {errors.releaseDate && <style.ValidationText>{errors.releaseDate.message}</style.ValidationText>}
                 <style.Label>Data premiery:</style.Label>
-                <style.Input value={toISODateString(new Date())} {...register("releaseDate", {
+                <style.Input  {...register("releaseDate", {
                     required: {
                         value: true,
                         message: "Pole data premiery jest wymagane"
                     }, valueAsDate: true,
                     validate: validateReleaseDate
                 })}
-                             type="date"/>
+                              type="date"/>
                 {errors.duration && <style.ValidationText>{errors.duration.message}</style.ValidationText>}
                 <style.Label>Czas trwania [min]:</style.Label>
                 <style.Input {...register("duration", {
@@ -94,7 +107,7 @@ function MovieDetailsForm() {
                         return <option value={value} label={key} key={key}></option>
                     })}
                 </style.Select>
-                <GenreArrayFields onSelectChange={setSelectedMovieGenreIds}/>
+                <GenreArrayFields onSelectChange={setSelectedMovieGenreIds} errorMessage={genreError}/>
                 <style.SearchButton>Utwórz</style.SearchButton>
             </style.InputContainer>
         </style.FormContainer>

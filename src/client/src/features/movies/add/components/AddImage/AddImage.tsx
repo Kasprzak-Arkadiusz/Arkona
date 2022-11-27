@@ -20,7 +20,8 @@ function AddImage({width = "220px", height = "320px", image, onImageChange}: Pro
             let reader = new FileReader();
             reader.readAsDataURL(event.target.files[0]);
             reader.onload = function () {
-                onImageChange(reader.result === null ? "" : reader.result.toString());
+                const imageString = reader.result === null ? "" : reader.result.toString();
+                onImageChange(imageString);
             };
         }
     }
