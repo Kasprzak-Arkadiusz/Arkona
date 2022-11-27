@@ -22,16 +22,15 @@ function GenreField({fieldId, availableMovieGenres, onSelectedValueChange}: Prop
     }
 
     return (
-        <div key={`${fieldId}-container`}>
-            <style.MovieGenreSelect key={fieldId} onChange={onDropDownSelect} value={dropdownValue}>
-                <option value={-1} label={""} key={`${fieldId}--1`}/>
-                {availableMovieGenres.map(({name, id}) => {
-                    if (name !== undefined) {
-                        return <option value={id} label={name} key={`${fieldId}-${id}`}/>
-                    }
-                })}
-            </style.MovieGenreSelect>
-        </div>)
+        <style.MovieGenreSelect key={fieldId} onChange={onDropDownSelect} value={dropdownValue}>
+            <option value={-1} label={""} key={`${fieldId}--1`}/>
+            {availableMovieGenres.map(({name, id}) => {
+                if (name !== undefined) {
+                    return <option value={id} label={name} key={`${fieldId}-${id}`}/>
+                }
+            })}
+        </style.MovieGenreSelect>
+    )
 }
 
 export default GenreField;

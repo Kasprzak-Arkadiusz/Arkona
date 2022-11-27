@@ -84,7 +84,8 @@ export const Select = styled.select`
     background: ${props => props.theme.Palette.gray};
     box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.5);
 `
-export const SearchButton = styled.button`
+
+const CommonButton = styled.button`
     width: 90px;
     height: 24px;
     border-radius: 15px;
@@ -101,6 +102,9 @@ export const SearchButton = styled.button`
     color: ${props => props.theme.Palette.textMain};
     background-color: ${props => props.theme.Palette.gray};
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.85);
+`
+
+export const SearchButton = styled(CommonButton)`
 `
 
 export const ValidationText = styled.span`
@@ -127,5 +131,16 @@ export const MovieGenreTitle = styled.span`
 `
 
 export const MovieGenreSelect = styled(Select)`
-    margin: auto;
+    margin: 5px auto;
+`
+
+export const ButtonsContainer = styled.div`
+    margin: 5px;
+`
+
+export const IncrDecrButton = styled(CommonButton)`
+    margin: auto 5px;
+    width: 20px;
+
+    font-size: 20px;
 `

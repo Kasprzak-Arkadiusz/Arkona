@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, {useEffect, useState} from 'react';
 import {SubmitHandler, useForm, Validate} from "react-hook-form";
 import * as style from "./styled";
 import {ValidateResult} from "react-hook-form/dist/types/validator";
@@ -19,6 +19,7 @@ interface Props {
 }
 
 function MovieDetailsForm() {
+    const [selectedMovieGenreIds, setSelectedMovieGenreIds] = useState<Array<number>>(new Array<number>());
     const {
         register,
         setError,
@@ -32,13 +33,17 @@ function MovieDetailsForm() {
     };
 
     const validateReleaseDate: Validate<Date> = (providedDate: Date): ValidateResult => {
-        if (providedDate.setHours(0,0,0,0) >= (new Date).setHours(0, 0, 0, 0)) {
+        if (providedDate.setHours(0, 0, 0, 0) >= (new Date).setHours(0, 0, 0, 0)) {
             const errorMessage = "Wybrana data musi być z przeszłości";
             setError("releaseDate", {type: "validate", message: errorMessage});
             return errorMessage;
         }
     }
     
+    useEffect(() => {
+        console.log(selectedMovieGenreIds)
+    }, [selectedMovieGenreIds]);
+
     return (
         <style.FormContainer onSubmit={handleSubmit((data) => console.log(JSON.stringify(data)))}>
             <style.InputContainer>
@@ -89,7 +94,7 @@ function MovieDetailsForm() {
                         return <option value={value} label={key} key={key}></option>
                     })}
                 </style.Select>
-                <GenreArrayFields/>
+                <GenreArrayFields onSelectChange={setSelectedMovieGenreIds}/>
                 <style.SearchButton>Utwórz</style.SearchButton>
             </style.InputContainer>
         </style.FormContainer>

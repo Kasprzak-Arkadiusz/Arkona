@@ -4,7 +4,7 @@ import * as style from "../MovieDetailsForm/styled";
 import GenreField, {MovieGenre} from "./GenreField";
 
 interface Props {
-
+    onSelectChange: (selectedMovieGenreIds :Array<number>) => void
 }
 
 type DropdownObject = {
@@ -17,7 +17,7 @@ type SelectedGenre = {
     selectedGenreId: number
 }
 
-function GenreArrayFields({}: Props) {
+function GenreArrayFields({onSelectChange}: Props) {
     const [selectedMovieGenres, setSelectedMovieGenres] = useState<Array<SelectedGenre>>(new Array<SelectedGenre>());
     const [movieGenresArray,] = useState<Array<MovieGenre>>(Array.from(MovieGenres).map(([key, value]) => {
         return {name: key, id: value}
@@ -65,11 +65,8 @@ function GenreArrayFields({}: Props) {
 
     useEffect(() => {
         setError(null);
+        onSelectChange(selectedMovieGenres.map(genre => genre.selectedGenreId))
     }, [selectedMovieGenres])
-
-    useEffect(() => {
-        console.log(availableGenres);
-    }, [availableGenres])
 
     function handleSelectChange(previousValue: number, selectedValue: number, dropdownId: number) {
         console.log("PreviousValue = ", previousValue);
@@ -113,11 +110,11 @@ function GenreArrayFields({}: Props) {
     return (<style.MovieGenreContainer>
         <style.MovieGenreTitle>Gatunki:</style.MovieGenreTitle>
         {error && <style.ValidationText>{error}</style.ValidationText>}
-        <div>
-            {elements.length > 1 && <button onClick={(e) => onRemoveClick(e)} key={`remove-button`}>-</button>}
+        <style.ButtonsContainer>
+            {elements.length > 1 && <style.IncrDecrButton onClick={(e) => onRemoveClick(e)} key={`remove-button`}>-</style.IncrDecrButton>}
             {elements.length < movieGenresArray.length &&
-                <button onClick={(e) => onAddClick(e)} key={`add-button`}>+</button>}
-        </div>
+                <style.IncrDecrButton onClick={(e) => onAddClick(e)} key={`add-button`}>+</style.IncrDecrButton>}
+        </style.ButtonsContainer>
         {elements.map(element => {
             return element.dropdown;
         })}
