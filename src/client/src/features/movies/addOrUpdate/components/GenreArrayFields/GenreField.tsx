@@ -1,10 +1,11 @@
-﻿import React, {useState} from 'react';
+﻿import React, {useEffect, useState} from 'react';
 import * as style from "../MovieDetailsForm/styled";
 
 interface Props {
     fieldId: number,
-    availableMovieGenres: Array<MovieGenre>
-    onSelectedValueChange: (previousValue: number, selectedValue: number, dropdownId: number) => void
+    availableMovieGenres: Array<MovieGenre>,
+    onSelectedValueChange: (previousValue: number, selectedValue: number, dropdownId: number) => void,
+    defaultValue?: number,
 }
 
 export type MovieGenre = {
@@ -12,7 +13,7 @@ export type MovieGenre = {
     id: number
 }
 
-function GenreField({fieldId, availableMovieGenres, onSelectedValueChange}: Props) {
+function GenreField({fieldId, availableMovieGenres, onSelectedValueChange, defaultValue}: Props) {
     const [dropdownValue, setDropdownValue] = useState<number>(-1);
 
     function onDropDownSelect(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -21,8 +22,22 @@ function GenreField({fieldId, availableMovieGenres, onSelectedValueChange}: Prop
         setDropdownValue(selectedId);
     }
 
+    useEffect(() => {
+        if (defaultValue === undefined) {
+            return
+        }
+
+        const select = document.getElementById(`GenreSelect-${fieldId}`) as HTMLSelectElement | null;
+        if (select === null) {
+            return;
+        }
+
+        select.selectedIndex = defaultValue + 1;
+    }, [defaultValue])
+
     return (
-        <style.MovieGenreSelect key={fieldId} onChange={onDropDownSelect} value={dropdownValue}>
+        <style.MovieGenreSelect id={`GenreSelect-${fieldId}`} key={fieldId} onChange={onDropDownSelect}
+                                value={dropdownValue}>
             <option value={-1} label={""} key={`${fieldId}--1`}/>
             {availableMovieGenres.map(({name, id}) => {
                 if (name !== undefined) {

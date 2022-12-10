@@ -31,3 +31,8 @@ export function toISODateString(date: Date) {
     date = new Date(date.getTime() - (offset*60*1000))
     return date.toISOString().split('T')[0]
 }
+
+export function toDateInputValue(date: Date) {
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return date.toJSON().slice(0,10);
+}

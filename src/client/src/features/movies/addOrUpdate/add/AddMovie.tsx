@@ -1,9 +1,9 @@
 ﻿import React, {useState} from 'react';
-import * as style from "./styled";
-import * as formStyle from "./components/MovieDetailsForm/styled"
-import AddImage from "./components/AddImage/AddImage";
+import * as style from "../styled";
+import * as formStyle from "../components/MovieDetailsForm/styled"
+import AddImage from "../components/AddImage/AddImage";
 import SectionContainer from "components/SectionContainer/SectionContainer";
-import MovieDetailsForm, {Inputs} from "./components/MovieDetailsForm/MovieDetailsForm";
+import MovieDetailsForm, {Inputs} from "../components/MovieDetailsForm/MovieDetailsForm";
 import {MovieClient} from "generated/movie/movie_pb_service";
 import {AddMovieRequest} from "generated/movie/movie_pb";
 import {Timestamp} from "google-protobuf/google/protobuf/timestamp_pb";
@@ -18,8 +18,7 @@ function AddMovie() {
     function handleFormSubmit(data: Inputs, selectedMovieGenreIds: Array<number>) {
         const addMovieRequest = new AddMovieRequest();
         addMovieRequest.setTitle(data.title);
-        const imageString = image.split(',')[1]
-        console.log(imageString);
+        const imageString = image.split(',')[1];
         addMovieRequest.setImage(imageString);
         addMovieRequest.setDuration(data.duration);
         addMovieRequest.setReleasedate(Timestamp.fromDate(data.releaseDate))

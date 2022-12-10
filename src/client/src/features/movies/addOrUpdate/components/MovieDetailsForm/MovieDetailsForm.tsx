@@ -4,6 +4,7 @@ import * as style from "./styled";
 import {ValidateResult} from "react-hook-form/dist/types/validator";
 import {AgeRestrictions} from "utils/CustomTypes/AgeRestrictions";
 import GenreArrayFields from "../GenreArrayFields/GenreArrayFields";
+import {toDateInputValue} from "../../../../../utils/dateUtils";
 
 export type Inputs = {
     title: string,
@@ -14,21 +15,22 @@ export type Inputs = {
 };
 
 interface Props {
-    handleFormSubmit: (data: Inputs, selectedMovieGenreIds: Array<number>) => void
+    handleFormSubmit: (data: Inputs, selectedMovieGenreIds: Array<number>) => void,
+    initialInputs?: Inputs,
+    initialMovieGenreIds?: Array<number>
 }
 
-function MovieDetailsForm({handleFormSubmit}: Props) {
-    const [selectedMovieGenreIds, setSelectedMovieGenreIds] = useState<Array<number>>(new Array<number>());
+function MovieDetailsForm({handleFormSubmit, initialInputs, initialMovieGenreIds}: Props) {
+    const [selectedMovieGenreIds, setSelectedMovieGenreIds] = useState<Array<number>>(
+        initialMovieGenreIds === undefined || initialMovieGenreIds.length === 0
+            ? new Array<number>() : initialMovieGenreIds);
     const [genreError, setGenreError] = useState<string | null>(null);
-    const {
-        register,
-        setError,
-        handleSubmit,
-        formState: {errors}
-    } = useForm<Inputs>({mode: "all", criteriaMode: "all"});
+    const {register, setError, handleSubmit, getValues, formState: {errors}} =
+        useForm<Inputs>(initialInputs === undefined
+            ? {mode: "all", criteriaMode: "all"} : {mode: "all", criteriaMode: "all", defaultValues: initialInputs}
+        );
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log(selectedMovieGenreIds);
         if (genreError !== null) {
             return
         }
@@ -44,18 +46,14 @@ function MovieDetailsForm({handleFormSubmit}: Props) {
         }
     }
 
-    useEffect(() => {        
+    useEffect(() => {
         if (selectedMovieGenreIds.length === 0) {
             setGenreError("Pole gatunki jest wymagane")
             return
         }
-        
+
         setGenreError(null);
     }, [selectedMovieGenreIds]);
-    
-    useEffect(() => {
-        console.log(genreError);
-    }, [genreError])
 
     return (
         <style.FormContainer onSubmit={handleSubmit((data) => onSubmit(data))}>
@@ -65,7 +63,7 @@ function MovieDetailsForm({handleFormSubmit}: Props) {
                 <style.Input {...register("title", {
                     required: {value: true, message: "Pole tytuł jest wymagane"},
                     maxLength: {value: 100, message: "Tytuł nie może być dłuższy niż 100 znaków"}
-                })} type="text"/>
+                })} type="text" defaultValue={initialInputs?.title ? initialInputs.title : ''}/>
                 {errors.releaseDate && <style.ValidationText>{errors.releaseDate.message}</style.ValidationText>}
                 <style.Label>Data premiery:</style.Label>
                 <style.Input  {...register("releaseDate", {
@@ -75,7 +73,8 @@ function MovieDetailsForm({handleFormSubmit}: Props) {
                     }, valueAsDate: true,
                     validate: validateReleaseDate
                 })}
-                              type="date"/>
+                              type="date"
+                              value={initialInputs?.releaseDate ? toDateInputValue(initialInputs.releaseDate) : toDateInputValue(new Date())}/>
                 {errors.duration && <style.ValidationText>{errors.duration.message}</style.ValidationText>}
                 <style.Label>Czas trwania [min]:</style.Label>
                 <style.Input {...register("duration", {
@@ -85,7 +84,7 @@ function MovieDetailsForm({handleFormSubmit}: Props) {
                     },
                     max: {value: 300, message: "Maksymalna dozwolona wartość to 300"},
                     min: {value: 1, message: "Minimalna dozwolona wartość to 1"}
-                })} type="number"/>
+                })} type="number" value={initialInputs?.duration ? initialInputs.duration : ''}/>
                 {errors.description && <style.ValidationText>{errors.description.message}</style.ValidationText>}
                 <style.Label>Opis:</style.Label>
                 <style.DescriptionArea {...register("description", {
@@ -93,7 +92,7 @@ function MovieDetailsForm({handleFormSubmit}: Props) {
                         value: true,
                         message: "Pole opis jest wymagane"
                     }
-                })}/>
+                })} value={initialInputs?.description ? initialInputs.description : ''}/>
                 {errors.ageRestrictionId &&
                     <style.ValidationText>{errors.ageRestrictionId.message}</style.ValidationText>}
                 <style.Label>Ograniczenie wiekowe:</style.Label>
@@ -102,12 +101,13 @@ function MovieDetailsForm({handleFormSubmit}: Props) {
                         value: true,
                         message: "Pole ograniczenie wiekowe jest wymagane"
                     }
-                })}>
+                })} value={initialInputs?.ageRestrictionId ? initialInputs.ageRestrictionId : ''}>
                     {Array.from(AgeRestrictions).map(([key, value]) => {
                         return <option value={value} label={key} key={key}></option>
                     })}
                 </style.Select>
-                <GenreArrayFields onSelectChange={setSelectedMovieGenreIds} errorMessage={genreError}/>
+                <GenreArrayFields onSelectChange={setSelectedMovieGenreIds} errorMessage={genreError}
+                                  initialMovieGenreIds={initialMovieGenreIds}/>
                 <style.SearchButton>Utwórz</style.SearchButton>
             </style.InputContainer>
         </style.FormContainer>
