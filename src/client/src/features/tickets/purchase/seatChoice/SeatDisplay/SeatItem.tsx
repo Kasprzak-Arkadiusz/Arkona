@@ -42,7 +42,9 @@ function SeatItem({seatId, isFree, occupiedByUserId, onClickHandler}: Props) {
     return (
         <style.SeatItemContainer isFree={isFreeState}
                                  isCurrentUser={currentUserId === userIdState && userIdState !== "0"}
-                                 onClick={handleClick}/>
+                                 onClick={handleClick} onMouseEnter={() => {
+            console.log("user: ", userIdState, ", isFree: ", isFreeState)
+        }}/>
     )
 }
 

@@ -15,10 +15,9 @@ interface Props {
     selectedSeats:  Array<number>,
     seanceClient: SeanceClient,
     stream: BidirectionalStream<ChooseSeatRequest, ChooseSeatResponse> | undefined
-    onHandledSet: () => boolean
 }
 
-function SeatChoice({seanceId, movieId, ticketsCount, onSeatClick, selectedSeats, stream, seanceClient, onHandledSet}: Props) {
+function SeatChoice({seanceId, movieId, ticketsCount, onSeatClick, selectedSeats, stream, seanceClient}: Props) {
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
     const errMessage = "Liczba wybranych miejsc jest różna od liczby wybranych biletów!";
     const navigate = useNavigate();
@@ -46,7 +45,7 @@ function SeatChoice({seanceId, movieId, ticketsCount, onSeatClick, selectedSeats
                 <Legend/>
                 <SeatDisplay seanceId={seanceId} ticketsCount={ticketsCount} onSeatClick={onSeatChoice}
                              selectedSeats={selectedSeats} seanceClient={seanceClient} stream={stream}
-                             errorMessage={errorMessage} onHandledSet={onHandledSet}/>
+                             errorMessage={errorMessage} />
             </style.ContentContainer>
             <NavigationButtons onPrevClick={onPrevButtonClick} onNextClick={onNextButtonClick}/>
         </div>)

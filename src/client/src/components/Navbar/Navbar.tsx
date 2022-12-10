@@ -65,11 +65,6 @@ const Navbar = () => {
                         Repertuar
                     </navbar.NavLink>
                 </navbar.Li>
-                <navbar.Li>
-                    <navbar.NavLink to="/offers" onClick={OnNavClick}>
-                        Promocje
-                    </navbar.NavLink>
-                </navbar.Li>
             </navbar.DefaultNavLinks>
         )
     }

@@ -22,7 +22,6 @@ function TicketPurchase() {
     const [offerId, setOfferId] = useState<number>(0);
     const [tickets, setTickets] = useState<Array<TicketDetails>>(new Array<TicketDetails>());
     const [userId,] = useState<string>(useUserId());
-    const [isHandlerSet, setIsHandlerSet] = useState<boolean>(false);
 
     const [userSeatIds, setUserSeatIds] = useState<Array<number>>(new Array<number>());
 
@@ -122,11 +121,6 @@ function TicketPurchase() {
             }
         })
     }
-    
-    const onHandledSet = () => {
-        setIsHandlerSet(true);
-        return isHandlerSet;
-    }
 
     const render = () => {
         switch (action) {
@@ -145,7 +139,7 @@ function TicketPurchase() {
                                    ticketsCount={tickets.reduce((prev, curr) => prev + curr.numberOfTickets, 0)}
                                    onSeatClick={handleSeatClick} selectedSeats={userSeatIds}
                                    seanceClient={seanceClient}
-                                   stream={stream} onHandledSet={onHandledSet}/>
+                                   stream={stream}/>
             }
             case "purchaseSummary": {
                 if (tickets.length === 0) {
