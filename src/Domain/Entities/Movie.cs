@@ -2,6 +2,10 @@
 
 public class Movie
 {
+    public const int MaxTitleLength = 100;
+    public const short MaxDurationInMinutes = 300;
+    public const int MaxDescriptionLength = 1000;
+
     public int Id { get; private set; }
     public byte[]? Image { get; private set; }
     public string Title { get; private set; }
@@ -19,7 +23,7 @@ public class Movie
     {
         Title = title;
         ReleaseDate = releaseDate;
-        Duration = duration;
+        Duration = duration > MaxDurationInMinutes ? MaxDurationInMinutes : duration;
         Description = description;
         AgeRestriction = ageRestriction;
         MovieGenres = genres.Select(genre => MovieGenre.Create(genre, this)).ToList();

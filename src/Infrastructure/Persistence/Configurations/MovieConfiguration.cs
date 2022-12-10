@@ -11,7 +11,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
     public void Configure(EntityTypeBuilder<Movie> builder)
     {
         builder.Property(m => m.Title)
-            .HasMaxLength(100)
+            .HasMaxLength(Movie.MaxTitleLength)
             .IsRequired();
         builder.Property(m => m.ReleaseDate)
             .HasColumnType("date")
@@ -20,7 +20,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         builder.Property(m => m.Duration)
             .IsRequired();
         builder.Property(m => m.Description)
-            .HasMaxLength(1000)
+            .HasMaxLength(Movie.MaxDescriptionLength)
             .IsRequired();
         builder.HasOne(m => m.AgeRestriction)
             .WithMany(ac => ac.Movies);
