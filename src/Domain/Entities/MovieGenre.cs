@@ -13,8 +13,10 @@ public class MovieGenre
 
     private MovieGenre(Genre genre, Movie movie)
     {
+        GenreId = genre.Id;
         Genre = genre;
         Movie = movie;
+        MovieId = movie.Id;
     }
 
     public static MovieGenre Create(Genre genre, Movie movie)

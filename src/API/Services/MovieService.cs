@@ -120,4 +120,16 @@ public class MovieService : Movie.MovieBase
 
         return new AddMovieResponse();
     }
+
+    public override async Task<UpdateMovieResponse> UpdateMovie(UpdateMovieRequest request, ServerCallContext context)
+    {
+        var releaseDate = DateOnly.FromDateTime(request.ReleaseDate.ToDateTime());
+
+        var command = new UpdateMovieCommand(request.Id, request.Title, request.Image.ToByteArray(), releaseDate,
+            (short)request.Duration, request.Description, request.AgeRestrictionId, request.GenreIds.ToList());
+
+        await _mediator.Send(command);
+
+        return new UpdateMovieResponse();
+    }
 }

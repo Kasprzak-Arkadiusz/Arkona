@@ -33,8 +33,49 @@ public class Movie
 
     public static Movie Create(string title, DateOnly releaseDate, short duration,
         string description, AgeRestriction ageRestriction, IEnumerable<Genre> movieGenres, byte[]? image = null
-        )
+    )
     {
         return new Movie(title, releaseDate, duration, description, ageRestriction, movieGenres, image);
+    }
+
+    public void Update(string? title = null, DateOnly? releaseDate = null, short? duration = null,
+        string? description = null, AgeRestriction? ageRestriction = null, IList<Genre>? genres = null, byte[]? image = null)
+    {
+        Title = title ?? Title;
+        ReleaseDate = releaseDate ?? ReleaseDate;
+        Duration = duration ?? Duration;
+        Description = description ?? Description;
+        AgeRestriction = ageRestriction ?? AgeRestriction;
+        ChangeMovieGenres(genres); 
+            // genres?.Select(genre => MovieGenre.Create(genre, this)).ToList() ?? MovieGenres;
+        Image = image ?? Image;
+    }
+
+    private void ChangeMovieGenres(IList<Genre>? newGenres)
+    {
+        if (newGenres is null || !newGenres.Any())
+        {
+            return;
+        }
+        
+        // Get different movie genres
+        var newGenreIds = newGenres.Select(ng => ng.Id).ToList();
+        var oldGenreIds = MovieGenres.Select(mg => mg.GenreId).ToList();
+        
+        var newElementIds = newGenreIds.Except(oldGenreIds);
+        var outdatedElementIds = oldGenreIds.Except(newGenreIds);
+
+        var movieGenresToRemove = MovieGenres.Where(mg => outdatedElementIds.Contains(mg.GenreId));
+        foreach (var movieGenre in movieGenresToRemove)
+        {
+            MovieGenres.Remove(movieGenre);
+        }
+
+        foreach (var id in newElementIds)
+        {
+            var genre = newGenres.First(ng => ng.Id == id);
+            var movieGenre = MovieGenre.Create(genre, this);
+            MovieGenres.Add(movieGenre);
+        }
     }
 }
