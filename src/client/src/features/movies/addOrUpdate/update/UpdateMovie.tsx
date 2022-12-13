@@ -7,12 +7,14 @@ import MovieDetailsForm, {Inputs} from "../components/MovieDetailsForm/MovieDeta
 import {MovieClient} from "generated/movie/movie_pb_service";
 import {useNavigate} from "react-router-dom";
 import {useParams} from "react-router";
-import {GetMovieDetailsRequest} from "generated/movie/movie_pb";
+import {UpdateMovieRequest, GetMovieDetailsRequest} from "generated/movie/movie_pb";
 import {AgeRestrictions} from "utils/CustomTypes/AgeRestrictions";
 import {MovieGenres} from "utils/CustomTypes/MovieGenres";
+import {Timestamp} from "google-protobuf/google/protobuf/timestamp_pb";
 
 function UpdateMovie() {
     const {id} = useParams();
+    const [movieId, setMovieId] = useState<number>(0);
     const [image, setImage] = useState<string>("");
     const [backendError, setBackendError] = useState<string | null>(null);
     const [movieClient,] = useState<MovieClient>(new MovieClient(process.env.REACT_APP_SERVER_URL!));
@@ -27,6 +29,7 @@ function UpdateMovie() {
         }
 
         const parsedId = parseInt(id);
+        setMovieId(parsedId);
 
         const getMovieDetailsRequest = new GetMovieDetailsRequest();
         getMovieDetailsRequest.setId(parsedId);
@@ -34,7 +37,7 @@ function UpdateMovie() {
             if (responseMessage !== null) {
                 const releaseDate = responseMessage.getReleasedate();
                 const ageRestriction = AgeRestrictions.get(responseMessage.getAgerestriction());
-
+                
                 const inputs: Inputs = {
                     title: responseMessage.getTitle(),
                     releaseDate: releaseDate === undefined ? new Date() : releaseDate.toDate(),
@@ -59,13 +62,26 @@ function UpdateMovie() {
     }, [])
 
     function handleFormSubmit(data: Inputs, selectedMovieGenreIds: Array<number>) {
+        const updateMovieRequest = new UpdateMovieRequest();
+        updateMovieRequest.setId(movieId);
+        updateMovieRequest.setTitle(data.title);
+        const imageString = image.split(',')[1];
+        updateMovieRequest.setImage(imageString);
+        updateMovieRequest.setDuration(data.duration);
+        updateMovieRequest.setReleasedate(Timestamp.fromDate(data.releaseDate))
+        updateMovieRequest.setDescription(data.description);
+        updateMovieRequest.setAgerestrictionid(data.ageRestrictionId);
+        updateMovieRequest.setGenreidsList(selectedMovieGenreIds);
 
+        movieClient.updateMovie(updateMovieRequest, (error, _) => {
+            if (error !== null) {
+                setBackendError(error.message);
+            } else {
+                navigate("/")
+            }
+        });
     }
     
-    useEffect(()=> {
-        console.log(image);
-    }, [image])
-
     return (
         <style.DisplayContainer>
             <SectionContainer>

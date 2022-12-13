@@ -25,9 +25,17 @@ function MovieDetailsForm({handleFormSubmit, initialInputs, initialMovieGenreIds
         initialMovieGenreIds === undefined || initialMovieGenreIds.length === 0
             ? new Array<number>() : initialMovieGenreIds);
     const [genreError, setGenreError] = useState<string | null>(null);
-    const {register, setError, handleSubmit, getValues, formState: {errors}} =
+    const {register, setError, handleSubmit, getValues, reset, formState: {errors}} =
         useForm<Inputs>(initialInputs === undefined
-            ? {mode: "all", criteriaMode: "all"} : {mode: "all", criteriaMode: "all", defaultValues: initialInputs}
+            ? {mode: "all", criteriaMode: "all"} : {
+                mode: "all", criteriaMode: "all", defaultValues: {
+                    title: initialInputs.title,
+                    duration: initialInputs.duration,
+                    releaseDate: initialInputs.releaseDate,
+                    description: initialInputs.description,
+                    ageRestrictionId: initialInputs.ageRestrictionId
+                }
+            }
         );
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -54,6 +62,12 @@ function MovieDetailsForm({handleFormSubmit, initialInputs, initialMovieGenreIds
 
         setGenreError(null);
     }, [selectedMovieGenreIds]);
+
+    useEffect(() => {
+        if (initialInputs !== undefined) {
+            reset()
+        }
+    }, [initialInputs])
 
     return (
         <style.FormContainer onSubmit={handleSubmit((data) => onSubmit(data))}>

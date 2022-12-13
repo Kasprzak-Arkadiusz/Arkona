@@ -55,6 +55,15 @@ Movie.AddMovie = {
   responseType: movie_pb.AddMovieResponse
 };
 
+Movie.UpdateMovie = {
+  methodName: "UpdateMovie",
+  service: Movie,
+  requestStream: false,
+  responseStream: false,
+  requestType: movie_pb.UpdateMovieRequest,
+  responseType: movie_pb.UpdateMovieResponse
+};
+
 exports.Movie = Movie;
 
 function MovieClient(serviceHost, options) {
@@ -191,6 +200,37 @@ MovieClient.prototype.addMovie = function addMovie(requestMessage, metadata, cal
     callback = arguments[1];
   }
   var client = grpc.unary(Movie.AddMovie, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+MovieClient.prototype.updateMovie = function updateMovie(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(Movie.UpdateMovie, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
