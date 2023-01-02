@@ -42,7 +42,7 @@ function AddMovie() {
                 {backendError && <formStyle.ValidationText>{backendError}</formStyle.ValidationText>}
                 <style.ContentContainer>
                     <AddImage width={"360px"} height={"480px"} image={image} onImageChange={setImage}/>
-                    <MovieDetailsForm handleFormSubmit={handleFormSubmit}/>
+                    <MovieDetailsForm handleFormSubmit={handleFormSubmit} buttonText={"Utwórz"}/>
                 </style.ContentContainer>
             </SectionContainer>
         </style.DisplayContainer>

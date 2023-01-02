@@ -90,7 +90,7 @@ function UpdateMovie() {
                 <style.ContentContainer>
                     <AddImage width={"360px"} height={"480px"} image={image} onImageChange={setImage}/>
                     <MovieDetailsForm handleFormSubmit={handleFormSubmit} initialInputs={editedMovieData}
-                                      initialMovieGenreIds={editedMovieGenres}/>
+                                      initialMovieGenreIds={editedMovieGenres} buttonText={"Edytuj"}/>
                 </style.ContentContainer>
             </SectionContainer>
         </style.DisplayContainer>

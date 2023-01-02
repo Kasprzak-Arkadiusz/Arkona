@@ -105,6 +105,8 @@ const CommonButton = styled.button`
 `
 
 export const SearchButton = styled(CommonButton)`
+   margin-left: 5px;
+   margin-right: 5px;
 `
 
 export const ValidationText = styled.span`
