@@ -22,8 +22,7 @@ interface Props {
     seanceClient: SeanceClient,
     selectedSeats: Array<number>,
     stream: BidirectionalStream<ChooseSeatRequest, ChooseSeatResponse> | undefined,
-    errorMessage: string | undefined,
-    onHandledSet: () => boolean
+    errorMessage: string | undefined
 }
 
 const getRowLabels = (n: number): Array<JSX.Element> => {
@@ -45,8 +44,7 @@ function SeatDisplay({
                          seanceClient,
                          selectedSeats,
                          stream,
-                         errorMessage,
-                         onHandledSet
+                         errorMessage
                      }: Props) {
     const [sections, _setSections] = useState<SeanceSeatSection[]>(new Array<SeanceSeatSection>());
     const sectionsRef = useRef(sections);
@@ -90,9 +88,7 @@ function SeatDisplay({
 
     useEffect(() => {
         if (stream !== undefined && databaseStateLoaded) {
-            if (!onHandledSet()) {
-                stream.on("data", handleDataStream)
-            }
+            stream.on("data", handleDataStream)
             setStreamRegistered(true);
         }
     }, [stream, databaseStateLoaded]);

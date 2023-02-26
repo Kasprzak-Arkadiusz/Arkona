@@ -296,3 +296,139 @@ export namespace DetailedMovieInfo {
   }
 }
 
+export class AddMovieRequest extends jspb.Message {
+  getTitle(): string;
+  setTitle(value: string): void;
+
+  getImage(): Uint8Array | string;
+  getImage_asU8(): Uint8Array;
+  getImage_asB64(): string;
+  setImage(value: Uint8Array | string): void;
+
+  hasReleasedate(): boolean;
+  clearReleasedate(): void;
+  getReleasedate(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setReleasedate(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
+  getDuration(): number;
+  setDuration(value: number): void;
+
+  getDescription(): string;
+  setDescription(value: string): void;
+
+  getAgerestrictionid(): number;
+  setAgerestrictionid(value: number): void;
+
+  clearGenreidsList(): void;
+  getGenreidsList(): Array<number>;
+  setGenreidsList(value: Array<number>): void;
+  addGenreids(value: number, index?: number): number;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): AddMovieRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: AddMovieRequest): AddMovieRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: AddMovieRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): AddMovieRequest;
+  static deserializeBinaryFromReader(message: AddMovieRequest, reader: jspb.BinaryReader): AddMovieRequest;
+}
+
+export namespace AddMovieRequest {
+  export type AsObject = {
+    title: string,
+    image: Uint8Array | string,
+    releasedate?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    duration: number,
+    description: string,
+    agerestrictionid: number,
+    genreidsList: Array<number>,
+  }
+}
+
+export class AddMovieResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): AddMovieResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: AddMovieResponse): AddMovieResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: AddMovieResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): AddMovieResponse;
+  static deserializeBinaryFromReader(message: AddMovieResponse, reader: jspb.BinaryReader): AddMovieResponse;
+}
+
+export namespace AddMovieResponse {
+  export type AsObject = {
+  }
+}
+
+export class UpdateMovieRequest extends jspb.Message {
+  getId(): number;
+  setId(value: number): void;
+
+  getTitle(): string;
+  setTitle(value: string): void;
+
+  getImage(): Uint8Array | string;
+  getImage_asU8(): Uint8Array;
+  getImage_asB64(): string;
+  setImage(value: Uint8Array | string): void;
+
+  hasReleasedate(): boolean;
+  clearReleasedate(): void;
+  getReleasedate(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setReleasedate(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
+  getDuration(): number;
+  setDuration(value: number): void;
+
+  getDescription(): string;
+  setDescription(value: string): void;
+
+  getAgerestrictionid(): number;
+  setAgerestrictionid(value: number): void;
+
+  clearGenreidsList(): void;
+  getGenreidsList(): Array<number>;
+  setGenreidsList(value: Array<number>): void;
+  addGenreids(value: number, index?: number): number;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateMovieRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateMovieRequest): UpdateMovieRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: UpdateMovieRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateMovieRequest;
+  static deserializeBinaryFromReader(message: UpdateMovieRequest, reader: jspb.BinaryReader): UpdateMovieRequest;
+}
+
+export namespace UpdateMovieRequest {
+  export type AsObject = {
+    id: number,
+    title: string,
+    image: Uint8Array | string,
+    releasedate?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    duration: number,
+    description: string,
+    agerestrictionid: number,
+    genreidsList: Array<number>,
+  }
+}
+
+export class UpdateMovieResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateMovieResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateMovieResponse): UpdateMovieResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: UpdateMovieResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateMovieResponse;
+  static deserializeBinaryFromReader(message: UpdateMovieResponse, reader: jspb.BinaryReader): UpdateMovieResponse;
+}
+
+export namespace UpdateMovieResponse {
+  export type AsObject = {
+  }
+}
+

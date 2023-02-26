@@ -65,12 +65,19 @@ const Navbar = () => {
                         Repertuar
                     </navbar.NavLink>
                 </navbar.Li>
-                <navbar.Li>
-                    <navbar.NavLink to="/offers" onClick={OnNavClick}>
-                        Promocje
+            </navbar.DefaultNavLinks>
+        )
+    }
+    
+    const getWorkerNavLinks = () : JSX.Element => {
+        return (
+            <navbar.NavLinks>
+                <navbar.Li id="first-link">
+                    <navbar.NavLink to="/movie/add" onClick={OnNavClick}>
+                        Filmy
                     </navbar.NavLink>
                 </navbar.Li>
-            </navbar.DefaultNavLinks>
+            </navbar.NavLinks>
         )
     }
     
@@ -86,7 +93,7 @@ const Navbar = () => {
                     {
                         <RequireAuth role={role ?? ""}/> && (
                             role === Role.client && getClientNavLinks() ||
-                            role === Role.worker)}
+                            role === Role.worker && getWorkerNavLinks() )}
                     {getAuthenticationNavLinks()}
                 </navbar.NavLinksContainer>
                 <navbar.NavIcon onClick={() => setOpen(!open)}>

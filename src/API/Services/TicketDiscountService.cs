@@ -17,15 +17,17 @@ public class TicketDiscountService : TicketDiscount.TicketDiscountBase
         ServerCallContext context)
     {
         var viewModel = await _mediator.Send(new GetTicketDiscountsQuery());
+        
         var response = new GetTicketDiscountsResponse();
         response.TicketDiscount.AddRange(viewModel.Select(td => new TicketDiscountsDetails
         {
             Id = td.Id,
             Name = td.Name,
             Description = td.Description,
-            DiscountValue = td.DiscountValue == 1 ? string.Empty : $"-{((1 - td.DiscountValue) * 100):F0}%"
+            DiscountValue = td.DiscountValue == 1 ? string.Empty : $"-{(1 - td.DiscountValue) * 100:F0}%"
         }));
 
         return response;
     }
 }
+

@@ -48,5 +48,4 @@ public class ErrorHandlingInterceptor : Interceptor
 
         return (statusCode, message);
     }
-       
 }

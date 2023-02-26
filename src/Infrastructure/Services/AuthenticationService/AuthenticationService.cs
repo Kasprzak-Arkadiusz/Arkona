@@ -102,7 +102,12 @@ public class AuthenticationService : IAuthenticationService
             throw new UnauthorizedException("Niepoprawne dane logowania");
         }
 
-        return _mapper.Map<User>(appUser);
+        var user = User.Create(appUser.FirstName, appUser.LastName, appUser.Email);
+        var userRoles = await _userManager.GetRolesAsync(appUser);
+        var role = userRoles.Any(r => r == Role.Worker.ToString()) ? Role.Worker : Role.Client; 
+        user.SetRole(role);
+        user.SetId(appUser.Id);
+        return user;
     }
 
     private async Task<AppUser> GetUserWithIdAsync(string id)
@@ -185,8 +190,7 @@ public class AuthenticationService : IAuthenticationService
 
     public async Task<User> LoginWithGoogleAsync(string code)
     {
-        var exchangeResult = await _googleAuthService.ExchangeCodeAsync(code);
-        var userInfo = await _googleAuthService.GetUserInfoAsync(exchangeResult.AccessToken);
+        var userInfo = await _googleAuthService.GetUserInfoAsync(code);
 
         var appUser = await _userManager.FindByEmailAsync(userInfo.Email);
 

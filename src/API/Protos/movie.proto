@@ -11,6 +11,8 @@ service Movie{
   rpc GetMovies(GetMoviesRequest) returns (GetMoviesResponse);
   rpc GetFilteredMovies(GetFilteredMoviesRequest) returns (GetMoviesResponse);
   rpc GetMovieDetails(GetMovieDetailsRequest) returns (DetailedMovieInfo);
+  rpc AddMovie(AddMovieRequest) returns (AddMovieResponse);
+  rpc UpdateMovie(UpdateMovieRequest) returns (UpdateMovieResponse);
 }
 
 // GetMovies
@@ -74,4 +76,33 @@ message DetailedMovieInfo {
   repeated string           genres         = 6;
   string                    ageRestriction = 7;
   string                    description    = 8;
+}
+
+// AddMovie
+message AddMovieRequest {
+  string                    title            = 1;
+  bytes                     image            = 2;
+  google.protobuf.Timestamp releaseDate      = 3;
+  int32                     duration         = 4;
+  string                    description      = 5;
+  int32                     ageRestrictionId = 6;
+  repeated int32            genreIds         = 7;
+}
+
+message AddMovieResponse {
+}
+
+// UpdateMovie
+message UpdateMovieRequest {
+  int32                     id               = 1;
+  string                    title            = 2;
+  bytes                     image            = 3;
+  google.protobuf.Timestamp releaseDate      = 4;
+  int32                     duration         = 5;
+  string                    description      = 6;
+  int32                     ageRestrictionId = 7;
+  repeated int32            genreIds         = 8;
+}
+
+message UpdateMovieResponse {
 }

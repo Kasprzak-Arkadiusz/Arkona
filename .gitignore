@@ -276,3 +276,9 @@ src/API/appsettings.json
 
 # Kreya files
 PI/*
+
+# Uml Diagram files
+ArkonaDB.uml
+DATABASE
+
+global.json
