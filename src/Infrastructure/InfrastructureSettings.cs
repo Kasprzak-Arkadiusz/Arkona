@@ -1,7 +1,6 @@
 ﻿#pragma warning disable CS8603
 using Infrastructure.Services.EmailService;
 using Infrastructure.Services.FacebookAuthService;
-using Infrastructure.Services.GoogleAuthService;
 using Microsoft.Data.SqlClient;
 
 namespace Infrastructure;
@@ -12,7 +11,6 @@ public class InfrastructureSettings
     public bool SeedWithCustomData { get; set; }
     public EmailConfiguration EmailConfiguration { get; set; }
     public FacebookAuthSettings FacebookAuthSettings { get; set; }
-    public GoogleAuthSettings GoogleAuthSettings { get; set; }
 
     public string DbConnectionString
     {

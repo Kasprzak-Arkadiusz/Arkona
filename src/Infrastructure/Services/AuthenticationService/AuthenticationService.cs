@@ -190,8 +190,7 @@ public class AuthenticationService : IAuthenticationService
 
     public async Task<User> LoginWithGoogleAsync(string code)
     {
-        var exchangeResult = await _googleAuthService.ExchangeCodeAsync(code);
-        var userInfo = await _googleAuthService.GetUserInfoAsync(exchangeResult.AccessToken);
+        var userInfo = await _googleAuthService.GetUserInfoAsync(code);
 
         var appUser = await _userManager.FindByEmailAsync(userInfo.Email);
 
