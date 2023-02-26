@@ -5,6 +5,7 @@ import {ValidateResult} from "react-hook-form/dist/types/validator";
 import {AgeRestrictions} from "utils/CustomTypes/AgeRestrictions";
 import GenreArrayFields from "../GenreArrayFields/GenreArrayFields";
 import {toDateInputValue} from "../../../../../utils/dateUtils";
+import {useNavigate} from "react-router-dom";
 
 export type Inputs = {
     title: string,
@@ -17,17 +18,27 @@ export type Inputs = {
 interface Props {
     handleFormSubmit: (data: Inputs, selectedMovieGenreIds: Array<number>) => void,
     initialInputs?: Inputs,
-    initialMovieGenreIds?: Array<number>
+    initialMovieGenreIds?: Array<number>,
+    buttonText: string,
 }
 
-function MovieDetailsForm({handleFormSubmit, initialInputs, initialMovieGenreIds}: Props) {
+function MovieDetailsForm({handleFormSubmit, initialInputs, initialMovieGenreIds, buttonText}: Props) {
+    const navigate = useNavigate();
     const [selectedMovieGenreIds, setSelectedMovieGenreIds] = useState<Array<number>>(
         initialMovieGenreIds === undefined || initialMovieGenreIds.length === 0
             ? new Array<number>() : initialMovieGenreIds);
     const [genreError, setGenreError] = useState<string | null>(null);
-    const {register, setError, handleSubmit, getValues, formState: {errors}} =
+    const {register, setError, handleSubmit, getValues, reset, formState: {errors}} =
         useForm<Inputs>(initialInputs === undefined
-            ? {mode: "all", criteriaMode: "all"} : {mode: "all", criteriaMode: "all", defaultValues: initialInputs}
+            ? {mode: "all", criteriaMode: "all"} : {
+                mode: "all", criteriaMode: "all", defaultValues: {
+                    title: initialInputs.title,
+                    duration: initialInputs.duration,
+                    releaseDate: initialInputs.releaseDate,
+                    description: initialInputs.description,
+                    ageRestrictionId: initialInputs.ageRestrictionId
+                }
+            }
         );
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -37,6 +48,11 @@ function MovieDetailsForm({handleFormSubmit, initialInputs, initialMovieGenreIds
 
         handleFormSubmit(data, selectedMovieGenreIds);
     };
+    
+    const onReturnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        navigate(-1);
+    }
 
     const validateReleaseDate: Validate<Date> = (providedDate: Date): ValidateResult => {
         if (providedDate.setHours(0, 0, 0, 0) >= (new Date).setHours(0, 0, 0, 0)) {
@@ -54,6 +70,12 @@ function MovieDetailsForm({handleFormSubmit, initialInputs, initialMovieGenreIds
 
         setGenreError(null);
     }, [selectedMovieGenreIds]);
+
+    useEffect(() => {
+        if (initialInputs !== undefined) {
+            reset()
+        }
+    }, [initialInputs])
 
     return (
         <style.FormContainer onSubmit={handleSubmit((data) => onSubmit(data))}>
@@ -108,7 +130,8 @@ function MovieDetailsForm({handleFormSubmit, initialInputs, initialMovieGenreIds
                 </style.Select>
                 <GenreArrayFields onSelectChange={setSelectedMovieGenreIds} errorMessage={genreError}
                                   initialMovieGenreIds={initialMovieGenreIds}/>
-                <style.SearchButton>Utwórz</style.SearchButton>
+                <style.SearchButton onClick={onReturnClick}>Wróć</style.SearchButton>
+                <style.SearchButton>{buttonText}</style.SearchButton>
             </style.InputContainer>
         </style.FormContainer>
     )

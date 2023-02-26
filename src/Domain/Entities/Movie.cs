@@ -47,7 +47,6 @@ public class Movie
         Description = description ?? Description;
         AgeRestriction = ageRestriction ?? AgeRestriction;
         ChangeMovieGenres(genres); 
-            // genres?.Select(genre => MovieGenre.Create(genre, this)).ToList() ?? MovieGenres;
         Image = image ?? Image;
     }
 
@@ -58,7 +57,6 @@ public class Movie
             return;
         }
         
-        // Get different movie genres
         var newGenreIds = newGenres.Select(ng => ng.Id).ToList();
         var oldGenreIds = MovieGenres.Select(mg => mg.GenreId).ToList();
         

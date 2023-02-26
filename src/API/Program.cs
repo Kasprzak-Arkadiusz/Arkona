@@ -52,8 +52,8 @@ builder.Services.AddGrpcFluentValidation();
 builder.Services.AddGrpc(options =>
 {
     options.EnableMessageValidation();
-    options.Interceptors.Add<AuthorizationInterceptor>();
     options.Interceptors.Add<ErrorHandlingInterceptor>();
+    options.Interceptors.Add<AuthorizationInterceptor>();
 });
 builder.Services.AddGrpcReflection();
 
@@ -64,11 +64,6 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.SaveToken = true;
-    options.RequireHttpsMetadata = true;
-    options.TokenValidationParameters = TokenValidationParametersCreator.Create(applicationSettings);
 });
 
 builder.Services.AddAuthorization(options =>
